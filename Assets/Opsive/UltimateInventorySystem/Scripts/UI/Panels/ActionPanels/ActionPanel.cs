@@ -26,7 +26,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ActionPanels
         [SerializeField] internal GameObject m_ActionButtonPrefab;
         [Tooltip("The buttons container transform.")]
         [SerializeField] protected Transform m_ButtonsParent;
-        [Tooltip("Add a cancel option to close the panel")]
+        [Tooltip("Add a cancel option to close the panel.")]
         [SerializeField] protected bool m_AddCancelOption = true;
 
         protected List<ActionButton> m_ItemActionButtons = new List<ActionButton>();
@@ -91,6 +91,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ActionPanels
             }
         }
 
+        /// <summary>
+        /// Add the button to a specific index.
+        /// </summary>
+        /// <param name="i">The index to add the button to.</param>
+        /// <returns>The Action button. created.</returns>
         private ActionButton AddButtonAtIndex(int i)
         {
             if (m_ButtonsParent.childCount <= i) { Instantiate(m_ActionButtonPrefab, m_ButtonsParent); }
@@ -116,6 +121,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ActionPanels
             AfterActionInvoke(index);
         }
 
+        /// <summary>
+        /// This function is called before the action is invoked.
+        /// </summary>
+        /// <param name="index">The index of the action.</param>
         protected virtual void BeforeActionInvoke(int index)
         {
             var action = m_Actions[index];
@@ -147,6 +156,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ActionPanels
             action.InvokeAction();
         }
 
+        /// <summary>
+        /// This function is called after the action was invoked.
+        /// </summary>
+        /// <param name="index">The action index.</param>
         protected virtual void AfterActionInvoke(int index)
         {
             OnAfterAnyItemActionInvoke?.Invoke(index);

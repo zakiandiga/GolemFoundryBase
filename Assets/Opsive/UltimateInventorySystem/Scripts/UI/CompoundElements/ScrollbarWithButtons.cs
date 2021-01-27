@@ -20,7 +20,7 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
 
         [Tooltip("The scrollbar.")]
         [SerializeField] protected Scrollbar m_Scrollbar;
-        [Tooltip("Set the steps to discrete")]
+        [Tooltip("Set the steps to discrete.")]
         [SerializeField] protected bool m_DiscreteSteps = true;
         [Tooltip("The button to scroll up.")]
         [SerializeField] protected Button m_PositiveButton;

@@ -18,7 +18,7 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicItemCategoryArray
     {
-        [Tooltip("Serialized Dynamic Item Category")]
+        [Tooltip("Serialized Dynamic Item Category.")]
         [SerializeField] private DynamicItemCategory[] m_ItemCategories;
 
         private ItemCategory[] m_CachedItemCategories;
@@ -66,9 +66,9 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicItemCategory
     {
-        [Tooltip("The item category name")]
+        [Tooltip("The item category name.")]
         [SerializeField] private string m_Name;
-        [Tooltip("The item category")]
+        [Tooltip("The item category.")]
         [SerializeField] private ItemCategory m_ItemCategory;
 
         private ItemCategory m_ValidItemCategory;
@@ -140,9 +140,9 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicItemDefinition
     {
-        [Tooltip("The item category name")]
+        [Tooltip("The item category name.")]
         [SerializeField] private string m_Name;
-        [Tooltip("The item category")]
+        [Tooltip("The item category.")]
         [SerializeField] private ItemDefinition m_ItemDefinition;
 
         private ItemDefinition m_ValidItemDefinition;
@@ -213,7 +213,7 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicCraftingCategoryArray
     {
-        [Tooltip("Serialized Dynamic Crafting Category")]
+        [Tooltip("Serialized Dynamic Crafting Category.")]
         [SerializeField] private DynamicCraftingCategory[] m_CraftingCategories;
 
         private CraftingCategory[] m_CachedCategories;
@@ -261,9 +261,9 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicCraftingCategory
     {
-        [Tooltip("The item category name")]
+        [Tooltip("The item category name.")]
         [SerializeField] private string m_Name;
-        [Tooltip("The item category")]
+        [Tooltip("The item category.")]
         [SerializeField] private CraftingCategory m_CraftingCategory;
 
         private CraftingCategory m_ValidCraftingCategory;
@@ -331,7 +331,7 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicCraftingRecipeArray
     {
-        [Tooltip("Serialized Dynamic Crafting Category")]
+        [Tooltip("Serialized Dynamic Crafting Category.")]
         [SerializeField] private DynamicCraftingRecipe[] m_CraftingRecipes;
 
         private CraftingRecipe[] m_CachedRecipes;
@@ -379,9 +379,9 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicCraftingRecipe
     {
-        [Tooltip("The item category name")]
+        [Tooltip("The recipe name.")]
         [SerializeField] private string m_Name;
-        [Tooltip("The item category")]
+        [Tooltip("The recipe.")]
         [SerializeField] private CraftingRecipe m_CraftingRecipe;
 
         private CraftingRecipe m_ValidCraftingRecipe;
@@ -449,9 +449,9 @@ namespace Opsive.UltimateInventorySystem.Core
     [Serializable]
     public struct DynamicCurrency
     {
-        [Tooltip("The item category name")]
+        [Tooltip("The currency name.")]
         [SerializeField] private string m_Name;
-        [Tooltip("The item category")]
+        [Tooltip("The currency.")]
         [SerializeField] private Currency m_Currency;
 
         private Currency m_ValidItemCategory;

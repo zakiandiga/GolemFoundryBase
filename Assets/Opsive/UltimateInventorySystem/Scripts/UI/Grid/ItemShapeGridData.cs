@@ -55,38 +55,69 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         }
 
         [Tooltip("The ID of the Grid Data.")]
-        [SerializeField] protected int m_ID;
-        [Tooltip("The Tab ID if the Grid uses a Tab Controller.")]
-        [SerializeField] protected int m_TabID;
+        [SerializeField] internal int m_ID;
+        [Tooltip("The Item Collection of the Grid, this is the collection where the items will be added " +
+                 "(NONE, means items from all the collections in the inventory can be placed in the grid data.).")]
+        [SerializeField] internal ItemCollectionID m_ItemCollectionID;
         [Tooltip("The Item Info Filter used to prevent certain items from being added in the grid.")]
         [SerializeField] internal ItemInfoFilterSorterBase m_ItemInfoFilter;
         [Tooltip("The Grid Size (must match the UI Grid size.)")]
         [SerializeField] internal Vector2Int m_GridSize;
+        [Tooltip("Allow items to exchange places when possible or allow items to be moved in empty places only?")]
+        [SerializeField] protected bool m_SmartTwoWayMove = false;
 
         public int GridSizeCount => m_GridSize.x * m_GridSize.y;
         public int GridColumns => m_GridSize.x;
         public int GridRows => m_GridSize.y;
-        protected string ShapeAttributeName => m_Controller.ShapeAttributeName;
+        public string ShapeAttributeName => m_Controller.ShapeAttributeName;
 
-        protected ItemShapeInventoryGridController m_Controller;
+        protected ItemShapeGridController m_Controller;
 
         protected GridElementData[,] m_ItemStackAnchorGrid;
         protected GridElementData[,] m_TemporaryItemStackAnchorGrid;
 
         public Inventory Inventory => m_Controller.Inventory;
         public int ID => m_ID;
-        public int TabID => m_TabID;
+        public ItemCollectionID ItemCollectionID {
+            get { return m_ItemCollectionID; }
+            set { m_ItemCollectionID = value; }
+        }
+
         public Vector2Int GridSize => m_GridSize;
         public IFilterSorter<ItemInfo> FilterSorter => m_ItemInfoFilter;
 
-        public Vector2Int OneDTo2D(int index) => new Vector2Int(index % m_GridSize.x, index / m_GridSize.x);
-        public int TwoDTo1D(Vector2Int pos) => pos.y * m_GridSize.x + pos.x;
+        /// <summary>
+        /// Convert an index to a position in the grid.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>The position.</returns>
+        public Vector2Int OneDTo2D(int index)
+        {
+            if (index < 0 || index >= GridSizeCount) { return new Vector2Int(-1, -1); }
+
+            return new Vector2Int(index % m_GridSize.x, index / m_GridSize.x);
+        }
+
+        /// <summary>
+        /// Convert a position to an index.
+        /// </summary>
+        /// <param name="pos">The position.</param>
+        /// <returns>The index.</returns>
+        public int TwoDTo1D(Vector2Int pos)
+        {
+            if (pos.x < 0
+                || pos.x >= m_GridSize.x
+                || pos.y < 0
+                || pos.y >= m_GridSize.y) { return -1; }
+
+            return pos.y * m_GridSize.x + pos.x;
+        }
 
         /// <summary>
         /// Initialize
         /// </summary>
         /// <param name="controller">The item shape inventory grid controller.</param>
-        public void Initialize(ItemShapeInventoryGridController controller)
+        public void Initialize(ItemShapeGridController controller)
         {
             if (m_Controller == controller) {
                 return;
@@ -130,17 +161,77 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         }
 
         /// <summary>
+        /// Get the anchor position of the anchor for the index.
+        /// </summary>
+        /// <param name="index">index.</param>
+        /// <returns>True if the item was found.</returns>
+        public int GetAnchorIndex(int index)
+        {
+            var elementData = GetElementAt(index);
+
+            if (elementData.IsAnchor || elementData.IsEmpty) {
+                return index;
+            }
+
+            if (TryFindAnchorForItem((ItemInfo)elementData.ItemStack, out var anchorPos)) {
+                return TwoDTo1D(anchorPos);
+            }
+
+            return -1;
+        }
+
+        /// <summary>
+        /// Get the anchor position of the anchor for the index.
+        /// </summary>
+        /// <param name="index">index.</param>
+        /// <returns>True if the item was found.</returns>
+        public Vector2Int GetAnchorPosition(int index)
+        {
+            return OneDTo2D(GetAnchorIndex(index));
+        }
+
+        /// <summary>
+        /// Get the index of the item.
+        /// </summary>
+        /// <param name="itemInfo">The item info to find the index for.</param>
+        /// <returns>The index where the item info is located.</returns>
+        public int GetItemIndex(ItemInfo itemInfo)
+        {
+            return TwoDTo1D(GetItemPos(itemInfo));
+        }
+
+        /// <summary>
+        /// Get the position of the item.
+        /// </summary>
+        /// <param name="itemInfo">The item info to find the position for.</param>
+        /// <returns>The position of the item within the grid.</returns>
+        public Vector2Int GetItemPos(ItemInfo itemInfo)
+        {
+            for (int row = 0; row < m_ItemStackAnchorGrid.GetLength(1); row++) {
+                for (int col = 0; col < m_ItemStackAnchorGrid.GetLength(0); col++) {
+                    var element = m_ItemStackAnchorGrid[col, row];
+                    if (element.IsAnchor == false) { continue; }
+
+                    if (itemInfo.ItemStack == element.ItemStack) {
+                        return new Vector2Int(col, row);
+                    }
+                }
+            }
+
+            return new Vector2Int(-1, -1);
+        }
+
+        /// <summary>
         /// Try to add an item in the position.
         /// </summary>
         /// <param name="info">The item info.</param>
         /// <param name="position">The position.</param>
         /// <returns>True if the item was added.</returns>
-        public bool TryAddItemToPosition(ItemInfo info, Vector2Int position)
+        public virtual bool TryPlaceItemToPosition(ItemInfo info, Vector2Int position)
         {
             //Debug.Log($"Try Add: {position} + {info}");
             var x = position.x;
             var y = position.y;
-
 
             if (info.Item.TryGetAttributeValue<ItemShape>(ShapeAttributeName, out var shape) == false
                 || shape.Count <= 1) {
@@ -155,16 +246,24 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
                 return true;
             }
 
+            var anchorWithOffset = new Vector2Int(
+                x - shape.Anchor.x,
+                y - shape.Anchor.y);
+
             // Out of range
-            if (x - shape.Anchor.x < 0 || x - shape.Anchor.x + shape.Cols > GridColumns) { return false; }
-            if (y - shape.Anchor.y < 0 || y - shape.Anchor.y + shape.Rows > GridRows) { return false; }
+            if (anchorWithOffset.x < 0 || anchorWithOffset.x + shape.Cols > GridColumns) { return false; }
+            if (anchorWithOffset.y < 0 || anchorWithOffset.y + shape.Rows > GridRows) { return false; }
 
             // Check if the item fits
             for (int row = 0; row < shape.Rows; row++) {
                 for (int col = 0; col < shape.Cols; col++) {
-                    if (m_ItemStackAnchorGrid[x - shape.Anchor.x + col, y - shape.Anchor.y + row].IsOccupied && shape.IsIndexOccupied(col, row)) {
-                        return false;
-                    }
+                    var gridElementData = m_ItemStackAnchorGrid[anchorWithOffset.x + col, anchorWithOffset.y + row];
+
+                    if (!gridElementData.IsOccupied || !shape.IsIndexOccupied(col, row)) { continue; }
+
+                    if (CanItemStack(info, gridElementData)) { continue; }
+
+                    return false;
                 }
             }
 
@@ -172,13 +271,25 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             for (int row = 0; row < shape.Rows; row++) {
                 for (int col = 0; col < shape.Cols; col++) {
                     if (shape.IsIndexOccupied(col, row)) {
-                        m_ItemStackAnchorGrid[x - shape.Anchor.x + col, y - shape.Anchor.y + row] = new GridElementData(info.ItemStack, shape.Anchor.x == col && shape.Anchor.y == row);
+                        m_ItemStackAnchorGrid[anchorWithOffset.x + col, anchorWithOffset.y + row] =
+                            new GridElementData(info.ItemStack, shape.IsAnchor(col, row));
                     }
                 }
             }
 
             //Debug.Log("Value mxn is now set: "+m_ItemStackAnchorGrid[x, y].IsOccupied);
             return true;
+        }
+
+        /// <summary>
+        /// Can the item be stacked.
+        /// </summary>
+        /// <param name="info">The item info.</param>
+        /// <param name="gridElementData">The grid element data.</param>
+        /// <returns>True if the item can stacked to the item in the grid element.</returns>
+        protected virtual bool CanItemStack(ItemInfo info, GridElementData gridElementData)
+        {
+            return info.Item.IsUnique == false && info.Item.StackableEquivalentTo(gridElementData.ItemStack.Item);
         }
 
         /// <summary>
@@ -194,8 +305,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
             for (int y = 0; y < GridRows; y++) {
                 for (int x = 0; x < GridColumns; x++) {
-                    if (IsPositionAvailable(info, x, y)) {
-                        position = new Vector2Int(x, y);
+
+                    position = new Vector2Int(x, y);
+                    if (IsPositionAvailable(info, position)) {
                         return true;
                     }
                 }
@@ -206,26 +318,46 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         }
 
         /// <summary>
+        /// Is the position within the grid size.
+        /// </summary>
+        /// <param name="position">The Position.</param>
+        /// <returns>True if the position is available.</returns>
+        public bool IsPositionValid(Vector2Int position)
+        {
+            return IsPositionValid(position.x, position.y);
+        }
+
+        /// <summary>
+        /// Is the position within the grid size.
+        /// </summary>
+        /// <param name="x">The column.</param>
+        /// <param name="y">The row.</param>
+        /// <returns>True if the position is available.</returns>
+        public bool IsPositionValid(int x, int y)
+        {
+            if (x < 0 || y < 0 || x >= m_GridSize.x || y >= m_GridSize.y) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Is the position available for the item.
         /// </summary>
         /// <param name="info">The item info.</param>
-        /// <param name="x">The column.</param>
-        /// <param name="y">The row.</param>
+        /// <param name="position">The position.</param>
         /// <param name="canIgnore">A function of whether the grid element should be ignored.</param>
         /// <returns>True if the position is available.</returns>
-        public bool IsPositionAvailable(ItemInfo info, int x, int y, Func<Vector2Int, bool> canIgnore = null)
+        public virtual bool IsPositionAvailable(ItemInfo info, Vector2Int position, Func<Vector2Int, bool> canIgnore = null)
         {
+            var x = position.x;
+            var y = position.y;
+
             if (info.Item.TryGetAttributeValue<ItemShape>(ShapeAttributeName, out var shape) == false
                 || shape.Count <= 1) {
-
                 // Item takes a 1x1 shape.
-                if (m_ItemStackAnchorGrid[x, y].IsOccupied) {
-
-                    if ((canIgnore?.Invoke(new Vector2Int(x, y)) ?? false) == false) {
-                        return false;
-                    }
-                }
-                return true;
+                return IsSingularPositionAvailable(info, position, canIgnore);
             }
 
             // Out of range
@@ -235,16 +367,42 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             // Check if the item fits
             for (int row = 0; row < shape.Rows; row++) {
                 for (int col = 0; col < shape.Cols; col++) {
-                    if (!m_ItemStackAnchorGrid[x - shape.Anchor.x + col, y - shape.Anchor.y + row].IsOccupied ||
-                        !shape.IsIndexOccupied(col, row)) { continue; }
 
-                    if ((canIgnore?.Invoke(new Vector2Int(x, y)) ?? false) == false) {
-                        return false;
+                    if (!shape.IsIndexOccupied(col, row)) { continue; }
+
+                    var innerPosition = new Vector2Int(
+                        x - shape.Anchor.x + col,
+                        y - shape.Anchor.y + row);
+
+                    if (IsSingularPositionAvailable(info, innerPosition, canIgnore)) {
+                        continue;
                     }
+
+                    return false;
                 }
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Is the exact position available for the item to be placed.
+        /// </summary>
+        /// <param name="info">The item to check the position for.</param>
+        /// <param name="position">The position to check.</param>
+        /// <param name="canIgnore">Can certain positions be ignored.</param>
+        /// <returns>True if the position is available for that particular item.</returns>
+        protected virtual bool IsSingularPositionAvailable(ItemInfo info, Vector2Int position, Func<Vector2Int, bool> canIgnore = null)
+        {
+            if (canIgnore?.Invoke(position) ?? false) { return true; }
+
+            var gridElementData = m_ItemStackAnchorGrid[position.x, position.y];
+
+            if (!gridElementData.IsOccupied) { return true; }
+
+            if (CanItemStack(info, gridElementData)) { return true; }
+
+            return false;
         }
 
         /// <summary>
@@ -313,7 +471,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             }
 
             //Place the item in the grid
-            if (TryAddItemToPosition(itemInfoAdded, position) == false) {
+            if (TryPlaceItemToPosition(itemInfoAdded, position) == false) {
                 Debug.LogError("This should never happen, item could fit but was not added: " + itemInfoAdded);
                 return;
             };
@@ -355,12 +513,15 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <param name="itemInfoRemoved">The item info was removed.</param>
         public void OnItemRemoved(ItemInfo itemInfoRemoved)
         {
-            if (TryFindAnchorForItem(itemInfoRemoved, out var position) == false) {
-                Debug.LogWarning($"The item '{itemInfoRemoved}' was removed from the inventory but not from the grid");
-                return;
+            //Clean up the grid from null items when an item is removed.
+            //This works because the item stack is reset if an item is removed from the inventory.
+            for (int row = 0; row < m_GridSize.y; row++) {
+                for (int col = 0; col < m_GridSize.x; col++) {
+                    if (m_ItemStackAnchorGrid[col, row].ItemStack?.Item == null) {
+                        m_ItemStackAnchorGrid[col, row] = GridElementData.None;
+                    }
+                }
             }
-
-            RemoveItemFromPosition(position);
         }
 
         /// <summary>
@@ -385,7 +546,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
             var itemStack = m_ItemStackAnchorGrid[x, y].ItemStack;
 
-            if (itemStack.Item.TryGetAttributeValue<ItemShape>(ShapeAttributeName, out var shape) == false
+            if (itemStack?.Item == null
+                || itemStack.Item.TryGetAttributeValue<ItemShape>(ShapeAttributeName, out var shape) == false
                 || shape.Count <= 1) {
 
                 // Item takes a 1x1 shape.
@@ -406,15 +568,82 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         }
 
         /// <summary>
+        /// Add the item at the index.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
+        /// <param name="positon">The position where the item should be added.</param>
+        /// <returns>The added item.</returns>
+        public virtual ItemInfo AddItemToPosition(ItemInfo itemInfo, Vector2Int position)
+        {
+            if (IsPositionAvailable(itemInfo, position) == false) {
+                return ItemInfo.None;
+            }
+
+            var itemCollection = Inventory.GetItemCollection(m_ItemCollectionID);
+
+            ItemInfo addedItem;
+            if (itemCollection == null) {
+                addedItem = Inventory.AddItem(itemInfo);
+            } else {
+                addedItem = itemCollection.AddItem(itemInfo);
+            }
+
+            var tempItemPos = GetItemPos(addedItem);
+
+            RemoveItemFromPosition(tempItemPos);
+            var placedItem = TryPlaceItemToPosition(addedItem, position);
+
+            return addedItem;
+        }
+
+        /// <summary>
+        /// Add the item at the index.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
+        /// <param name="index">The index of the item.</param>
+        /// <returns>The added item.</returns>
+        public virtual ItemInfo AddItemToPosition(ItemInfo itemInfo, int index)
+        {
+            var wantedItemPos = OneDTo2D(index);
+            return AddItemToPosition(itemInfo, wantedItemPos);
+        }
+
+        /// <summary>
         /// Can the grid contain the item.
         /// </summary>
-        /// <param name="itemInfoPreview">The item to preview.</param>
+        /// <param name="originalItemInfo">The item to preview.</param>
+        /// <param name="receivingCollection">The receiving Item Collection.</param>
         /// <returns>True if the item fits.</returns>
-        public bool CanContain(ItemInfo itemInfoPreview)
+        public virtual bool CanAddItem(ItemInfo originalItemInfo, ItemCollection receivingCollection)
         {
+            if (m_Controller.IsCollectionIgnored(receivingCollection)) { return false; }
+
+            var collectionIsNone =
+                m_ItemCollectionID.Purpose == ItemCollectionPurpose.None
+                && string.IsNullOrWhiteSpace(m_ItemCollectionID.Name);
+            var collectionMatch = 
+                m_ItemCollectionID.Compare(receivingCollection) 
+                || (receivingCollection == null && m_ItemCollectionID.Purpose == ItemCollectionPurpose.Main);
+
+            if (!collectionIsNone && !collectionMatch) { return false; }
+
             if (m_ItemInfoFilter == null) { return true; }
 
-            return m_ItemInfoFilter.CanContain(itemInfoPreview);
+            // set the item info as if it was already added in the receiving collection to pass the conditions.
+            var previewItemInfo =
+                new ItemInfo(originalItemInfo.ItemAmount, receivingCollection, originalItemInfo.ItemStack);
+
+            return m_ItemInfoFilter.CanContain(previewItemInfo);
+        }
+
+        /// <summary>
+        /// Can this grid contain an item that was added in the inventory?
+        /// </summary>
+        /// <param name="itemInfo">The itemInfo.</param>
+        /// <returns>True if the item is valid for the grid data.</returns>
+        public virtual bool IsItemValidForGridData(ItemInfo itemInfo)
+        {
+            return CanAddItem(itemInfo, itemInfo.ItemCollection);
         }
 
         /// <summary>
@@ -452,8 +681,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
             if (sourceElement.IsEmpty) { return false; }
 
-            var oneWayMove = destinationElement.ItemStack == sourceElement.ItemStack || destinationElement.IsEmpty;
-
             TryFindAnchorForItem((ItemInfo)sourceElement.ItemStack, out var sourceAnchor);
             TryFindAnchorForItem((ItemInfo)destinationElement.ItemStack, out var destinationAnchor);
 
@@ -471,22 +698,33 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
                 return false;
             }
 
-            if (oneWayMove == false) {
-                if (RemoveItemFromPosition(destinationAnchor) == false) {
-                    Debug.LogError("Nothing should be preventing it to be removed");
+            var isOneWayMove = (destinationElement.ItemStack == sourceElement.ItemStack || destinationElement.IsEmpty);
+
+            if (isOneWayMove || m_SmartTwoWayMove == false) {
+
+                if (TryPlaceItemToPosition((ItemInfo)sourceElement.ItemStack, destinationPosWithOffset) == false) {
                     //Return to previous state.
                     Copy(m_TemporaryItemStackAnchorGrid, m_ItemStackAnchorGrid);
                     return false;
                 }
 
-                if (TryAddItemToPosition((ItemInfo)destinationElement.ItemStack, sourcePosWithOffset) == false) {
-                    //Return to previous state.
-                    Copy(m_TemporaryItemStackAnchorGrid, m_ItemStackAnchorGrid);
-                    return false;
-                }
+                return true;
             }
 
-            if (TryAddItemToPosition((ItemInfo)sourceElement.ItemStack, destinationPosWithOffset) == false) {
+            if (RemoveItemFromPosition(destinationAnchor) == false) {
+                Debug.LogError("Nothing should be preventing it to be removed");
+                //Return to previous state.
+                Copy(m_TemporaryItemStackAnchorGrid, m_ItemStackAnchorGrid);
+                return false;
+            }
+
+            if (TryPlaceItemToPosition((ItemInfo)sourceElement.ItemStack, destinationPosWithOffset) == false) {
+                //Return to previous state.
+                Copy(m_TemporaryItemStackAnchorGrid, m_ItemStackAnchorGrid);
+                return false;
+            }
+
+            if (TryPlaceItemToPosition((ItemInfo)destinationElement.ItemStack, sourcePosWithOffset) == false) {
                 //Return to previous state.
                 Copy(m_TemporaryItemStackAnchorGrid, m_ItemStackAnchorGrid);
                 return false;
@@ -501,13 +739,15 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <param name="itemInfo"></param>
         /// <param name="pos"></param>
         /// <returns></returns>
-        public Vector2Int GetAnchorOffset(ItemInfo itemInfo, Vector2Int pos)
+        public bool TryGetAnchorOffset(ItemInfo itemInfo, Vector2Int pos, out Vector2Int anchorOffset)
         {
             if (TryFindAnchorForItem(itemInfo, out var anchor) == false) {
-                return new Vector2Int(-1, -1);
+                anchorOffset = new Vector2Int(-1, -1);
+                return false;
             }
 
-            return anchor - pos;
+            anchorOffset = anchor - pos;
+            return true;
         }
 
         /// <summary>

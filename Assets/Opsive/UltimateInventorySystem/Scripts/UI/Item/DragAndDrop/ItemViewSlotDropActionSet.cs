@@ -21,6 +21,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         menuName = "Ultimate Inventory System/UI/Item View Slot Drop Action Set", order = 1)]
     public class ItemViewSlotDropActionSet : ScriptableObject
     {
+        [Tooltip("The serialized data of actions with conditions.")]
         [SerializeField] protected Serialization[] m_ActionsWithConditionsData;
 
         protected ItemViewDropActionsWithConditions[] m_ActionsWithConditions;
@@ -40,6 +41,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             ResetActionsConditionsToDefault();
         }
 
+        /// <summary>
+        /// Reset the Actions and Conditions to their default value.
+        /// </summary>
         public void ResetActionsConditionsToDefault()
         {
             m_ActionsWithConditions = new ItemViewDropActionsWithConditions[2];
@@ -100,6 +104,10 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             m_ActionsWithConditionsData = Serialization.Serialize(m_ActionsWithConditions as IList<ItemViewDropActionsWithConditions>);
         }
 
+        /// <summary>
+        /// Handle Item View Slot drop.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
         public void HandleItemViewSlotDrop(ItemViewDropHandler itemViewDropHandler)
         {
             var index = GetFirstPassingConditionIndex(itemViewDropHandler);
@@ -108,6 +116,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             m_ActionsWithConditions[index].Drop(itemViewDropHandler);
         }
 
+        /// <summary>
+        /// Get the first passing condition index within the list of actions conditions.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
+        /// <returns>The index, -1 if non-found.</returns>
         public int GetFirstPassingConditionIndex(ItemViewDropHandler itemViewDropHandler)
         {
             for (int i = 0; i < m_ActionsWithConditions.Length; i++) {
@@ -117,6 +130,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             return -1;
         }
 
+        /// <summary>
+        /// Get the first passing action condition.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
+        /// <returns>The passing actions conditions.</returns>
         public ItemViewDropActionsWithConditions GetFirstPassingCondition(ItemViewDropHandler itemViewDropHandler)
         {
             for (int i = 0; i < m_ActionsWithConditions.Length; i++) {
@@ -127,32 +145,60 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         }
     }
 
+    /// <summary>
+    /// Base class for an Item View Drop Action.
+    /// </summary>
     [Serializable]
     public abstract class ItemViewDropAction
     {
+        /// <summary>
+        /// Action Invoked when an Item View is dropped.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
         public abstract void Drop(ItemViewDropHandler itemViewDropHandler);
 
+        /// <summary>
+        /// Custom string.
+        /// </summary>
+        /// <returns>The string.</returns>
         public override string ToString()
         {
             return GetType().Name.Replace("ItemViewDrop", "").Replace("Action", "");
         }
     }
 
+    /// <summary>
+    /// Base class for an Item View Drop Condition.
+    /// </summary>
     [Serializable]
     public abstract class ItemViewDropCondition
     {
+        /// <summary>
+        /// The condition used to know whether or not an drop action should be executed.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
+        /// <returns>Should the drop be executed?</returns>
         public abstract bool CanDrop(ItemViewDropHandler itemViewDropHandler);
 
+        /// <summary>
+        /// Custom string.
+        /// </summary>
+        /// <returns>The string.</returns>
         public override string ToString()
         {
             return GetType().Name.Replace("ItemViewDrop", "").Replace("Condition", "");
         }
     }
 
+    /// <summary>
+    /// Contains a list of Actions and a list of conditions.
+    /// </summary>
     [Serializable]
     public class ItemViewDropActionsWithConditions
     {
+        [Tooltip("Item View Drop conditions.")]
         [SerializeField] protected ItemViewDropCondition[] m_Conditions;
+        [Tooltip("Item View drop actions..")]
         [SerializeField] protected ItemViewDropAction[] m_Actions;
 
 
@@ -166,6 +212,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             set => m_Actions = value;
         }
 
+        /// <summary>
+        /// Do the conditions pass for the drop.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
+        /// <returns>True if the conditions pass.</returns>
         public bool CanDrop(ItemViewDropHandler itemViewDropHandler)
         {
             for (int i = 0; i < m_Conditions.Length; i++) {
@@ -175,6 +226,10 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             return true;
         }
 
+        /// <summary>
+        /// Invoke the actions.
+        /// </summary>
+        /// <param name="itemViewDropHandler">The item view drop handler.</param>
         public void Drop(ItemViewDropHandler itemViewDropHandler)
         {
             for (int i = 0; i < m_Actions.Length; i++) { m_Actions[i].Drop(itemViewDropHandler); }

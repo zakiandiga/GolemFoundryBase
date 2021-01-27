@@ -55,6 +55,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         public Transform Content => m_Content;
         public GridLayoutGroup GridLayoutGroup => m_GridLayoutGroup;
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
         private void Awake()
         {
             if (m_Content == null) { m_Content = transform; }
@@ -160,11 +163,19 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnGridElementSelectedE?.Invoke(index);
         }
 
+        /// <summary>
+        /// The button was deslected.
+        /// </summary>
+        /// <param name="index">The button index.</param>
         private void OnDeselectButton(int index)
         {
             OnGridElementDeselectE?.Invoke(index);
         }
 
+        /// <summary>
+        /// The button was canceled.
+        /// </summary>
+        /// <param name="index">The index of the button.</param>
         private void OnCancelButton(int index)
         {
             OnGridElementCancelE?.Invoke(index);
@@ -194,31 +205,61 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             }
         }
 
+        /// <summary>
+        /// On Pointer Down Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnPointerDownButton(int index, PointerEventData eventData)
         {
             OnGridElementPointerDownE?.Invoke(index, eventData);
         }
 
+        /// <summary>
+        /// On Pointer Up Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnPointerUpButton(int index, PointerEventData eventData)
         {
             OnGridElementPointerUpE?.Invoke(index, eventData);
         }
 
+        /// <summary>
+        /// On Begin Drag Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnBeginDragButton(int index, PointerEventData eventData)
         {
             OnGridElementBeginDragE?.Invoke(index, eventData);
         }
 
+        /// <summary>
+        /// On End Drag Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnEndDragButton(int index, PointerEventData eventData)
         {
             OnGridElementEndDragE?.Invoke(index, eventData);
         }
 
+        /// <summary>
+        /// On Drag Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnDragButton(int index, PointerEventData eventData)
         {
             OnGridElementDragE?.Invoke(index, eventData);
         }
 
+        /// <summary>
+        /// On Drop Button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnDropButton(int index, PointerEventData eventData)
         {
             OnGridElementDropE?.Invoke(index, eventData);

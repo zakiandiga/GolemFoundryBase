@@ -473,7 +473,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             tabSelect.SelectInHierarchy();
             m_TabSelectedContainer.Add(tabSelect);
 
-            var tabName = new TextField("Tab Name");
+            var tabName = new UnicodeTextField("Tab Name");
             tabName.value = selectedTab.GetText();
             tabName.RegisterValueChangedCallback(evt =>
             {

@@ -37,10 +37,11 @@ namespace Opsive.UltimateInventorySystem.Crafting.Processors
     /// <summary>
     /// Simple crafting solution using the recipe itemDefinitions.
     /// </summary>
+    [Serializable]
     public class SimpleCraftingProcessor : CraftingProcessor
     {
-
-        protected bool m_RemoveIngredientsExternally;
+        [Tooltip("Use crafting processor callback to remove ingredient items from the inventory.")]
+        [SerializeField] protected bool m_RemoveIngredientsExternally;
 
         /// <summary>
         /// Constructor.

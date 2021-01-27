@@ -39,6 +39,9 @@ namespace Opsive.UltimateInventorySystem.Interactions
         protected InteractableBehavior m_InteractableBehavior;
         public virtual InteractableBehavior InteractableBehavior => m_InteractableBehavior;
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
         private void Awake()
         {
             m_InteractableBehavior = GetComponent<InteractableBehavior>();

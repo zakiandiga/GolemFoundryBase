@@ -291,7 +291,11 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             var amountToRemove = amount > 0 ? amount : itemToRemove.Amount;
             var removed = RemoveInternal((itemToRemove.Item, amountToRemove, this));
 
-            m_ItemsBySlot[slotIndex] = removed.ItemStack;
+            if (removed.ItemStack.IsInitialized) {
+                m_ItemsBySlot[slotIndex] = removed.ItemStack;
+            } else {
+                m_ItemsBySlot[slotIndex] = null;
+            }
 
             return removed;
         }

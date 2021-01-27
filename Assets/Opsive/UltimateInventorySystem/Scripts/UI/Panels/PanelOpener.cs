@@ -14,7 +14,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
     /// </summary>
     public class PanelOpener : MonoBehaviour
     {
-        [Tooltip("The panel manager index")]
+        [Tooltip("The panel manager index.")]
         [SerializeField] protected uint m_PanelManagerIndex = 1;
         [Tooltip("The panel name (optional if the panel is referenced directly)")]
         [SerializeField] protected string m_PanelName;

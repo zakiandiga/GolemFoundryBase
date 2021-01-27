@@ -32,7 +32,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         protected ReorderableList m_ReorderableList;
         protected VisualElement m_Selection;
 
-        protected TextField m_NameField;
+        protected UnicodeTextField m_NameField;
         protected ItemCategoryField m_ItemCategoryField;
 
         protected int m_PreviousSelected = -1;
@@ -104,7 +104,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
             m_Selection = new VisualElement();
 
-            m_NameField = new TextField("Name");
+            m_NameField = new UnicodeTextField("Name");
             m_NameField.RegisterValueChangedCallback(evt => { NameChanged(evt.newValue); });
 
             container.Add(m_Selection);

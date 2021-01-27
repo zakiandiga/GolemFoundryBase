@@ -26,7 +26,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
     /// </summary>
     public class GridNavigator : GridNavigatorBase
     {
+        [Tooltip("The step option to choose how the items are navigated through.")]
         [SerializeField] protected SlicerStepOption m_StepOption;
+        [Tooltip("The custom amount, only used when the 'Amount' slicer step option is used.")]
         [SerializeField] protected int m_CustomAmount;
 
         protected int m_Step;

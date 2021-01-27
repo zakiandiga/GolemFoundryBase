@@ -243,7 +243,8 @@ namespace Opsive.UltimateInventorySystem.Core
 
             if (lhs.IsUnique) { return false; }
 
-            if (lhs.IsMutable) { return true; }
+            if (lhs.IsMutable == false) { return true; }
+
             return AreValueEquivalent(lhs, rhs);
         }
 

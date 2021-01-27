@@ -8,15 +8,17 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
 {
     using Opsive.UltimateInventorySystem.UI.Grid;
     using UnityEngine;
-    using UnityEngine.Serialization;
 
     /// <summary>
     /// Binds the inventory grid to a sorter.
     /// </summary>
     public class InventoryGridSorterBinding : MonoBehaviour
     {
+        [Tooltip("The item info grid to bind.")]
         [SerializeField] protected ItemInfoGrid m_ItemInfoGrid;
-        [FormerlySerializedAs("m_ItemInfoGridSorter")] [FormerlySerializedAs("m_InventoryGridSorter")] [SerializeField] protected ItemInfoSorterBase m_ItemInfoSorter;
+        [Tooltip("The item info sorter.")]
+        [SerializeField] protected ItemInfoSorterBase m_ItemInfoSorter;
+        [Tooltip("Bind on start or bind manually through script?")]
         [SerializeField] protected bool m_BindOnStart;
 
         /// <summary>

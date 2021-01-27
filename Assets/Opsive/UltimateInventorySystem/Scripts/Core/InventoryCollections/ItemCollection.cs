@@ -54,6 +54,21 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         }
 
         /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="itemCollection">The itemCollection.</param>
+        public ItemCollectionID(ItemCollection itemCollection)
+        {
+            if (itemCollection != null) {
+                m_Name = itemCollection.Name;
+                m_Purpose = itemCollection.Purpose;
+            } else {
+                m_Name = "";
+                m_Purpose = ItemCollectionPurpose.None;
+            }
+        }
+
+        /// <summary>
         /// Compare the ItemCollection with the Id to see if it matches.
         /// </summary>
         /// <param name="itemCollection">The itemCollection.</param>
@@ -322,6 +337,17 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             return true;
         }
 
+        /// <summary>
+        /// Can the item stack.
+        /// </summary>
+        /// <param name="itemInfo">The itemInfo.</param>
+        /// <param name="itemStack">The itemStack.</param>
+        /// <returns>True if the item can stack.</returns>
+        public virtual bool CanItemStack(ItemInfo itemInfo, ItemStack itemStack)
+        {
+            return itemInfo.Item.IsUnique == false && itemStack.Item.StackableEquivalentTo(itemInfo.Item);
+        }
+
         #endregion
 
         #region Add&Remove
@@ -333,6 +359,7 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         /// <param name="stackTarget">The item stack where you would like the item to be added (can be null).</param>
         protected virtual ItemInfo AddInternal(ItemInfo itemInfo, ItemStack stackTarget, bool notifyAdd = true)
         {
+            //Debug.Log(Name+" ItemCollection Add item "+itemInfo);
             var found = false;
             ItemStack addedItemStack = null;
 
@@ -347,7 +374,7 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
 
                 if (!found) {
                     for (int i = 0; i < m_ItemStacks.Count; i++) {
-                        if (m_ItemStacks[i].Item.StackableEquivalentTo(itemInfo.Item) == false) { continue; }
+                        if (CanItemStack(itemInfo, m_ItemStacks[i]) == false) { continue; }
 
                         m_ItemStacks[i].SetAmount(itemInfo.Amount + m_ItemStacks[i].Amount);
                         addedItemStack = m_ItemStacks[i];
@@ -367,7 +394,11 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
 
             if (notifyAdd) { NotifyAdd(itemInfo, addedItemStack); }
 
-            return (itemInfo.Item, itemInfo.Amount, this, addedItemStack);
+            var addedItemInfo = (ItemInfo)(itemInfo.Item, itemInfo.Amount, this, addedItemStack);
+
+            //Debug.Log(Name+" ItemCollection Added item "+addedItemInfo);
+
+            return addedItemInfo;
         }
 
         /// <summary>
@@ -523,26 +554,22 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         /// <returns>Returns the number of items removed, 0 if no item was removed.</returns>
         protected virtual ItemInfo RemoveInternal(ItemInfo itemInfo)
         {
+            //Debug.Log(Name+" ItemCollection Remove item "+itemInfo);
             var removed = 0;
-            ItemStack itemStackToRemove = null;
-            for (int i = m_ItemStacks.Count - 1; i >= 0; i--) {
-                if (m_ItemStacks[i].Item.ID != itemInfo.Item.ID) { continue; }
+            ItemStack itemStackToRemove = itemInfo.ItemStack;
 
-                itemStackToRemove = m_ItemStacks[i];
-                var remainingToRemove = itemInfo.Amount - removed;
-                var newAmount = m_ItemStacks[i].Amount - remainingToRemove;
-                if (newAmount <= 0) {
-                    removed += m_ItemStacks[i].Amount;
-                    m_ItemStacks.RemoveAt(i);
-                    itemInfo.Item.RemoveItemCollection(this);
-                    itemStackToRemove.Reset();
-                    GenericObjectPool.Return<ItemStack>(itemStackToRemove);
-                    itemStackToRemove = null;
-                } else {
-                    removed += remainingToRemove;
-                    m_ItemStacks[i].SetAmount(newAmount);
+            if (itemStackToRemove != null && itemStackToRemove.Item.ID == itemInfo.Item.ID) {
+                removed = SimpleInternalItemRemove(itemInfo, removed, itemStackToRemove);
+            }
+
+            if (removed <= itemInfo.Amount) {
+                for (int i = m_ItemStacks.Count - 1; i >= 0; i--) {
+                    if (m_ItemStacks[i].Item.ID != itemInfo.Item.ID) { continue; }
+
+                    itemStackToRemove = m_ItemStacks[i];
+                    removed = SimpleInternalItemRemove(itemInfo, removed, itemStackToRemove);
+                    if (removed >= itemInfo.Amount) { break; }
                 }
-                if (removed >= itemInfo.Amount) { break; }
             }
 
             if (removed == 0) {
@@ -556,7 +583,37 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
 
             UpdateCollection();
 
-            return (removed, itemInfo.Item, this, itemStackToRemove);
+            var removedItemInfo = (ItemInfo)(removed, itemInfo.Item, this, itemStackToRemove);
+
+            //Debug.Log(Name+" ItemCollection Removed item "+removedItemInfo);
+            return removedItemInfo;
+        }
+
+        /// <summary>
+        /// Simple remove of an item from a specific item stack.
+        /// </summary>
+        /// <param name="itemInfo">The item Info to remove.</param>
+        /// <param name="removed">The amount already removed.</param>
+        /// <param name="itemStackToRemove">The item stack to remove the amount from.</param>
+        /// <returns>The amount removed (includes the amount previously removed).</returns>
+        private int SimpleInternalItemRemove(ItemInfo itemInfo, int removed, ItemStack itemStackToRemove)
+        {
+            var remainingToRemove = itemInfo.Amount - removed;
+            var newAmount = itemStackToRemove.Amount - remainingToRemove;
+            if (newAmount <= 0) {
+                removed += itemStackToRemove.Amount;
+                m_ItemStacks.Remove(itemStackToRemove);
+                itemInfo.Item.RemoveItemCollection(this);
+                itemStackToRemove.Reset();
+                GenericObjectPool.Return<ItemStack>(itemStackToRemove);
+                //TODO is making the itemStack not null ok?
+                //itemStackToRemove = null;
+            } else {
+                removed += remainingToRemove;
+                itemStackToRemove.SetAmount(newAmount);
+            }
+
+            return removed;
         }
 
         /// <summary>

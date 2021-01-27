@@ -34,51 +34,62 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
 
         private CraftingRecipe m_SelectedRecipe;
 
-        public override void Initialize(DisplayPanel display)
+        /// <summary>
+        /// Initialize the Crafting Menu.
+        /// </summary>
+        /// <param name="display">The display.</param>
+        /// <param name="force">Force the initialize.</param>
+        public override void Initialize(DisplayPanel display, bool force)
         {
-            if (m_IsInitialized) { return; }
-            base.Initialize(display);
+            var wasInitialized = m_IsInitialized;
+            if (wasInitialized && !force) { return; }
+            base.Initialize(display, force);
 
-            if (m_Inventory == null) {
-                m_Inventory = GameObject.FindWithTag("Player")?.GetComponent<Inventory>();
-            }
-
-            if (m_Crafter != null) {
-                m_Crafter.Initialize(false);
-            }
-
-            m_CraftingRecipeGrid.SetParentPanel(m_DisplayPanel);
-            m_CraftingRecipeGrid.Initialize(false);
-
-            m_CraftingRecipeGrid.OnElementSelected += CraftingRecipeSelected;
-            m_CraftingRecipeGrid.OnEmptySelected += (x) => CraftingRecipeSelected(null, x);
-            m_CraftingRecipeGrid.OnElementClicked += CraftingRecipeClicked;
-
-            m_QuantityPickerPanel.OnAmountChanged += CraftingAmountChanged;
-            m_QuantityPickerPanel.ConfirmCancelPanel.OnConfirm += CraftSelectedQuantity;
-
-            if (m_ExitButton != null) {
-                m_ExitButton.onClick.AddListener(() => m_DisplayPanel.Close(true));
-            }
-
-            var tabControl = m_CraftingRecipeGrid.TabControl;
-
-            if (tabControl != null) {
-                tabControl.Initialize(false);
-                tabControl.OnTabChange += HandleTabChange;
-
-                for (int i = 0; i < tabControl.TabCount; i++) {
-                    var tab = tabControl.TabToggles[i];
-                    var craftingTabData = tab.GetComponent<CraftingTabData>();
-                    if (craftingTabData != null) {
-                        craftingTabData.Initialize(false);
-                    }
+            if (wasInitialized == false) {
+                //Only do it once even if forced.
+                if (m_Inventory == null) {
+                    m_Inventory = GameObject.FindWithTag("Player")?.GetComponent<Inventory>();
                 }
 
-                HandleTabChange(-1, tabControl.TabIndex, false);
+                if (m_Crafter != null) { m_Crafter.Initialize(false); }
+
+                m_CraftingRecipeGrid.SetParentPanel(m_DisplayPanel);
+                m_CraftingRecipeGrid.Initialize(false);
+
+                m_CraftingRecipeGrid.OnElementSelected += CraftingRecipeSelected;
+                m_CraftingRecipeGrid.OnEmptySelected += (x) => CraftingRecipeSelected(null, x);
+                m_CraftingRecipeGrid.OnElementClicked += CraftingRecipeClicked;
+
+                m_QuantityPickerPanel.OnAmountChanged += CraftingAmountChanged;
+                m_QuantityPickerPanel.ConfirmCancelPanel.OnConfirm += CraftSelectedQuantity;
+
+                if (m_ExitButton != null) {
+                    m_ExitButton.onClick.AddListener(() => m_DisplayPanel.Close(true));
+                }
+
+                var tabControl = m_CraftingRecipeGrid.TabControl;
+
+                if (tabControl != null) {
+                    tabControl.Initialize(false);
+                    tabControl.OnTabChange += HandleTabChange;
+
+                    for (int i = 0; i < tabControl.TabCount; i++) {
+                        var tab = tabControl.TabToggles[i];
+                        var craftingTabData = tab.GetComponent<CraftingTabData>();
+                        if (craftingTabData != null) {
+                            craftingTabData.Initialize(false);
+                        }
+                    }
+
+                    HandleTabChange(-1, tabControl.TabIndex, false);
+                }
             }
         }
 
+        /// <summary>
+        /// Set the crafter.
+        /// </summary>
+        /// <param name="crafter">The crafter to set.</param>
         public void SetCrafter(Crafter crafter)
         {
             m_Crafter = crafter;
@@ -94,6 +105,9 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
             m_RecipePanel.SetInventory(m_Inventory);
         }
 
+        /// <summary>
+        /// Handle the On Open event.
+        /// </summary>
         public override void OnOpen()
         {
             base.OnOpen();
@@ -121,11 +135,22 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
             m_CraftingRecipeGrid.Draw();
         }
 
+        /// <summary>
+        /// Handle a tab change.
+        /// </summary>
+        /// <param name="previousIndex">The previous tab index.</param>
+        /// <param name="newIndex">The new tab index.</param>
         private void HandleTabChange(int previousIndex, int newIndex)
         {
             HandleTabChange(previousIndex, newIndex, true);
         }
 
+        /// <summary>
+        /// Handle the tab change.
+        /// </summary>
+        /// <param name="previousIndex">The previous tab index.</param>
+        /// <param name="newIndex">The new tab index.</param>
+        /// <param name="draw">Should the recipes be drawn?</param>
         private void HandleTabChange(int previousIndex, int newIndex, bool draw)
         {
             if (previousIndex == newIndex) { return; }

@@ -1037,7 +1037,7 @@ namespace Opsive.UltimateInventorySystem.Core.AttributeSystem
         /// Are the attributes equivalent.
         /// </summary>
         /// <param name="other">The other attribute.</param>
-        /// <returns>True if the attributes are equivalent</returns>
+        /// <returns>True if the attributes are equivalent.</returns>
         public virtual bool AreEquivalent(AttributeBase other)
         {
             if (ReferenceEquals(null, other)) {
