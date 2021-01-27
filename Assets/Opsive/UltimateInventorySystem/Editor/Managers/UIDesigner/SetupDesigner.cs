@@ -16,6 +16,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
     using System.IO;
     using System.Reflection;
     using UnityEditor;
+    using UnityEditor.Compilation;
     using UnityEditor.UIElements;
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -302,7 +303,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
         void FetchSchemas()
         {
-            var assetGUIDs = AssetDatabase.FindAssets("t:UIDesignerSchema", new[] {"Assets"});
+            var assetGUIDs = AssetDatabase.FindAssets("t:UIDesignerSchema", new[] { "Assets" });
             m_Schemas.Clear();
             for (var i = 0; i < assetGUIDs.Length; i++) {
                 var guid = assetGUIDs[i];
@@ -374,6 +375,9 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
         private UIDesignerSchema Duplicate(UIDesignerSchema sourceSchema, string newSchemaPath)
         {
+            //Start by recompiling the scripts and refreshing the assets to make sure the assets are well imported.
+            ForceCompilationAndAssetRefresh();
+
             var previousSchemaPath = AssetDatabase.GetAssetPath(sourceSchema);
             newSchemaPath = AssetDatabaseUtility.GetPathForNewDatabase(newSchemaPath, out var newFolderPath);
 
@@ -389,7 +393,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             ShowProgressBar(0.01f);
 
             m_NewUIDesignerSchema =
-                (UIDesignerSchema) AssetDatabase.LoadAssetAtPath(newSchemaPath, typeof(UIDesignerSchema));
+                (UIDesignerSchema)AssetDatabase.LoadAssetAtPath(newSchemaPath, typeof(UIDesignerSchema));
 
             //Duplicate all objects within the schema.
             var schemaSourceToNewObjectsDictionary = new Dictionary<Object, Object>();
@@ -406,8 +410,13 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
                 var sourceObj = field.GetValue(sourceSchema) as Object;
 
-                if (ReferenceEquals(sourceObj,null)) {
+                if (ReferenceEquals(sourceObj, null)) {
                     Debug.LogWarning($"The object '{field.Name}' is missing from the source schema.");
+                    continue;
+                }
+
+                if (sourceObj == null) {
+                    Debug.LogError($"The object '{field.Name}' thinks it is null when it is not. IMPORTANT: The created schema will be broken. Delete it, recompile the scripts and try again.");
                     continue;
                 }
 
@@ -437,7 +446,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                 }
 
                 //Set the duplicate object to the new schema.
-                var duplicateObj = (Object) AssetDatabase.LoadAssetAtPath(newPath, fieldType);
+                var duplicateObj = (Object)AssetDatabase.LoadAssetAtPath(newPath, fieldType);
                 field.SetValue(m_NewUIDesignerSchema, duplicateObj);
                 schemaSourceToNewObjectsDictionary.Add(sourceObj, duplicateObj);
             }
@@ -510,6 +519,27 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         {
             EditorUtility.DisplayProgressBar("Duplicating the UI Designer Schema", "This process may take a while.",
                 percentage);
+        }
+
+        /// <summary>
+        /// Force all the assets and the scripts to be realoaded to avoid 
+        /// </summary>
+        private static void ForceCompilationAndAssetRefresh()
+        {
+            CompilationPipeline.RequestScriptCompilation();
+            AssetDatabase.StartAssetEditing();
+
+            string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
+            for (int i = 0; i < allAssetPaths.Length; i += 1) {
+                MonoScript script = AssetDatabase.LoadAssetAtPath(allAssetPaths[i], typeof(MonoScript)) as MonoScript;
+                if (script != null) {
+                    AssetDatabase.ImportAsset(allAssetPaths[i]);
+                    break;
+                }
+            }
+
+            AssetDatabase.StopAssetEditing();
+            AssetDatabase.Refresh();
         }
     }
 }

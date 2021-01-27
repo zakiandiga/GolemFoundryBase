@@ -120,7 +120,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         {
             if (m_ArePanelsSetup && !force) { return; }
 
-            for (int i = 0; i < m_AllUIPanels.Length; i++) { m_AllUIPanels[i].Setup(this); }
+            for (int i = 0; i < m_AllUIPanels.Length; i++) { m_AllUIPanels[i].Setup(this, force); }
         }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             EventHandler.RegisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_OpenPanel_String, OpenPanel);
             EventHandler.RegisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_TogglePanel_String, TogglePanel);
 
-            SetupDisplayPanels(false);
+            SetupDisplayPanels(true);
             if (gameObject.activeInHierarchy == false) {
                 gameObject.SetActive(true);
             }
@@ -276,7 +276,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
 
             //If the panel is a menu
             if (panel.IsMenuPanel) {
-
                 if (open) {
                     m_SelectedDisplayMenu = panel;
                     if (m_SetTimeScaleToZeroWhenMenuIsOpened) { Time.timeScale = 0; }
@@ -284,7 +283,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
                     if (m_SelectedDisplayMenu == panel) { m_SelectedDisplayMenu = null; }
                     if (m_SetTimeScaleToZeroWhenMenuIsOpened) { Time.timeScale = 1; }
                 }
-
             }
 
             if (open == false) { return; }
@@ -293,6 +291,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             SetSelectedPanel(panelEventData);
         }
 
+        /// <summary>
+        /// Set the selected panel.
+        /// </summary>
+        /// <param name="displayPanel">The panel to set as selected.</param>
         public virtual void SetSelectedPanel(DisplayPanel displayPanel)
         {
             if (displayPanel == null) { return; }
@@ -314,6 +316,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             SetSelectedPanel(info);
         }
 
+        /// <summary>
+        /// Set the selected panel.
+        /// </summary>
+        /// <param name="eventData">The panel event data.</param>
         protected virtual void SetSelectedPanel(PanelEventData eventData)
         {
             if (eventData.ThisPanel == m_SelectedDisplayPanel) { return; }

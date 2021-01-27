@@ -21,7 +21,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         [SerializeField] protected Image m_ItemIcon;
         [Tooltip("The icon image.")]
         [SerializeField] protected Image m_ColorFilter;
+        [Tooltip("The color when not condition have passed.")]
         [SerializeField] protected Color m_NoConditionsPassed;
+        [Tooltip("The preview color when at least one condition has passed.")]
         [SerializeField] protected Color m_ConditionsPassed;
 
         /// <summary>

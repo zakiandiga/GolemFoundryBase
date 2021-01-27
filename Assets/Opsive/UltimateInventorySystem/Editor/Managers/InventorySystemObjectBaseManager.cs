@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
+    using Opsive.Shared.Editor.UIElements;
     using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
@@ -23,7 +24,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
     {
         protected ListPanel<T> m_ListPanel;
         protected ScrollView m_ContentPanel;
-        protected TextField m_Name;
+        protected UnicodeTextField m_Name;
 
         [SerializeField] protected int m_SelectedIndex = -1;
         public T SelectedObject => SelectedIndexOutOfRange ? null : m_ListPanel.SearchableList.ItemList[m_SelectedIndex];
@@ -51,7 +52,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             m_ContentPanel.showVertical = true;
             horizontalLayout.Add(m_ContentPanel);
 
-            m_Name = new TextField("Name");
+            m_Name = new UnicodeTextField("Name");
             m_Name.tooltip = "The object name";
             m_Name.isDelayed = true;
             m_Name.RegisterCallback<ChangeEvent<string>>(evt =>

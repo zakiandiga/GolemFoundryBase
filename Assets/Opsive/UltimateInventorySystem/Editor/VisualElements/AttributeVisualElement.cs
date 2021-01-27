@@ -30,10 +30,10 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
         private InventorySystemDatabase m_Database;
 
         private AttributeViewName m_AttributeViewName;
-        private TextField m_NameField;
+        private UnicodeTextField m_NameField;
         private FilterWindowPopupField m_TypePopup;
         private RadioButtonGroup m_VariantType;
-        private TextField m_Expression;
+        private UnicodeTextField m_Expression;
         private VisualElement m_Value;
         private VisualElement m_InheritValue;
         private VisualElement m_OverrideValue;
@@ -73,7 +73,7 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
             horizontalContainer.Add(moreOptionsButton);
             Add(horizontalContainer);
 
-            m_NameField = new TextField();
+            m_NameField = new UnicodeTextField();
             m_NameField.label = "Name";
             m_NameField.isDelayed = true;
             m_NameField.RegisterValueChangedCallback(evt =>
@@ -104,7 +104,7 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
             });
             Add(m_VariantType);
 
-            m_Expression = new TextField();
+            m_Expression = new UnicodeTextField();
             m_Expression.label = "Expression";
             m_Expression.isDelayed = true;
             m_Expression.RegisterValueChangedCallback(c =>

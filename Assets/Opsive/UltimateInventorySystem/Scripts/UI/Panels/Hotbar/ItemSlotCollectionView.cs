@@ -21,9 +21,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
     /// </summary>
     public class ItemSlotCollectionView : ItemViewSlotsContainer, IDatabaseSwitcher
     {
-        [Tooltip("Update UI when inventory updates")]
+        [Tooltip("Update UI when inventory updates.")]
         [SerializeField] protected ItemCollectionID m_ItemCollectionID = new ItemCollectionID(null, ItemCollectionPurpose.Equipped);
-        [Tooltip("Automatically set the item view slot category restriction to match the ItemSlot category")]
+        [Tooltip("Automatically set the item view slot category restriction to match the ItemSlot category.")]
         [SerializeField] protected bool m_SetItemViewSlotRestrictions = true;
         [Tooltip("The slots that belong to the collection.")]
         [SerializeField] protected ItemSlotSet m_ItemSlotSet;
@@ -45,7 +45,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
         protected override void OnInitializeBeforeSettingInventory()
         {
             if (m_ItemSlotSet == null || m_ItemSlotSet.ItemSlots == null) {
-                Debug.LogError("The item slot set cannot be null", gameObject);
+                if (Application.isPlaying) {
+                    Debug.LogError("The item slot set cannot be null", gameObject);
+                }
                 return;
             }
 

@@ -83,7 +83,10 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             var description = UIDesignerManager.InstantiateSchemaPrefab<ItemDescriptionBase>(prefab, rectParent);
 
-            if (binding != null) { binding.ItemDescription = description; }
+            if (binding != null) {
+                binding.ItemDescription = description;
+                SetRectToFullSize(description.RectTransform);
+            }
 
             var categoryAttributeViewSetItemViewModule = description.GetComponent<CategoryAttributeViewSetItemViewModule>();
 
@@ -103,7 +106,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             var displayPanel = rectTransform.gameObject.AddComponent<DisplayPanel>();
 
             var panelContent = CreateRectTransform(rectTransform);
-            panelContent.sizeDelta = size;
+            SetRectToFullSize(panelContent);
             panelContent.gameObject.name = "Main Content";
             displayPanel.m_MainContent = panelContent;
 
@@ -113,6 +116,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             var binding = rectTransform.gameObject.AddComponent<ItemDescriptionPanelBinding>();
             return binding;
+        }
+
+        private static void SetRectToFullSize(RectTransform panelContent)
+        {
+            panelContent.anchorMin = Vector2.zero;
+            panelContent.anchorMax = Vector2.one;
+            panelContent.pivot = new Vector2(0.5f, 0.5f);
+            panelContent.sizeDelta = Vector2.zero;
         }
     }
 

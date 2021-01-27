@@ -16,6 +16,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
     /// </summary>
     public class ItemInfoNameSorter : ItemInfoSorterBase
     {
+        [Tooltip("Sort by name ascending or descending?")]
         [SerializeField] protected bool m_Ascending = false;
 
         protected Comparer<ItemInfo> m_ItemNameComparer;

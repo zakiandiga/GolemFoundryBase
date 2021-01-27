@@ -16,7 +16,7 @@ namespace Opsive.UltimateInventorySystem.Demo.UI
     /// </summary>
     public class AsyncFuncActionsPanelInt : AsyncFuncActionsPanel<int>
     {
-        [Tooltip("If true the object will be returned to the object when closed")]
+        [Tooltip("If true the object will be returned to the object when closed.")]
         [SerializeField]
         private bool m_ReturnToObjectPoolOnClose = true;
 
@@ -33,6 +33,10 @@ namespace Opsive.UltimateInventorySystem.Demo.UI
             return m_ValueToReturn;
         }
 
+        /// <summary>
+        /// Close the panel.
+        /// </summary>
+        /// <param name="selectPrevious">Select the previous panel?</param>
         public override void Close(bool selectPrevious = true)
         {
             base.Close(selectPrevious);

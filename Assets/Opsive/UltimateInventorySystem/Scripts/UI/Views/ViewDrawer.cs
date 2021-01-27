@@ -37,9 +37,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         [Tooltip("Draw Empty boxes when initialized?.")]
         [SerializeField] protected bool m_DrawEmptyViewsOnInitialize = true;
 
-        protected IViewSlot[] m_BoxParents;
+        protected IViewSlot[] m_ViewSlots;
 
-        public IViewSlot[] BoxParents => m_BoxParents;
+        public IViewSlot[] ViewSlots => m_ViewSlots;
 
         protected bool m_IsInitialized = false;
 
@@ -65,7 +65,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
 
             if (m_Content == null) { m_Content = transform; }
 
-            var boxParents = new List<IViewSlot>();
+            var viewSlots = new List<IViewSlot>();
             for (int i = 0; i < m_Content.childCount; i++) {
                 var childObject = m_Content.GetChild(i).gameObject;
                 var childParentBox = childObject.GetComponent<IViewSlot>();
@@ -76,17 +76,17 @@ namespace Opsive.UltimateInventorySystem.UI.Views
                     childParentBox.DisableImage();
                 }
 
-                boxParents.Add(childParentBox);
+                viewSlots.Add(childParentBox);
                 if (m_RemoveViewsOnInitialize) {
                     RemoveChildrenFromTransform(childParentBox.transform);
                 }
             }
 
-            m_BoxParents = boxParents.ToArray();
+            m_ViewSlots = viewSlots.ToArray();
 
             if (m_DrawEmptyViewsOnInitialize) {
-                for (int i = 0; i < m_BoxParents.Length; i++) {
-                    DrawEmptyBox(i, i, true);
+                for (int i = 0; i < m_ViewSlots.Length; i++) {
+                    DrawEmptyView(i, i, true);
                 }
             }
 
@@ -110,10 +110,10 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// </summary>
         protected void RemoveBoxesFromBoxParents()
         {
-            for (int i = 0; i < m_BoxParents.Length; i++) {
-                if (m_BoxParents[i].View == null) { continue; }
+            for (int i = 0; i < m_ViewSlots.Length; i++) {
+                if (m_ViewSlots[i].View == null) { continue; }
 
-                var obj = m_BoxParents[i].View.gameObject;
+                var obj = m_ViewSlots[i].View.gameObject;
                 if (Application.isPlaying) {
                     if (ObjectPool.IsPooledObject(obj)) { ObjectPool.Destroy(obj); } else { Destroy(obj); }
                 } else {
@@ -139,11 +139,15 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             }
         }
 
-        public void RemoveBox(int index)
+        /// <summary>
+        /// Remove the view.
+        /// </summary>
+        /// <param name="index">The index of the view to remove.</param>
+        public void RemoveView(int index)
         {
             GameObject objectToRemove = null;
             if (m_UseViewSlot) {
-                objectToRemove = m_BoxParents[index]?.View?.gameObject;
+                objectToRemove = m_ViewSlots[index]?.View?.gameObject;
 
             } else {
                 objectToRemove = m_Content.GetChild(index)?.gameObject;
@@ -159,7 +163,14 @@ namespace Opsive.UltimateInventorySystem.UI.Views
 
         }
 
-        protected abstract View DrawEmptyBox(int boxIndex, int elementIndex, bool removePreviousBox);
+        /// <summary>
+        /// Draw an empty view.
+        /// </summary>
+        /// <param name="viewIndex">The view index.</param>
+        /// <param name="elementIndex">The element Index.</param>
+        /// <param name="removePreviousView">Remove from the previous view?</param>
+        /// <returns>The view.</returns>
+        protected abstract View DrawEmptyView(int viewIndex, int elementIndex, bool removePreviousView);
     }
 
     /// <summary>
@@ -171,9 +182,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         public event Action<View<T>, T> BeforeDrawing;
         public event Action<View<T>, T> AfterDrawing;
 
-        protected List<View<T>> m_BoxObjects;
+        protected List<View<T>> m_Views;
 
-        public IReadOnlyList<View<T>> BoxObjects => m_BoxObjects;
+        public IReadOnlyList<View<T>> Views => m_Views;
 
         /// <summary>
         /// Initialize the component.
@@ -182,8 +193,8 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         {
             if (m_IsInitialized && !force) { return; }
 
-            if (m_BoxObjects == null) {
-                m_BoxObjects = new List<View<T>>();
+            if (m_Views == null) {
+                m_Views = new List<View<T>>();
             }
             base.Initialize(force);
         }
@@ -201,7 +212,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="startIndex">The start index of the list.</param>
         /// <param name="endIndex">The end index of the list.</param>
         /// <param name="elements">The list of elements.</param>
-        public virtual void DrawBoxes(int startIndex, int endIndex, IReadOnlyList<T> elements)
+        public virtual void DrawViews(int startIndex, int endIndex, IReadOnlyList<T> elements)
         {
 
             if (startIndex < 0) {
@@ -232,36 +243,43 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="elementIndex">The element index.</param>
         /// <param name="element">The element.</param>
         /// <returns>The box.</returns>
-        public virtual View<T> DrawView(int boxIndex, int elementIndex, T element, bool removePreviousBox)
+        public virtual View<T> DrawView(int boxIndex, int elementIndex, T element, bool removePreviousView)
         {
-            if (removePreviousBox) { RemoveBox(boxIndex); }
+            if (removePreviousView) { RemoveView(boxIndex); }
 
-            var boxUI = InstantiateBoxUI(boxIndex, elementIndex, element);
+            var view = InstantiateView(boxIndex, elementIndex, element);
 
-            if (boxUI == null) {
+            if (view == null) {
                 Debug.LogWarning("The Box Drawer BoxUI Prefab does not have a BoxUI component or it is not of the correct Type");
                 return null;
             }
 
             //Clear to remove any previous state of the pooled object.
-            boxUI.Clear();
+            view.Clear();
 
-            BeforeDrawingBox(elementIndex, boxUI, element);
+            BeforeDrawingBox(elementIndex, view, element);
 
-            DrawingBox(elementIndex, boxUI, element);
+            DrawingView(elementIndex, view, element);
 
-            AfterDrawingBox(elementIndex, boxUI, element);
+            AfterDrawingBox(elementIndex, view, element);
 
-            m_BoxObjects.EnsureSize(boxIndex + 1);
+            m_Views.EnsureSize(boxIndex + 1);
 
-            m_BoxObjects[boxIndex] = boxUI;
+            m_Views[boxIndex] = view;
 
-            return boxUI;
+            return view;
         }
 
-        protected override View DrawEmptyBox(int boxIndex, int elementIndex, bool removePreviousBox)
+        /// <summary>
+        /// Draw Empty view.
+        /// </summary>
+        /// <param name="viewIndex">The view index.</param>
+        /// <param name="elementIndex">The element index.</param>
+        /// <param name="removePreviousView">Should the previous view be removed?</param>
+        /// <returns>The view that was drawn.</returns>
+        protected override View DrawEmptyView(int viewIndex, int elementIndex, bool removePreviousView)
         {
-            return DrawView(boxIndex, elementIndex, default, removePreviousBox);
+            return DrawView(viewIndex, elementIndex, default, removePreviousView);
         }
 
         /// <summary>
@@ -271,7 +289,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="elementIndex">The element index.</param>
         /// <param name="element">The element.</param>
         /// <returns>The instantiated box.</returns>
-        protected virtual View<T> InstantiateBoxUI(int boxIndex, int elementIndex, T element)
+        protected virtual View<T> InstantiateView(int boxIndex, int elementIndex, T element)
         {
             var itemViewPrefab = GetViewPrefabFor(element);
             if (itemViewPrefab == null) {
@@ -280,8 +298,8 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             }
 
             return m_UseViewSlot
-                ? InstantiateBoxUIInBoxParent(itemViewPrefab, boxIndex, elementIndex, element)
-                : InstantiateBoxUIInThis(itemViewPrefab, boxIndex, elementIndex, element);
+                ? InstantiateViewWithSlot(itemViewPrefab, boxIndex, elementIndex, element)
+                : InstantiateViewInThis(itemViewPrefab, boxIndex, elementIndex, element);
         }
 
         /// <summary>
@@ -292,37 +310,37 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="elementIndex">The element index.</param>
         /// <param name="element">The element.</param>
         /// <returns>The box ui.</returns>
-        protected virtual View<T> InstantiateBoxUIInBoxParent(GameObject prefab, int boxIndex, int elementIndex, T element)
+        protected virtual View<T> InstantiateViewWithSlot(GameObject prefab, int boxIndex, int elementIndex, T element)
         {
-            if (boxIndex >= m_BoxParents.Length) {
+            if (boxIndex >= m_ViewSlots.Length) {
                 Debug.LogWarning("There is no view parent for the index provided. Please make sure there are enough box parents when using them.");
-                return InstantiateBoxUIInThis(prefab, boxIndex, elementIndex, element);
+                return InstantiateViewInThis(prefab, boxIndex, elementIndex, element);
             }
 
-            var boxUI = ObjectPool.Instantiate(prefab, m_BoxParents[boxIndex].transform).GetComponent<View<T>>();
-            boxUI.RectTransform.anchoredPosition = Vector2.zero;
-            boxUI.RectTransform.anchorMin = new Vector2(0f, 0f);
-            boxUI.RectTransform.anchorMax = new Vector2(1f, 1f);
-            boxUI.RectTransform.pivot = new Vector2(0.5f, 0.5f);
-            boxUI.RectTransform.sizeDelta = Vector2.zero;
-            boxUI.RectTransform.offsetMin = Vector2.zero;
-            boxUI.RectTransform.offsetMax = Vector2.zero;
-            boxUI.RectTransform.localPosition = Vector3.zero;
-            boxUI.RectTransform.localScale = Vector3.one;
-            m_BoxParents[boxIndex].SetView(boxUI);
-            return boxUI;
+            var view = ObjectPool.Instantiate(prefab, m_ViewSlots[boxIndex].transform).GetComponent<View<T>>();
+            view.RectTransform.anchoredPosition = Vector2.zero;
+            view.RectTransform.anchorMin = new Vector2(0f, 0f);
+            view.RectTransform.anchorMax = new Vector2(1f, 1f);
+            view.RectTransform.pivot = new Vector2(0.5f, 0.5f);
+            view.RectTransform.sizeDelta = Vector2.zero;
+            view.RectTransform.offsetMin = Vector2.zero;
+            view.RectTransform.offsetMax = Vector2.zero;
+            view.RectTransform.localPosition = Vector3.zero;
+            view.RectTransform.localScale = Vector3.one;
+            m_ViewSlots[boxIndex].SetView(view);
+            return view;
 
         }
 
         /// <summary>
-        /// Instantiate the box Ui within this transform.
+        /// Instantiate the view within this transform.
         /// </summary>
-        /// <param name="prefab">The box prefab.</param>
-        /// <param name="boxIndex">The box index.</param>
+        /// <param name="prefab">The view prefab.</param>
+        /// <param name="boxIndex">The view index.</param>
         /// <param name="elementIndex">The element index.</param>
         /// <param name="element">The element.</param>
         /// <returns>The box ui.</returns>
-        protected virtual View<T> InstantiateBoxUIInThis(GameObject prefab, int boxIndex, int elementIndex, T element)
+        protected virtual View<T> InstantiateViewInThis(GameObject prefab, int boxIndex, int elementIndex, T element)
         {
             return ObjectPool.Instantiate(prefab, m_Content).GetComponent<View<T>>();
         }
@@ -344,7 +362,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="index">The index.</param>
         /// <param name="view">The box.</param>
         /// <param name="element">The element.</param>
-        protected virtual void DrawingBox(int index, View<T> view, T element)
+        protected virtual void DrawingView(int index, View<T> view, T element)
         {
             view.SetValue(element);
         }
@@ -360,47 +378,52 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             AfterDrawing?.Invoke(view, element);
         }
 
+        /// <summary>
+        /// Is the index available.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <returns>True if it is available.</returns>
         public bool IsIndexAvailable(int index)
         {
-            if (index >= m_BoxObjects.Count) { return false; }
+            if (index >= m_Views.Count) { return false; }
 
-            if (m_BoxObjects[index] == null) { return false; }
+            if (m_Views[index] == null) { return false; }
 
-            if (m_BoxObjects[index].isActiveAndEnabled == false) { return false; }
+            if (m_Views[index].isActiveAndEnabled == false) { return false; }
 
-            if (m_UseViewSlot && m_BoxParents[index].isActiveAndEnabled == false) { return false; }
+            if (m_UseViewSlot && m_ViewSlots[index].isActiveAndEnabled == false) { return false; }
 
             return true;
         }
 
         /// <summary>
-        /// Select the box at index.
+        /// Select the view at index.
         /// </summary>
         /// <param name="index">The index.</param>
         public void Select(int index)
         {
-            for (int i = 0; i < m_BoxObjects.Count; i++) {
-                if (m_BoxObjects[i] == null) { continue; }
+            for (int i = 0; i < m_Views.Count; i++) {
+                if (m_Views[i] == null) { continue; }
 
                 if (index == i) {
-                    m_BoxObjects[index].Select(true);
+                    m_Views[index].Select(true);
                     continue;
                 }
 
-                if (m_BoxObjects[i].IsSelected) {
-                    m_BoxObjects[i].Select(false);
+                if (m_Views[i].IsSelected) {
+                    m_Views[i].Select(false);
                 }
             }
         }
 
         /// <summary>
-        /// Click a box at index.
+        /// Click a view at index.
         /// </summary>
         /// <param name="index">The index.</param>
         public void Click(int index)
         {
-            if (index < 0 || index >= m_BoxObjects.Count) { return; }
-            m_BoxObjects[index].Click();
+            if (index < 0 || index >= m_Views.Count) { return; }
+            m_Views[index].Click();
         }
     }
 }

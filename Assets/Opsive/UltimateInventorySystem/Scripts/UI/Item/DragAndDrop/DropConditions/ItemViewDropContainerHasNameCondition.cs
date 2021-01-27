@@ -15,7 +15,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
     [Serializable]
     public class ItemViewDropContainerHasNameCondition : ItemViewDropCondition
     {
+        [Tooltip("If this is true the condition will return true if the name DO NOT match.")]
+        [SerializeField] protected bool m_DoesNotMatchName;
+        [Tooltip("The source container name.")]
         [SerializeField] protected string m_SourceContainerName;
+        [Tooltip("The destination container name.")]
         [SerializeField] protected string m_DestinationContainerName;
 
         /// <summary>
@@ -43,11 +47,17 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
         public override bool CanDrop(ItemViewDropHandler itemViewDropHandler)
         {
             if (string.IsNullOrWhiteSpace(m_SourceContainerName) == false) {
-                if (itemViewDropHandler.SourceContainer.ContainerName != m_SourceContainerName) { return false; }
+                var nameMatch = itemViewDropHandler.SourceContainer.ContainerName == m_SourceContainerName;
+                if (nameMatch == m_DoesNotMatchName) {
+                    return false;
+                }
             }
 
             if (string.IsNullOrWhiteSpace(m_DestinationContainerName) == false) {
-                if (itemViewDropHandler.DestinationContainer.ContainerName != m_DestinationContainerName) { return false; }
+                var nameMatch = itemViewDropHandler.DestinationContainer.ContainerName == m_DestinationContainerName;
+                if (nameMatch == m_DoesNotMatchName) {
+                    return false;
+                }
             }
 
             return true;
@@ -59,12 +69,14 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
         /// <returns>The string.</returns>
         public override string ToString()
         {
+            var not = m_DoesNotMatchName ? "_NOT_" : "";
+
             var sourceName = string.IsNullOrWhiteSpace(m_SourceContainerName) ? "ANY" :
                 string.Format("'{0}'", m_SourceContainerName);
             var destinationName = string.IsNullOrWhiteSpace(m_DestinationContainerName) ? "ANY" :
                 string.Format("'{0}'", m_DestinationContainerName);
 
-            return base.ToString() + string.Format("[{0},{1}]", sourceName, destinationName);
+            return base.ToString() + string.Format("{0}[{1},{2}]", not, sourceName, destinationName);
         }
     }
 }

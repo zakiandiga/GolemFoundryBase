@@ -7,6 +7,7 @@
 namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
 {
     using Opsive.Shared.Game;
+    using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using UnityEngine;
 
@@ -15,7 +16,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     /// </summary>
     public abstract class InventoryPanelBinding : DisplayPanelBinding
     {
+        [Tooltip("Should the inventory on the panel owner be used to bind this panel?")]
         [SerializeField] protected bool m_BindToPanelOwnerInventory = true;
+        [Tooltip("Bind the inventory with a specific Identifier ID.")]
+        [SerializeField] protected uint m_BindToInventoryByIdentifier = 0;
+        [Tooltip("Set the Inventory to bind to this panel.")]
         [SerializeField] protected Inventory m_Inventory;
 
         public Inventory Inventory {
@@ -27,9 +32,12 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// Initialize.
         /// </summary>
         /// <param name="display">The bound display panel.</param>
-        public override void Initialize(DisplayPanel display)
+        /// <param name="force"></param>
+        public override void Initialize(DisplayPanel display, bool force)
         {
-            base.Initialize(display);
+            var wasInitialized = m_IsInitialized;
+            if (wasInitialized && !force) { return; }
+            base.Initialize(display, force);
 
             OnInitializeBeforeInventoryBind();
 
@@ -54,6 +62,16 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
 
             if (m_BindToPanelOwnerInventory) {
                 BindInventory(m_DisplayPanel.Manager.PanelOwner.GetCachedComponent<Core.InventoryCollections.Inventory>());
+                return;
+            }
+
+            if (m_BindToInventoryByIdentifier != 0) {
+                var identifier = InventorySystemManager.GetInventoryIdentifier(m_BindToInventoryByIdentifier);
+                if (identifier == null) {
+                    Debug.LogWarning($"The Inventory Identifier with ID '{m_BindToInventoryByIdentifier}' could not be found", gameObject);
+                    return;
+                }
+                BindInventory(identifier.Inventory);
             }
         }
 

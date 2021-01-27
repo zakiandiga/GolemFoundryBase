@@ -1,4 +1,10 @@
-﻿namespace Opsive.UltimateInventorySystem.Editor.Inspectors
+﻿/// ---------------------------------------------
+/// Ultimate Inventory System
+/// Copyright (c) Opsive. All Rights Reserved.
+/// https://www.opsive.com
+/// ---------------------------------------------
+
+namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
     using Opsive.UltimateInventorySystem.UI;
     using System.Collections.Generic;

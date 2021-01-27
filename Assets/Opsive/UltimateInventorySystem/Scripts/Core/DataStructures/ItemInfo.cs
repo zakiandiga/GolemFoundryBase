@@ -61,7 +61,7 @@ namespace Opsive.UltimateInventorySystem.Core.DataStructures
         /// ItemInfo constructor, copy the item info and change the item amount.
         /// </summary>
         /// <param name="itemAmount">The item amount.</param>
-        /// <param name="otherItemInfo">The item info to copy</param>
+        /// <param name="otherItemInfo">The item info to copy.</param>
         public ItemInfo(ItemAmount itemAmount, ItemInfo otherItemInfo)
         {
             m_ItemAmount = itemAmount;
@@ -182,7 +182,10 @@ namespace Opsive.UltimateInventorySystem.Core.DataStructures
                 return "None ItemInfo";
             }
 
-            return string.Format("{0} {1} {2}", m_ItemAmount, m_ItemCollection, m_ItemStack);
+            var itemCollection = m_ItemCollection == null ? "ItemCollection is NULL" : m_ItemCollection.ToString();
+            var itemStack = m_ItemStack == null ? "ItemStack is NULL" : m_ItemStack.ToString();
+
+            return string.Format("{0} || {1} || {2}", m_ItemAmount, itemCollection, itemStack);
         }
 
         /// <summary>

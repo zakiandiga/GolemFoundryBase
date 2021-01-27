@@ -28,6 +28,9 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
 
         public int Count => m_SaveDataKeys.Count;
 
+        public IReadOnlyList<string> SaveDataKeys => m_SaveDataKeys;
+        public IReadOnlyList<Serialization> SerializedSaveData => m_SerializedSaveData;
+
         /// <summary>
         /// Constructor for the save data.
         /// </summary>

@@ -23,7 +23,7 @@ namespace Opsive.UltimateInventorySystem.Demo.UI.Menus.Storage
     {
         [Tooltip("The menu title text.")]
         [SerializeField] protected Text m_MenuTitle;
-        [Tooltip("The storage Inventory")]
+        [Tooltip("The storage Inventory.")]
         [SerializeField] protected Inventory m_StorageInventory;
         [Tooltip("The client inventory Grid.")]
         [SerializeField] internal InventoryGrid m_ClientInventoryGrid;
@@ -44,12 +44,17 @@ namespace Opsive.UltimateInventorySystem.Demo.UI.Menus.Storage
         public InventoryGrid ClientInventoryGrid => m_ClientInventoryGrid;
         public InventoryGrid StorageInventoryGrid => m_StorageInventoryGrid;
 
-        public override void Initialize(DisplayPanel display)
+        /// <summary>
+        /// Initialize the storage menu.
+        /// </summary>
+        /// <param name="display">The display panel.</param>
+        /// <param name="force">Force the initialize.</param>
+        public override void Initialize(DisplayPanel display, bool force)
         {
             m_ClientInventoryGrid.Initialize(false);
             m_StorageInventoryGrid.Initialize(false);
 
-            base.Initialize(display);
+            base.Initialize(display, force);
 
             m_StoreButton.onClick.RemoveAllListeners();
             m_StoreButton.onClick.AddListener(StoreClicked);
@@ -84,6 +89,9 @@ namespace Opsive.UltimateInventorySystem.Demo.UI.Menus.Storage
             m_StorageInventoryGrid.SetInventory(m_StorageInventory);
         }
 
+        /// <summary>
+        /// Handle the On Open event.
+        /// </summary>
         public override void OnOpen()
         {
             base.OnOpen();

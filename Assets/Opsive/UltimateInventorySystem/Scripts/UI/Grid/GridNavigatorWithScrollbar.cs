@@ -42,6 +42,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             if (m_PreviousButton == null) { m_PreviousButton = m_Scrollbar.NegativeButton; }
         }
 
+        /// <summary>
+        /// Register to the grid system movements.
+        /// </summary>
         protected override void RegisterGridSystemMoves()
         {
             if (m_Vertical) {
@@ -63,6 +66,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             SetIndexInternal(index);
         }
 
+        /// <summary>
+        /// Refresh the arrows.
+        /// </summary>
         public override void RefreshArrows()
         {
             base.RefreshArrows();

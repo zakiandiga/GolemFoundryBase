@@ -16,9 +16,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
     [Serializable]
     public class ItemViewDropInventoryGiveAction : ItemViewDropAction
     {
-        [Tooltip("Add to the source container inventory")]
+        [Tooltip("Add to the source container inventory.")]
         [SerializeField] protected bool m_AddToDestinationInventory;
-        [Tooltip("Remove from the source container inventory")]
+        [Tooltip("Remove from the source container inventory.")]
         [SerializeField] protected bool m_RemoveFromSourceInventory;
         [Tooltip("The Item Collection were the item should be added.")]
         [SerializeField] protected ItemCollectionID m_DestinationItemCollectionID;
@@ -92,13 +92,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
     [Serializable]
     public class ItemViewDropInventoryExchangeAction : ItemViewDropAction
     {
-        [Tooltip("Remove from the source container inventory")]
+        [Tooltip("Remove from the source container inventory.")]
         [SerializeField] protected bool m_RemoveFromSourceInventory;
-        [Tooltip("Remove from the destination container inventory")]
+        [Tooltip("Remove from the destination container inventory.")]
         [SerializeField] protected bool m_RemoveFromDestinationInventory;
-        [Tooltip("Add to the destination container inventory")]
+        [Tooltip("Add to the destination container inventory.")]
         [SerializeField] protected bool m_AddToDestinationInventory;
-        [Tooltip("Add to the source container inventory")]
+        [Tooltip("Add to the source container inventory.")]
         [SerializeField] protected bool m_AddToSourceInventory;
         [Tooltip("The Item Collection were the item should be added.")]
         [SerializeField] protected ItemCollectionID m_DestinationItemCollectionID;

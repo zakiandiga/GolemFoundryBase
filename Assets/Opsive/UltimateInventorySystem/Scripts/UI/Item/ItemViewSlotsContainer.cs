@@ -30,10 +30,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public override void Initialize(bool force)
         {
             if (m_IsInitialized && !force) {
-                if (Application.isPlaying) {
-                    m_ItemViewDrawer.Content = m_Content;
-                    m_ItemViewDrawer.Initialize(force);
-                }
+                if (Application.isPlaying) { InitializeItemViewDrawer(force); }
                 return;
             }
 
@@ -41,12 +38,17 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 
             m_ItemViewSlots = m_Content.GetComponentsInChildren<ItemViewSlot>();
 
-            if (Application.isPlaying) {
-                m_ItemViewDrawer.Content = m_Content;
-                m_ItemViewDrawer.Initialize(force);
-            }
+            if (Application.isPlaying) { InitializeItemViewDrawer(force); }
 
             base.Initialize(force);
+        }
+
+        private void InitializeItemViewDrawer(bool force)
+        {
+            if (m_ItemViewDrawer == null) { return; }
+
+            m_ItemViewDrawer.Content = m_Content;
+            m_ItemViewDrawer.Initialize(force);
         }
 
         /// <summary>

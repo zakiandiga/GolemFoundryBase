@@ -14,6 +14,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewSlotRestrictions
     /// </summary>
     public abstract class ItemViewSlotRestriction : MonoBehaviour
     {
+        /// <summary>
+        /// Can the Item View Slot container a certain Item Info.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
+        /// <returns>Can the Item Info be contained?</returns>
         public abstract bool CanContain(ItemInfo itemInfo);
 
         /// <summary>

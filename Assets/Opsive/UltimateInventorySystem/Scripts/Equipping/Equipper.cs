@@ -248,6 +248,22 @@ namespace Opsive.UltimateInventorySystem.Equipping
         }
 
         /// <summary>
+        /// Get the item Object slot by name.
+        /// </summary>
+        /// <param name="slotName">The slot name.</param>
+        /// <returns>The item Object slot.</returns>
+        public virtual ItemObjectSlot GetItemObjectSlot(string slotName)
+        {
+            for (int i = 0; i < m_Slots.Length; i++) {
+                if (m_Slots[i].Name == slotName) {
+                    return m_Slots[i];
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Get the item equipped in the slot provided.
         /// </summary>
         /// <param name="index">The slot.</param>
@@ -259,11 +275,36 @@ namespace Opsive.UltimateInventorySystem.Equipping
         }
 
         /// <summary>
+        /// Get the item equipped in the slot provided.
+        /// </summary>
+        /// <param name="slotName">The slot name.</param>
+        /// <returns>The item equipped in that slot.</returns>
+        public virtual Item GetEquippedItem(string slotName)
+        {
+            var slotIndex = m_ItemSlotSet.GetIndexOf(slotName);
+            if (slotIndex == -1) {
+                return null;
+            }
+
+            return GetEquippedItem(slotIndex);
+        }
+
+        /// <summary>
         /// Get the Equipment stats by retrieving the total value of the attribute.
         /// </summary>
         /// <param name="attributeName">The attribute name.</param>
         /// <returns>The total amount for the attribute.</returns>
-        public virtual int GetEquipmentStat(string attributeName)
+        public virtual int GetEquipmentStatInt(string attributeName)
+        {
+            return (int)GetEquipmentStatFloat(attributeName);
+        }
+
+        /// <summary>
+        /// Get the Equipment stats by retrieving the total value of the attribute.
+        /// </summary>
+        /// <param name="attributeName">The attribute name.</param>
+        /// <returns>The total amount for the attribute.</returns>
+        public virtual float GetEquipmentStatFloat(string attributeName)
         {
             var stat = 0f;
             for (int i = 0; i < m_Slots.Length; i++) {
@@ -278,7 +319,7 @@ namespace Opsive.UltimateInventorySystem.Equipping
                 }
             }
 
-            return (int)stat;
+            return stat;
         }
 
         /// <summary>

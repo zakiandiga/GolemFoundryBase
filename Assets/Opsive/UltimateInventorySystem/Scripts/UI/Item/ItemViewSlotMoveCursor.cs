@@ -9,6 +9,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     using Opsive.UltimateInventorySystem.UI.Item.DragAndDrop;
     using Opsive.UltimateInventorySystem.UI.Panels;
     using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers;
+    using System.Collections.Generic;
     using UnityEngine;
 
     /// <summary>
@@ -16,22 +17,42 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     /// </summary>
     public class ItemViewSlotMoveCursor : ItemViewSlotsContainerBinding
     {
+        [Tooltip("The Item view Drop Handler.")]
         [SerializeField] internal ItemViewDropHandler m_DropHandler;
-        [Tooltip("Can be a hidden display, it is required to allow cancelling the move action without closing the other panels")]
+        [Tooltip("Can be a hidden display, it is required to allow cancelling the move action without closing the other panels.")]
         [SerializeField] internal DisplayPanel m_MoveDisplayPanel;
-        [Tooltip("Unbind ItemAction while moving")]
+        [Tooltip("Unbind ItemAction while moving.")]
         [SerializeField] internal ItemViewSlotsContainerBinding[] m_UnbindWhileMoving;
+        [Tooltip("Unbind ItemAction while moving.")]
+        [SerializeField] internal GameObject[] m_UnbindInterfaceWhileMoving;
 
         protected bool m_IsMoving;
         protected ItemViewSlotEventData m_ItemViewSlotEventData;
+        protected List<IItemViewSlotContainerBinding> m_UnbindItemViewSlotContainersWhileMoving;
 
         private ItemViewSlotCursorManager ItemViewSlotCursorManager =>
             m_ItemViewSlotsContainer.ItemViewSlotCursor;
 
         /// <summary>
+        /// Initialize.
+        /// </summary>
+        /// <param name="force">Force the initialize.</param>
+        public override void Initialize(bool force)
+        {
+            if (m_IsInitialized && !force) { return; }
+            base.Initialize(force);
+
+            m_UnbindItemViewSlotContainersWhileMoving = new List<IItemViewSlotContainerBinding>();
+            m_UnbindItemViewSlotContainersWhileMoving.AddRange(m_UnbindWhileMoving);
+            for (int i = 0; i < m_UnbindInterfaceWhileMoving.Length; i++) {
+                m_UnbindItemViewSlotContainersWhileMoving.AddRange(m_UnbindInterfaceWhileMoving[i].GetComponents<IItemViewSlotContainerBinding>());
+            }
+        }
+
+        /// <summary>
         /// A slot container was bound.
         /// </summary>
-        protected override void OnBind()
+        protected override void OnBindItemViewSlotContainer()
         {
             if (m_DropHandler == null) {
                 m_DropHandler = GetComponent<ItemViewDropHandler>();
@@ -54,7 +75,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <summary>
         /// The slot container was unbound.
         /// </summary>
-        protected override void OnUnBind()
+        protected override void OnUnbindItemViewSlotContainer()
         {
             m_ItemViewSlotsContainer.OnItemViewSlotSelected -= ItemViewSlotSelected;
             m_ItemViewSlotsContainer.OnItemViewSlotClicked -= ItemViewSlotClicked;
@@ -104,8 +125,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected void EndMove()
         {
             m_IsMoving = false;
-            for (int i = 0; i < m_UnbindWhileMoving.Length; i++) {
-                m_UnbindWhileMoving[i]?.Bind(m_ItemViewSlotsContainer);
+            for (int i = 0; i < m_UnbindItemViewSlotContainersWhileMoving.Count; i++) {
+                m_UnbindItemViewSlotContainersWhileMoving[i]?.BindItemViewSlotContainer(m_ItemViewSlotsContainer);
             }
         }
 
@@ -115,6 +136,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="index">The index of the item view slot.</param>
         public void StartMove(int index)
         {
+            if (ItemViewSlotCursorManager.CanMove() == false) { return; }
+
             var itemViewSlot = m_ItemViewSlotsContainer.GetItemViewSlot(index);
 
             if (m_MoveDisplayPanel != null) {
@@ -128,8 +151,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 
             ItemViewSlotCursorManager.StartMove(m_ItemViewSlotEventData, itemViewSlot.transform.position);
 
-            for (int i = 0; i < m_UnbindWhileMoving.Length; i++) {
-                m_UnbindWhileMoving[i]?.UnBind();
+            for (int i = 0; i < m_UnbindItemViewSlotContainersWhileMoving.Count; i++) {
+                m_UnbindItemViewSlotContainersWhileMoving[i]?.UnbindItemViewSlotContainer();
             }
         }
     }

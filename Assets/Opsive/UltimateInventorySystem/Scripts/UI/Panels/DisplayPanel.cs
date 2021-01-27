@@ -50,7 +50,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         [SerializeField] internal bool m_SetDisableOnClose = true;
         [Tooltip("The selectable which should be selected when the panel is opened.")]
         [SerializeField] protected Selectable m_SelectableOnOpen;
-        [Tooltip("The main content used to spawn content in a particular place in the panel")]
+        [Tooltip("The main content used to spawn content in a particular place in the panel.")]
         [SerializeField] internal RectTransform m_MainContent;
         [Tooltip("The display bindings.")]
         [SerializeField] protected List<DisplayPanelBinding> m_Bindings;
@@ -95,9 +95,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         /// <summary>
         /// Set up the the UI.
         /// </summary>
-        public virtual void Setup(DisplayPanelManager manager)
+        public virtual void Setup(DisplayPanelManager manager, bool force)
         {
-            if (m_IsSetup && manager != null) { return; }
+            if (m_IsSetup && m_Manager == manager && !force) { return; }
             m_Manager = manager;
             m_Manager.RegisterPanel(this);
 
@@ -126,7 +126,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             }
 
             for (int i = 0; i < m_Bindings.Count; i++) {
-                m_Bindings[i].Initialize(this);
+                m_Bindings[i].Initialize(this, force);
             }
         }
 
@@ -357,9 +357,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         }
 
         /// <summary>
-        /// Set the name of the panel
+        /// Set the name of the panel.
         /// </summary>
-        /// <param name="panelName">The new panel name</param>
+        /// <param name="panelName">The new panel name.</param>
         public void SetName(string panelName)
         {
             m_UniqueName = panelName;

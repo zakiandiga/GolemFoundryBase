@@ -41,8 +41,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         public override string DocumentationURL =>
             "https://opsive.com/support/documentation/ultimate-inventory-system/editor-window/equipment/";
         protected EnumField m_PanelOption;
-        protected TextField m_PanelName;
-        protected TextField m_ItemViewSlotContainerName;
+        protected UnicodeTextField m_PanelName;
+        protected UnicodeTextField m_ItemViewSlotContainerName;
         protected ObjectField m_InventoryField;
         protected ObjectFieldWithNestedInspector<ItemSlotSet, ItemSlotSetInspector> m_ItemSlotSetField;
 
@@ -52,7 +52,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             m_PanelOption.RegisterValueChangedCallback(evt => { Refresh(); });
             container.Add(m_PanelOption);
 
-            m_PanelName = new TextField("Panel Name");
+            m_PanelName = new UnicodeTextField("Panel Name");
             m_PanelName.value = "Equipment Panel";
             container.Add(m_PanelName);
 
@@ -72,7 +72,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                 });
             container.Add(m_ItemSlotSetField);
 
-            m_ItemViewSlotContainerName = new TextField("Equipment Item View Slot Container Name");
+            m_ItemViewSlotContainerName = new UnicodeTextField("Equipment Item View Slot Container Name");
             m_ItemViewSlotContainerName.value = "Equipment Item View Slot Container";
 
         }

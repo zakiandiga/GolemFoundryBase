@@ -42,7 +42,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         [SerializeField] internal GridNavigatorBase m_GridNavigator;
         [Tooltip("The grid tab control (optional).")]
         [SerializeField] internal TabControl m_TabControl;
-        [Tooltip("Refresh the grid on enable")]
+        [Tooltip("Refresh the grid on enable.")]
         [SerializeField] protected bool m_RefreshOnEnable;
 
         protected DisplayPanel m_ParentPanel;
@@ -318,6 +318,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementsChanged?.Invoke();
         }
 
+        /// <summary>
+        /// Stop listening to the events.
+        /// </summary>
         protected void OnDestroy()
         {
             if (m_ParentPanel?.Manager?.PanelOwner == null) {

@@ -15,9 +15,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewSlotRestrictions
     /// </summary>
     public class ItemViewSlotCategoryRestriction : ItemViewSlotRestriction
     {
-        [Tooltip("The item category the the item should have")]
+        [Tooltip("The item category the the item should have.")]
         [SerializeField] protected DynamicItemCategory m_ItemCategory;
-        [Tooltip("Compare the category inherently or by exact match")]
+        [Tooltip("Compare the category inherently or by exact match.")]
         [SerializeField] protected bool m_Inherently = true;
 
         public ItemCategory ItemCategory {

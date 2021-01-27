@@ -21,18 +21,30 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
 
         protected ItemAction[] m_ItemActionArray;
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
+        /// <param name="force">Force Initialize.</param>
         public override void Initialize(bool force)
         {
             if (m_IsInitialized && force == false) { return; }
             base.Initialize(force);
         }
 
+        /// <summary>
+        /// Initialize the item action list.
+        /// </summary>
+        /// <returns>The item action list slice.</returns>
         protected override ListSlice<ItemAction> InitializeItemActionList()
         {
             m_ItemActionArray = new ItemAction[m_MaxNumberOfActions];
             return m_ItemActionArray;
         }
 
+        /// <summary>
+        /// Refresh the item actions.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
         protected virtual void RefreshItemActions(ItemInfo itemInfo)
         {
             m_ItemActionListSlice = m_CategoryItemActionSet.GetItemActionsForItem(itemInfo.Item, ref m_ItemActionArray);
