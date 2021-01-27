@@ -30,10 +30,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         /// <summary>
         /// Set up the panel.
         /// </summary>
-        public override void Setup(DisplayPanelManager manager)
+        public override void Setup(DisplayPanelManager manager, bool force)
         {
             if (m_IsSetup == true) { return; }
-            base.Setup(manager);
+            base.Setup(manager, force);
 
             m_Confirm.AddClickEvent(ClickedConfirm);
             m_Cancel.AddClickEvent(ClickedCancel);

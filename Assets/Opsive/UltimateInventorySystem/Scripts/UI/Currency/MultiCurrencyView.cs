@@ -18,7 +18,9 @@ namespace Opsive.UltimateInventorySystem.UI.Currency
     [Serializable]
     public struct CurrencyWithView
     {
+        [Tooltip("The currency.")]
         [SerializeField] private DynamicCurrency m_Currency;
+        [Tooltip("The currency view.")]
         [SerializeField] private CurrencyView m_View;
 
         public Currency Currency => m_Currency;
@@ -91,6 +93,9 @@ namespace Opsive.UltimateInventorySystem.UI.Currency
             }
         }
 
+        /// <summary>
+        /// Clear the currency views.
+        /// </summary>
         private void Clear()
         {
             for (int i = 0; i < m_CurrenciesWithViews.Length; i++) {

@@ -79,6 +79,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public event ItemViewSlotPointerEventHandler OnItemViewSlotDragE;
         public event ItemViewSlotPointerEventHandler OnItemViewSlotDropE;
 
+        [Tooltip("The name of the container, it should be unique.")]
         [SerializeField] protected string m_ContainerName;
         [FormerlySerializedAs("m_CursorManager")]
         [Tooltip("The parent of all the itemBoxSlots.")]
@@ -202,6 +203,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item
                 };
                 itemViewSlot.OnDeselectE += () =>
                 {
+                    if (GetItemViewSlot(localIndex) != m_SelectedSlot) { return; }
+
                     m_SelectedSlot = null;
                     m_ItemViewSlotEventData.SetValues(this, localIndex);
                     OnItemViewSlotDeselected?.Invoke(m_ItemViewSlotEventData);
@@ -240,7 +243,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 
             var bindings = GetComponents<ItemViewSlotsContainerBinding>();
             for (int i = 0; i < bindings.Length; i++) {
-                bindings[i].Bind(this);
+                bindings[i].BindItemViewSlotContainer(this);
             }
 
             OnInitializeBeforeSettingInventory();

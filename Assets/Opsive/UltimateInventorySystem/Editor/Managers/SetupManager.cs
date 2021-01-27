@@ -266,8 +266,16 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             if (m_MainManagerWindow.Database != null) {
                 inventorySystemManager.Database = m_MainManagerWindow.Database;
             }
+
+            var spawner = InspectorUtility.AddComponent<ItemObjectSpawner>(gameGameObject);
+            spawner.ItemObjectPrefab =
+                AssetDatabase.LoadAssetAtPath<GameObject>(
+                    AssetDatabase.GUIDToAssetPath("99f2ccf6e56f42146ad63b866481f569"))?.GetComponent<ItemObject>();
+
             InspectorUtility.AddComponent<Scheduler>(gameGameObject);
             InspectorUtility.AddComponent<ObjectPool>(gameGameObject);
+
+
         }
 
         /// <summary>

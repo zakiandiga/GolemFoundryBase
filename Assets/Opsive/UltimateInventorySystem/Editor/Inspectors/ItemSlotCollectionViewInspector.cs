@@ -88,6 +88,9 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 }, (parent, index) =>
                 {
                     var listElement = parent.ElementAt(0) as ListElement;
+                    if (m_ItemSlotCollectionView.ItemSlotSet == null) {
+                        return;
+                    }
                     var itemSlot = m_ItemSlotCollectionView.ItemSlotSet.GetSlot(index);
                     if (itemSlot.HasValue == false) {
                         m_List.RemoveAt(index);

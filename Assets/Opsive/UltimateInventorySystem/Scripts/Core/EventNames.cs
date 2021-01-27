@@ -73,9 +73,9 @@ namespace Opsive.UltimateInventorySystem.Core
 
         //The panel was opened or closed. The target game object is the panel owner assigned in the PanelManager.
         public const string c_GameObject_OnPanelOpenClose_PanelEventData = "GameObject_OnPanelOpenClose_PanelEventData";
-        //Similar to the OpenClose event but only happens if the selected panel is different. Used to know when the panel manager selects a new panel.
+        //Similar to the OpenClose event but only happens if the selected panel is different. Used to know when the panel manager selects a new panel. The target game object is the panel owner assigned in the PanelManager.
         public const string c_GameObject_OnNewPanelSelected_PanelEventData = "GameObject_OnNewPanelSelected_PanelEventData";
-        //The gameplay panel was selected or unselected, this event is particularly useful to enable disable character/UI input.
+        //The gameplay panel was selected or unselected, this event is particularly useful to enable disable character/UI input. The target game object is the panel owner assigned in the PanelManager.
         public const string c_GameObject_OnGameplayPanelSelected_Bool = "GameObject_OnGameplayPanelSelected_Bool";
 
         //Enable or Disable Character Input (does not enable disable UI inputs)

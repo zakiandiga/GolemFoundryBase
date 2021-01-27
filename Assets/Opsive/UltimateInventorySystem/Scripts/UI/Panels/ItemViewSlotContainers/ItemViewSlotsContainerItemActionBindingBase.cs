@@ -56,7 +56,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// On bind.
         /// </summary>
-        protected override void OnBind()
+        protected override void OnBindItemViewSlotContainer()
         {
             if (m_ItemUser == null) {
                 SetItemUser(m_ItemViewSlotsContainer.Inventory?.ItemUser);
@@ -74,7 +74,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// On UnBind.
         /// </summary>
-        protected override void OnUnBind()
+        protected override void OnUnbindItemViewSlotContainer()
         {
             m_ItemViewSlotsContainer.OnItemViewSlotClicked -= HandleItemClicked;
             if (m_ActionPanel != null) {
@@ -158,7 +158,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// Can the item use the action.
         /// </summary>
         /// <param name="itemSlotIndex">The item slot index.</param>
-        /// <returns>True if the item can use the action</returns>
+        /// <returns>True if the item can use the action.</returns>
         public virtual bool CanItemUseAction(int itemSlotIndex)
         {
             if (itemSlotIndex < 0 && itemSlotIndex >= m_ItemViewSlotsContainer.GetItemViewSlotCount()) { return false; }
@@ -189,6 +189,18 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// Use an item from the hot bar.
         /// </summary>
+        /// <param name="itemActionIndex">The item action index.</param>
+        public virtual void UseItemActionOnSelectedSlot(int itemActionIndex)
+        {
+            var selectedSlot = m_ItemViewSlotsContainer.GetSelectedSlot();
+            if (selectedSlot == null) { return; }
+
+            UseItemAction(selectedSlot.Index, itemActionIndex);
+        }
+
+        /// <summary>
+        /// Use an item from the hot bar.
+        /// </summary>
         /// <param name="itemSlotIndex">The item slot index of the item to use.</param>
         /// <param name="itemActionIndex">The item action index.</param>
         public virtual void UseItemAction(int itemSlotIndex, int itemActionIndex)
@@ -197,7 +209,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
                 return;
             }
 
-            InvokeActionInternal(itemActionIndex, itemActionIndex);
+            InvokeActionInternal(itemSlotIndex, itemActionIndex);
         }
 
         /// <summary>

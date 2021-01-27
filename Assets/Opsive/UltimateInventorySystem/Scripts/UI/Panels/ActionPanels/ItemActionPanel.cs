@@ -56,6 +56,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ActionPanels
             AssignActions(m_ItemActions);
         }
 
+        /// <summary>
+        /// Invoke the action.
+        /// </summary>
+        /// <param name="index">The action index.</param>
         protected override void InvokeActionInternal(int index)
         {
             var itemAction = m_ItemActions[index];

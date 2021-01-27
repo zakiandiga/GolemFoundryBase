@@ -17,7 +17,9 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
     /// </summary>
     public class CraftingTabData : MonoBehaviour, IFilterSorter<CraftingRecipe>
     {
+        [Tooltip("The item category of the result of the recipe.")]
         [SerializeField] protected DynamicItemCategory m_ItemCategory;
+        [Tooltip("The crafting category of the recipe.")]
         [SerializeField] protected DynamicCraftingCategory m_CraftingCategory;
 
         public ItemCategory ItemCategory => m_ItemCategory;

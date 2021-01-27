@@ -17,6 +17,9 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
         [Tooltip("The chest menu.")]
         [SerializeField] protected Chest m_Chest;
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
         protected void Awake()
         {
             m_Chest.OnClose += () =>

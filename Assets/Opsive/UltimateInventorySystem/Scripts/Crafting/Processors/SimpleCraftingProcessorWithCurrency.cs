@@ -11,10 +11,12 @@ namespace Opsive.UltimateInventorySystem.Crafting.Processors
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.Crafting.IngredientsTypes;
     using Opsive.UltimateInventorySystem.Exchange;
+    using System;
 
     /// <summary>
     /// Simple crafting solution using the recipe itemDefinitions.
     /// </summary>
+    [Serializable]
     public class SimpleCraftingProcessorWithCurrency : SimpleCraftingProcessor
     {
         protected readonly CurrencyCollection m_CurrencyCollection = new CurrencyCollection();
@@ -97,6 +99,11 @@ namespace Opsive.UltimateInventorySystem.Crafting.Processors
             return new CraftingResult(output, true);
         }
 
+        /// <summary>
+        /// Retrieve currency from the ingredients.
+        /// </summary>
+        /// <param name="ingredients">The ingredients.</param>
+        /// <param name="quantity">The quantity.</param>
         protected void RetrieveCurrencyFromIngredients(CraftingIngredients ingredients, int quantity)
         {
             if (ingredients is CraftingIngredientsWithCurrency ingredientsWithCurrency) {

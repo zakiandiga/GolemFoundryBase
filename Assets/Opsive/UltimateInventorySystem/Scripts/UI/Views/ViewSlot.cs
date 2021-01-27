@@ -34,6 +34,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             m_View = child;
         }
 
+        /// <summary>
+        /// Disable the Image.
+        /// </summary>
         public void DisableImage()
         {
             var image = GetComponent<Image>();

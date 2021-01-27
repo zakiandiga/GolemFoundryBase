@@ -15,9 +15,13 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     /// </summary>
     public class InventoryGridTabControlBinding : ItemViewSlotsContainerInventoryGridBinding
     {
+        [Tooltip("The tab control.")]
         [SerializeField] protected internal TabControl m_TabControl;
 
-        protected override void OnBind()
+        /// <summary>
+        /// Handle the Item View Slot Container being bound.
+        /// </summary>
+        protected override void OnBindItemViewSlotContainer()
         {
             if (m_TabControl == null) {
                 Debug.LogError("The tab control is missing from the inventory grid tab control binding", gameObject);
@@ -30,11 +34,19 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
 
         }
 
-        protected override void OnUnBind()
+        /// <summary>
+        /// Handle the Item view slot container being unbound.
+        /// </summary>
+        protected override void OnUnbindItemViewSlotContainer()
         {
             m_TabControl.OnTabChange -= HandleTabChange;
         }
 
+        /// <summary>
+        /// Handle the tab changing.
+        /// </summary>
+        /// <param name="previousIndex">The previous tab index.</param>
+        /// <param name="newIndex">The new tab index.</param>
         private void HandleTabChange(int previousIndex, int newIndex)
         {
             var inventoryTabData = m_TabControl.CurrentTab.GetComponent<InventoryTabData>();
@@ -88,6 +100,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
             m_InventoryGrid.Draw();
         }
 
+        /// <summary>
+        /// Sort the item indexes.
+        /// </summary>
+        /// <param name="comparer">The comparer used to sort the item infos.</param>
         public void SortItemIndexes(Comparer<ItemInfo> comparer)
         {
             for (int i = 0; i < m_TabControl.TabCount; i++) {

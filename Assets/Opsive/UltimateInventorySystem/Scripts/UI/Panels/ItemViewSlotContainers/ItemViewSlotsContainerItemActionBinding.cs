@@ -20,6 +20,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         [Tooltip("The categories item actions. Specifies the actions that can be performed on each item. Can be null.")]
         [SerializeField] public ItemActionSet m_ItemActionSet;
 
+        /// <summary>
+        /// Initialize the item action list.
+        /// </summary>
+        /// <returns>The item action list.</returns>
         protected override ListSlice<ItemAction> InitializeItemActionList()
         {
             m_ItemActionSet.ItemActionCollection.Initialize(false);

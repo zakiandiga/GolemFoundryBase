@@ -16,11 +16,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     {
         [Tooltip("The inventory grid.")]
         [SerializeField] protected ItemViewSlotsContainerBase m_ItemViewSlotsContainer;
-        [Tooltip("Draw on Initialize")]
+        [Tooltip("Draw on Initialize.")]
         [SerializeField] internal bool m_DrawOnInitialize = false;
-        [Tooltip("Draw on open")]
+        [Tooltip("Draw on open.")]
         [SerializeField] internal bool m_DrawOnOpen = true;
-        [Tooltip("Select Button 0 on Open")]
+        [Tooltip("Select Button 0 on Open.")]
         [SerializeField] internal bool m_SelectSlotOnOpen = true;
 
         public ItemViewSlotsContainerBase ItemViewSlotsContainer {
@@ -32,9 +32,12 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// Initialize.
         /// </summary>
         /// <param name="display">The display panel.</param>
-        public override void Initialize(DisplayPanel display)
+        /// <param name="force"></param>
+        public override void Initialize(DisplayPanel display, bool force)
         {
-            base.Initialize(display);
+            var wasInitialized = m_IsInitialized;
+            if (wasInitialized && !force) { return; }
+            base.Initialize(display, force);
 
             if (m_DrawOnInitialize) {
                 m_ItemViewSlotsContainer.Draw();

@@ -13,9 +13,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
 
     public abstract class InventoryPanelOpener : PanelOpener
     {
-        [Tooltip("Find the inventory with this identifier index, 0 is empty")]
+        [Tooltip("Find the inventory with this identifier index, 0 is empty.")]
         [SerializeField] protected uint m_ClientInventoryIdentifierIndex;
-        [Tooltip("The inventory opening the panel")]
+        [Tooltip("The inventory opening the panel.")]
         [SerializeField] protected Inventory m_ClientInventory;
 
         /// <summary>

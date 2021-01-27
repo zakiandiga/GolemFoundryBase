@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.Core
 {
+    using Opsive.Shared.Game;
     using Opsive.UltimateInventorySystem.Core.AttributeSystem;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.Core.Registers;
@@ -14,6 +15,7 @@ namespace Opsive.UltimateInventorySystem.Core
     using Opsive.UltimateInventorySystem.Storage;
     using Opsive.UltimateInventorySystem.UI.Item;
     using Opsive.UltimateInventorySystem.UI.Panels;
+    using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers;
     using System.Collections.Generic;
     using UnityEngine;
 
@@ -64,6 +66,8 @@ namespace Opsive.UltimateInventorySystem.Core
 
         public static ItemViewSlotCursorManagerRegister ItemViewSlotCursorManagerRegister =>
             Manager.Register.ItemViewSlotCursorManagerRegister;
+
+        public static GlobalRegister GlobalRegister => Manager.Register.GlobalRegister;
 
         /// <summary>
         /// Create an item.
@@ -303,6 +307,26 @@ namespace Opsive.UltimateInventorySystem.Core
             return item;
         }
 
+        /// <summary>
+        /// Get a global object that was registered with the ID provided.
+        /// </summary>
+        /// <param name="id">The object ID.</param>
+        /// <returns>The global object.</returns>
+        public static T GetGlobal<T>(uint id)
+        {
+            return Manager.Register.GlobalRegister.Get<T>(id);
+        }
+        
+        /// <summary>
+        /// Set a global object that was registered with the ID provided.
+        /// </summary>
+        /// <param name="obj">The object to set.</param>
+        /// <param name="id">The object ID.</param>
+        public static void SetGlobal<T>(T obj, uint id)
+        {
+            Manager.Register.GlobalRegister.Set<T>(obj,id);
+        }
+
         internal static bool CheckIfComponentIsValidWithLoadedDatabase(IDatabaseSwitcher @object)
         {
             if (@object.IsComponentValidForDatabase(Instance.Database)) { return true; }
@@ -310,6 +334,38 @@ namespace Opsive.UltimateInventorySystem.Core
             Debug.LogError($"The component \"{@object}\" on the \"{(@object as Component)?.gameObject}\" GameObject has objects that are not part of the active database. " +
                            $"Please run the 'Replace Database Objects' script by right-clicking on the folder with the affected prefabs, scriptable objects, or scenes.", (@object as Component)?.gameObject);
             return false;
+        }
+
+        /// <summary>
+        /// Get an Item View Slot Container.
+        /// The Display Panel Requires an ItemViewSlotsContainerPanelBinding pointing at the Item View Slot Container.
+        /// </summary>
+        /// <param name="panelManagerID">The panel Manager ID.</param>
+        /// <param name="panelName">The name of the Display Panel.</param>
+        /// <param name="containerName">The Item View Slot Container name.</param>
+        /// <typeparam name="T">The type of Item View Slot Container.</typeparam>
+        /// <returns>The Item View Slot Container.</returns>
+        public static T GetItemViewSlotContainer<T>(uint panelManagerID, string panelName, string containerName = null) where T : ItemViewSlotsContainerBase
+        {
+            //Get the display Panel manger by ID.
+            var panelManager = GetDisplayPanelManager(panelManagerID);
+            //Use the Unique Name set in the inspector.
+            var panel = panelManager.GetPanel(panelName);
+
+            if (panel == null) { return null; }
+
+            //Get the Item View Slot Container Binding which references the Item Hotbar
+            var panelBindings = panel.gameObject.GetCachedComponents<ItemViewSlotsContainerPanelBinding>();
+
+            for (int i = 0; i < panelBindings.Length; i++) {
+                var itemViewSlotContainer = panelBindings[i].ItemViewSlotsContainer;
+                if ((string.IsNullOrEmpty(containerName) || containerName == itemViewSlotContainer.ContainerName)
+                    && itemViewSlotContainer is T containerOfType) {
+                    return containerOfType;
+                }
+            }
+
+            return null;
         }
 
 #if UNITY_2019_3_OR_NEWER

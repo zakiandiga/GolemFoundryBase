@@ -65,7 +65,7 @@ namespace Opsive.UltimateInventorySystem.Equipping
         /// </summary>
         /// <param name="attributeName">The equipment stat name.</param>
         /// <returns>The equipment stat.</returns>
-        int GetEquipmentStat(string attributeName);
+        int GetEquipmentStatInt(string attributeName);
 
         /// <summary>
         /// Get a preview stat total by simulating adding a new item.

@@ -11,7 +11,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
     using System;
     using UnityEngine;
     using UnityEngine.EventSystems;
-    using UnityEngine.Serialization;
 
     /// <summary>
     /// The Generic abstract class used to create grids.
@@ -29,7 +28,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         public event Action<T, int, PointerEventData> OnElementDragE;
         public event Action<T, T, int, PointerEventData> OnElementDropE;
 
-        [FormerlySerializedAs("m_GridFilterSorterBase")] [SerializeField] protected internal FilterSorter m_FilterSorterBase;
+        [Tooltip("The filter sorter.")]
+        [SerializeField] protected internal FilterSorter m_FilterSorterBase;
 
         protected ViewDrawer<T> m_ViewDrawer;
         protected ResizableArray<T> m_Elements;
@@ -86,8 +86,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <returns>The element.</returns>
         public View<T> GetBoxAt(int index)
         {
-            if (index < 0 || index >= m_ViewDrawer.BoxObjects.Count) { return null; }
-            return m_ViewDrawer.BoxObjects[index];
+            if (index < 0 || index >= m_ViewDrawer.Views.Count) { return null; }
+            return m_ViewDrawer.Views[index];
         }
 
         /// <summary>
@@ -141,6 +141,11 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementClicked?.Invoke(selectedElements, index);
         }
 
+        /// <summary>
+        /// Handle Pointer down on button.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected override void BoxOnPointerDown(int index, PointerEventData eventData)
         {
             if (m_Elements.Count <= StartIndex + index) {
@@ -152,11 +157,22 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementPointerDown(selectedElement, index, eventData);
         }
 
+        /// <summary>
+        /// Handle an element being pointer downed.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="index">the button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnElementPointerDown(T element, int index, PointerEventData eventData)
         {
             OnElementPointerDownE?.Invoke(element, index, eventData);
         }
 
+        /// <summary>
+        /// Handle a button begin drag.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected override void BoxBeginDrag(int index, PointerEventData eventData)
         {
             if (m_Elements.Count <= StartIndex + index) {
@@ -168,11 +184,22 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementBeginDrag(selectedElements, index, eventData);
         }
 
+        /// <summary>
+        /// Handle an element being dragged.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="index">the button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnElementBeginDrag(T element, int index, PointerEventData eventData)
         {
             OnElementBeginDragE?.Invoke(element, index, eventData);
         }
 
+        /// <summary>
+        /// Handle button ending the drag.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected override void BoxEndDrag(int index, PointerEventData eventData)
         {
             if (m_Elements.Count <= StartIndex + index) {
@@ -185,11 +212,22 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementEndDrag(selectedElements, index, eventData);
         }
 
+        /// <summary>
+        /// Handle an element ending the dragged.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="index">the button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnElementEndDrag(T element, int index, PointerEventData eventData)
         {
             OnElementEndDragE?.Invoke(element, index, eventData);
         }
 
+        /// <summary>
+        /// Handle button being dragged.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected override void BoxDrag(int index, PointerEventData eventData)
         {
             if (m_Elements.Count <= StartIndex + index) {
@@ -201,11 +239,22 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementDrag(selectedElement, index, eventData);
         }
 
+        /// <summary>
+        /// Handle an element being dragged.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="index">the button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnElementDrag(T element, int index, PointerEventData eventData)
         {
             OnElementDragE?.Invoke(element, index, eventData);
         }
 
+        /// <summary>
+        /// Handle button being dropped.
+        /// </summary>
+        /// <param name="index">The button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected override void BoxDrop(int index, PointerEventData eventData)
         {
             var droppedObject = eventData.pointerDrag;
@@ -232,6 +281,12 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             OnElementDrop(droppedElement, selectedElement, index, eventData);
         }
 
+        /// <summary>
+        /// Handle an element being dropped.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="index">the button index.</param>
+        /// <param name="eventData">The event data.</param>
         protected virtual void OnElementDrop(T elementDropped, T currentElement, int index, PointerEventData eventData)
         {
             OnElementDropE?.Invoke(elementDropped, currentElement, index, eventData);
@@ -245,7 +300,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             var startIndex = StartIndex;
             var endIndex = EndIndex;
 
-            m_ViewDrawer.DrawBoxes(startIndex, endIndex, m_Elements);
+            m_ViewDrawer.DrawViews(startIndex, endIndex, m_Elements);
 
             var selectedButton = m_GridEventSystem.GetSelectedButton();
             if (selectedButton != null) { selectedButton.Select(); }

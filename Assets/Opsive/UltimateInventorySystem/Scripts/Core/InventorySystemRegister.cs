@@ -15,6 +15,8 @@ namespace Opsive.UltimateInventorySystem.Core
     {
         protected IInventorySystemManager m_Manager;
 
+        protected GlobalRegister m_GlobalRegister;
+
         protected ItemCategoryRegister m_ItemCategoryRegister;
         protected ItemDefinitionRegister m_ItemDefinitionRegister;
         protected ItemRegister m_ItemRegister;
@@ -29,6 +31,8 @@ namespace Opsive.UltimateInventorySystem.Core
         protected ItemViewSlotCursorManagerRegister m_ItemViewSlotCursorManagerRegister;
 
         public IInventorySystemManager Manager => m_Manager;
+
+        public GlobalRegister GlobalRegister => m_GlobalRegister;
 
         public ItemCategoryRegister ItemCategoryRegister => m_ItemCategoryRegister;
         public ItemDefinitionRegister ItemDefinitionRegister => m_ItemDefinitionRegister;
@@ -52,6 +56,7 @@ namespace Opsive.UltimateInventorySystem.Core
         {
             m_Manager = manager;
 
+            m_GlobalRegister = new GlobalRegister();
             m_ItemCategoryRegister = new ItemCategoryRegister(this);
             m_ItemDefinitionRegister = new ItemDefinitionRegister(this);
             m_ItemRegister = new ItemRegister(this);

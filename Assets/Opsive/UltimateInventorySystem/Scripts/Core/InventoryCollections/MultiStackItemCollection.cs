@@ -23,6 +23,78 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         [Tooltip("The attribute name used for limiting the stack size for an immutable item.")]
         [SerializeField] protected string m_StackSizeLimitAttributeName = "StackSizeLimit";
 
+        public int DefaultStackSizeLimit {
+            get { return m_DefaultStackSizeLimit; }
+            set { m_DefaultStackSizeLimit = value; }
+        }
+
+        public string StackSizeLimitAttributeName {
+            get { return m_StackSizeLimitAttributeName; }
+            set { m_StackSizeLimitAttributeName = value; }
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public MultiStackItemCollection()
+        { }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="stackSizeLimit">The stack size limit.</param>
+        /// <param name="stackSizeLimitAttributeName">The stack size limit attribute name.</param>
+        public MultiStackItemCollection(int stackSizeLimit, string stackSizeLimitAttributeName)
+        {
+            m_DefaultStackSizeLimit = stackSizeLimit;
+            m_StackSizeLimitAttributeName = stackSizeLimitAttributeName;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="stackSizeLimit">The stack size limit.</param>
+        public MultiStackItemCollection(int stackSizeLimit)
+        {
+            m_DefaultStackSizeLimit = stackSizeLimit;
+            m_StackSizeLimitAttributeName = "";
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="stackSizeLimitAttributeName">The stack size limit attribute name.</param>
+        public MultiStackItemCollection(string stackSizeLimitAttributeName)
+        {
+            m_DefaultStackSizeLimit = int.MaxValue;
+            m_StackSizeLimitAttributeName = stackSizeLimitAttributeName;
+        }
+
+        /// <summary>
+        /// Get the last valid item info in the item collection.
+        /// This is required to pass some unit tests, as it will remove Mutable Common items from the last stack and not the first.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        /// <returns>The itemInfo.</returns>
+        public override ItemInfo? GetItemInfo(Item item)
+        {
+            if (item == null) { return null; }
+
+            ItemInfo? similarItemInfo = null;
+
+            for (int i = m_ItemStacks.Count - 1; i >= 0; i--) {
+                if (!item.IsUnique && m_ItemStacks[i].Item.ItemDefinition == item.ItemDefinition) {
+                    similarItemInfo = (ItemInfo)m_ItemStacks[i];
+                }
+
+                if (m_ItemStacks[i].Item.ID != item.ID) { continue; }
+
+                return (ItemInfo)m_ItemStacks[i];
+            }
+
+            return similarItemInfo;
+        }
+
         /// <summary>
         /// Internal method which removes an ItemAmount from the collection.
         /// </summary>
@@ -42,8 +114,12 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
                     itemInfo, previousIndexWithItem, maxStackSize, ref amountToRemove, ref removed);
             }
 
-            for (int i = 0; i < m_ItemStacks.Count; i++) {
+            for (int i = m_ItemStacks.Count - 1; i >= 0; i--) {
+                if (amountToRemove <= 0) { break; }
+
                 if (m_ItemStacks[i].Item.ID != itemInfo.Item.ID) { continue; }
+                if (itemStackRemoved == m_ItemStacks[i]) { continue; }
+
                 itemStackRemoved = m_ItemStacks[i];
 
                 previousIndexWithItem = RemoveItemFromStack(i, itemInfo, previousIndexWithItem,
@@ -101,8 +177,8 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
                 itemStackRemoved.Reset();
                 GenericObjectPool.Return<ItemStack>(itemStackRemoved);
             } else {
+                removed += amountToRemove;
                 amountToRemove = 0;
-                removed += itemInfo.Amount;
                 itemStackRemoved.SetAmount(newAmount);
                 previousIndexWithItem = i;
             }
@@ -123,29 +199,16 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             ItemStack addedItemStack = null;
 
             if (m_ItemStacks.Contains(targetStack)) {
-                var sizeDifference = targetStack.Amount + amountToAdd - maxStackSize;
-
-                if (sizeDifference > 0) {
-                    amountToAdd = sizeDifference;
-                    itemInfo = (itemInfo.Item, itemInfo.Amount - sizeDifference, itemInfo.ItemCollection);
-                } else { amountToAdd = 0; }
-
-                targetStack.SetAmount(itemInfo.Amount + targetStack.Amount);
                 addedItemStack = targetStack;
+                IncreaseStackAmount(targetStack, maxStackSize, ref amountToAdd);
             }
 
             for (int i = 0; i < m_ItemStacks.Count; i++) {
-                if (m_ItemStacks[i].Item.ID != itemInfo.Item.ID) { continue; }
+                var itemStack = m_ItemStacks[i];
+                if (CanItemStack(itemInfo, itemStack) == false) { continue; }
+                addedItemStack = itemStack;
 
-                var sizeDifference = m_ItemStacks[i].Amount + amountToAdd - maxStackSize;
-
-                if (sizeDifference > 0) {
-                    amountToAdd = sizeDifference;
-                    itemInfo = (itemInfo.Item, itemInfo.Amount - sizeDifference, itemInfo.ItemCollection);
-                } else { amountToAdd = 0; }
-
-                m_ItemStacks[i].SetAmount(itemInfo.Amount + m_ItemStacks[i].Amount);
-                addedItemStack = m_ItemStacks[i];
+                IncreaseStackAmount(itemStack, maxStackSize, ref amountToAdd);
             }
 
             var stacksToAdd = amountToAdd / maxStackSize;
@@ -154,12 +217,14 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             for (int i = 0; i < stacksToAdd; i++) {
                 var newItemStack = GenericObjectPool.Get<ItemStack>();
                 newItemStack.Initialize((itemInfo.Item, maxStackSize), this);
+                addedItemStack = newItemStack;
                 m_ItemStacks.Add(newItemStack);
             }
 
             if (remainderStack != 0) {
                 var newItemStack = GenericObjectPool.Get<ItemStack>();
-                newItemStack.Initialize((itemInfo.Item, maxStackSize), this);
+                newItemStack.Initialize((itemInfo.Item, remainderStack), this);
+                addedItemStack = newItemStack;
                 m_ItemStacks.Add(newItemStack);
             }
 
@@ -170,6 +235,28 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             }
 
             return (itemInfo.Item, itemInfo.Amount, this, addedItemStack);
+        }
+
+        /// <summary>
+        /// Increase the stack amount.
+        /// </summary>
+        /// <param name="targetItemStack">The item stack to increase the amount from.</param>
+        /// <param name="maxStackSize">The max stack size.</param>
+        /// <param name="amountToAdd">The amount to add.</param>
+        private void IncreaseStackAmount(ItemStack targetItemStack, int maxStackSize, ref int amountToAdd)
+        {
+            if (targetItemStack.Amount == maxStackSize) { return; }
+
+            var totalToSet = targetItemStack.Amount + amountToAdd;
+            var sizeDifference = totalToSet - maxStackSize;
+
+            if (sizeDifference <= 0) {
+                targetItemStack.SetAmount(totalToSet);
+                amountToAdd = 0;
+            } else {
+                targetItemStack.SetAmount(maxStackSize);
+                amountToAdd = sizeDifference;
+            }
         }
 
         /// <summary>

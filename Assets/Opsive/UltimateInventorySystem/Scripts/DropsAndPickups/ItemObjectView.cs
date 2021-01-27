@@ -50,6 +50,10 @@ namespace Opsive.UltimateInventorySystem.DropsAndPickups
             Initialize(false);
         }
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
+        /// <param name="force">Force the initialize.</param>
         private void Initialize(bool force)
         {
             if (m_Initialized && !force) { return; }
@@ -62,17 +66,26 @@ namespace Opsive.UltimateInventorySystem.DropsAndPickups
             m_Initialized = true;
         }
 
+        /// <summary>
+        /// Register to the events.
+        /// </summary>
         protected void OnEnable()
         {
             if (m_ItemObject == null) { return; }
             EventHandler.RegisterEvent(m_ItemObject, EventNames.c_ItemObject_OnItemChanged, UpdateViews);
         }
 
+        /// <summary>
+        /// Update the view on start.
+        /// </summary>
         protected void Start()
         {
             UpdateViews();
         }
 
+        /// <summary>
+        /// Stop listening the events in disable.
+        /// </summary>
         protected void OnDisable()
         {
             if (m_ItemObject == null) { return; }
@@ -92,6 +105,10 @@ namespace Opsive.UltimateInventorySystem.DropsAndPickups
             SetVisualInternal(m_ItemObject.Item);
         }
 
+        /// <summary>
+        /// Update the item view.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
         private void UpdateItemView(ItemInfo itemInfo)
         {
             if (m_ItemView == null) { return; }

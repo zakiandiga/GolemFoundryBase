@@ -33,6 +33,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
             set => m_HideCategory = value;
         }
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
         protected virtual void Awake()
         {
             if (m_ShowItemCategory.SerializedValueIsValid == false || m_HideCategory.SerializedValueIsValid == false) {
@@ -40,6 +43,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
             }
         }
 
+        /// <summary>
+        /// Filter the itemInfo.
+        /// </summary>
+        /// <param name="itemInfo">The Item Info.</param>
+        /// <returns>True if it passes the conditions.</returns>
         public override bool Filter(ItemInfo itemInfo)
         {
             if (itemInfo.Item == null) { return true; }
@@ -56,6 +64,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
             return !hide && show;
         }
 
+        /// <summary>
+        /// To string.
+        /// </summary>
+        /// <returns>Custom string.</returns>
         public override string ToString()
         {
             var show = m_ShowItemCategory.Value == null ? "NULL" : m_ShowItemCategory.Value.name;

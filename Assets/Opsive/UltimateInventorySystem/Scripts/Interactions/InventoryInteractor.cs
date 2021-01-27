@@ -31,7 +31,11 @@ namespace Opsive.UltimateInventorySystem.Interactions
 
         protected virtual bool AutoInteract => m_AutoInteract;
 
-        public Inventory Inventory => m_Inventory;
+        public Inventory Inventory {
+            get => m_Inventory;
+            set => m_Inventory = value;
+        }
+
         public IInteractable SelectedInteractable => m_SelectedInteractable;
         public IReadOnlyList<IInteractable> Interactables => m_Interactables;
 

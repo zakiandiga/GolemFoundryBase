@@ -37,8 +37,15 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
         [SerializeField] protected Color m_DisabledAndSelectedColor = Color.gray;
         [Tooltip("The text that displays the action name.")]
         [SerializeField] protected Text m_Text;
-        [Tooltip("The on click Unity Action")]
+        [Tooltip("The on click Unity Action.")]
         [SerializeField] internal UnityEvent m_OnClickEvent;
+
+        [Tooltip("Send a Select enver when the pointer enters.")]
+        [SerializeField] protected bool m_SelectOnPointerEnter = true;
+        [Tooltip("Send a Deselect envent when the pointer exits.")]
+        [SerializeField] protected bool m_DeselectOnPointerExit = true;
+        [Tooltip("If the button detects a click on while unselected should it select and stop [false] or should it select and click [true].")]
+        [SerializeField] protected bool m_UnselectedPressSelectsAndPress = false;
 
         protected Action m_CachedHandler;
         protected bool m_Selected = false;
@@ -55,7 +62,9 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
 
             if (!m_Selected) {
                 Select();
-                return;
+                if (m_UnselectedPressSelectsAndPress == false) {
+                    return;
+                }
             }
 
             m_OnClickEvent.Invoke();
@@ -149,7 +158,11 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
                 EventSystem.current.SetSelectedGameObject(gameObject);
             }
             OnPointerEnterE?.Invoke(eventData);
-            OnSelectE?.Invoke();
+
+            if (m_SelectOnPointerEnter) {
+                OnSelect(eventData);
+            }
+
         }
 
         /// <summary>
@@ -161,7 +174,11 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
             //Debug.Log("Pointer Up");
             base.OnPointerExit(eventData);
             OnPointerExitE?.Invoke(eventData);
-            OnDeselectE?.Invoke();
+
+            if (m_DeselectOnPointerExit) {
+                OnDeselect(eventData);
+            }
+
         }
 
         /// <summary>
@@ -230,6 +247,7 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
         /// <param name="eventData">The event data.</param>
         public override void OnSelect(BaseEventData eventData)
         {
+
             base.OnSelect(eventData);
             m_Selected = true;
             OnSelectE?.Invoke();

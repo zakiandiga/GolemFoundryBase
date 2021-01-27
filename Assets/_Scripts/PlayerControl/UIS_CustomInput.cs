@@ -38,6 +38,7 @@ namespace Opsive.UltimateInventorySystem.Input
 
         private void Update()
         {
+            
             if (IsInputActive == false)
             {
                 return;
@@ -65,8 +66,12 @@ namespace Opsive.UltimateInventorySystem.Input
 
             if(menu.action.triggered) //temp
             {
-                OpenTogglePanel("Available Parts", true);
+                OpenTogglePanel("Main Menu", true);
             }
+            
+
+
+
 
             //See InventoryStandardInput.cs for original
             /*

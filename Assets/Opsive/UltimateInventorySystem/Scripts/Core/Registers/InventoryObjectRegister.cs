@@ -219,7 +219,15 @@ namespace Opsive.UltimateInventorySystem.Core.Registers
         public bool IDIsAvailable(uint id)
         {
             if (RandomID.IsIDEmpty(id)) { return false; }
-            return !m_DictionaryByID.ContainsKey(id);
+
+            if (!m_DictionaryByID.TryGetValue(id, out var registered)) { return true; }
+
+            if (registered == null || registered.Equals(null)) {
+                m_DictionaryByID.Remove(id);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

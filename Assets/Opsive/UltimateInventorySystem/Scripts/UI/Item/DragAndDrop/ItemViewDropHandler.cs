@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
 {
+    using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.DataStructures;
     using Opsive.UltimateInventorySystem.UI.Item.ItemViewModules;
     using UnityEngine;
@@ -77,15 +78,10 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
     {
         [Tooltip("This field shows the index of the last condition that past.")]
         [SerializeField] protected int m_DebugPassedConditionIndex;
-
-        [Tooltip("The item view cursor manager")]
+        [Tooltip("The cursor Manager ID, used to get the Cursor Manager from anywhere in the scene.")]
+        [SerializeField] protected uint m_CursorManagerID = 1;
+        [Tooltip("The item view cursor manager.")]
         [SerializeField] protected ItemViewSlotCursorManager m_ItemViewSlotCursorManager;
-        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
-        [SerializeField] protected bool m_MoveIndexIfSameContainer;
-        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
-        [SerializeField] protected bool m_AddToDestinationContainer;
-        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
-        [SerializeField] protected bool m_RemoveFromSourceContainer;
 
         [Tooltip("The Item View Slot Drop Action Set.")]
         [SerializeField] internal ItemViewSlotDropActionSet m_ItemViewSlotDropActionSet;
@@ -142,9 +138,12 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
             if (m_IsInitialized) { return; }
 
             if (m_ItemViewSlotCursorManager == null) {
-                m_ItemViewSlotCursorManager = GetComponentInParent<ItemViewSlotCursorManager>();
+                m_ItemViewSlotCursorManager = InventorySystemManager.GetItemViewSlotCursorManager(m_CursorManagerID);
                 if (m_ItemViewSlotCursorManager == null) {
-                    Debug.LogWarning("The item view cursor manager is missing, please add one on your canvas.");
+                    m_ItemViewSlotCursorManager = GetComponentInParent<ItemViewSlotCursorManager>();
+                    if (m_ItemViewSlotCursorManager == null) {
+                        Debug.LogWarning("The item view cursor manager is missing, please add one on your canvas.");
+                    }
                 }
             }
 
@@ -152,12 +151,15 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
                 m_ItemViewSlotDropActionSet.Initialize(false);
             }
 
+            //Listen to the destination container events.
             m_ViewSlotsContainer = GetComponent<ItemViewSlotsContainerBase>();
 
-            m_ViewSlotsContainer.OnItemViewSlotDropE += HandleItemViewSlotDrop;
+            if (m_ViewSlotsContainer != null) {
+                m_ViewSlotsContainer.OnItemViewSlotDropE += HandleItemViewSlotDrop;
 
-            m_ViewSlotsContainer.OnItemViewSlotSelected += ItemViewSlotSelected;
-            m_ViewSlotsContainer.OnItemViewSlotDeselected += ItemViewSlotDeselected;
+                m_ViewSlotsContainer.OnItemViewSlotSelected += ItemViewSlotSelected;
+                m_ViewSlotsContainer.OnItemViewSlotDeselected += ItemViewSlotDeselected;
+            }
 
             m_StreamData = new ItemViewSlotDropHandlerStreamData();
 
@@ -192,45 +194,24 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         /// </summary>
         protected virtual void HandleItemViewSlotDropInternal()
         {
+            if (m_ItemViewSlotDropActionSet == null) { return; }
 
-            if (m_ItemViewSlotDropActionSet != null) {
-                m_ItemViewSlotDropActionSet.HandleItemViewSlotDrop(this);
+            m_ItemViewSlotDropActionSet.HandleItemViewSlotDrop(this);
+
+            if (SourceContainer != null) {
                 SourceContainer.Draw();
+            }
+
+            if (DestinationContainer != null) {
                 DestinationContainer.Draw();
-                return;
             }
-
-            // The Container is the same
-            if (SourceContainer == DestinationContainer) {
-                if (m_MoveIndexIfSameContainer) {
-                    SourceContainer.MoveItem(SourceIndex, DestinationIndex);
-                    SourceContainer.Draw();
-                }
-
-                return;
-            }
-
-            // The container is not the same
-            var itemToRemove = SourceItemInfo;
-            var itemToAdd = SourceItemInfo;
-
-            if (m_RemoveFromSourceContainer) {
-                itemToAdd = SourceContainer.RemoveItem(itemToRemove, SourceIndex);
-            }
-
-            if (m_AddToDestinationContainer) {
-                DestinationContainer.AddItem(itemToAdd, DestinationIndex);
-            }
-
-            SourceContainer.Draw();
-            DestinationContainer.Draw();
         }
 
         /// <summary>
         /// An Item View slot was selected.
         /// </summary>
         /// <param name="eventdata">The event data.</param>
-        private void ItemViewSlotSelected(ItemViewSlotEventData eventdata)
+        public void ItemViewSlotSelected(ItemViewSlotEventData eventdata)
         {
             if (m_ItemViewSlotCursorManager.IsMovingItemView == false) { return; }
 
@@ -254,7 +235,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         /// An item View slot was deselected.
         /// </summary>
         /// <param name="slotEventData">The event data.</param>
-        private void ItemViewSlotDeselected(ItemViewSlotEventData slotEventData)
+        public void ItemViewSlotDeselected(ItemViewSlotEventData slotEventData)
         {
             var itemView = slotEventData.ItemView;
             if (m_ItemViewSlotCursorManager.IsMovingItemView == false) { return; }

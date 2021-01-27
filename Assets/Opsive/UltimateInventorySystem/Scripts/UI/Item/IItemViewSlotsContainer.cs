@@ -50,6 +50,19 @@ namespace Opsive.UltimateInventorySystem.UI.Item
             m_ItemViewSlot = ItemViewSlotsContainer.GetItemViewSlot(index);
             m_ItemView = m_ItemViewSlot.ItemView;
         }
+
+        /// <summary>
+        /// Set the event data values.
+        /// </summary>
+        /// <param name="itemViewSlot"></param>
+        public void SetValues(ItemViewSlot itemViewSlot)
+        {
+            Reset();
+            m_ItemViewSlotsContainer = null;
+            m_Index = 0;
+            m_ItemViewSlot = itemViewSlot;
+            m_ItemView = m_ItemViewSlot.ItemView;
+        }
     }
 
     public delegate void ItemViewSlotPointerEventHandler(ItemViewSlotPointerEventData eventData);

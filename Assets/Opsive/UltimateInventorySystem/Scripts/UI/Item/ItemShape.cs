@@ -15,9 +15,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     [Serializable]
     public class ItemShape
     {
+        [Tooltip("The item shape size in units.")]
         [SerializeField] protected Vector2Int m_Size = Vector2Int.one;
+        [Tooltip("Use a custom shape? If not the shape will be rectangle.")]
         [SerializeField] protected bool m_UseCustomShape;
+        [Tooltip("An array of boolean used to create a custom shape.")]
         [SerializeField] internal bool[] m_CustomShape;
+        [Tooltip("The anchor position of the shape.")]
         [SerializeField] protected Vector2Int m_Anchor;
 
         public Vector2Int Size => m_Size;
@@ -27,6 +31,15 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public int Count => m_Size.x * m_Size.y;
         public Vector2Int Anchor => m_Anchor;
         public int AnchorIndex => m_Anchor.y * m_Size.x + m_Anchor.x;
+
+        /// <summary>
+        /// Set the anchor position within the size.
+        /// </summary>
+        /// <param name="newAnchor">The new anchor point.</param>
+        public bool IsAnchor(int x, int y)
+        {
+            return m_Anchor.x == x && m_Anchor.y == y;
+        }
 
         /// <summary>
         /// Set the size.
@@ -112,7 +125,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="previousSize">The previous size.</param>
         /// <param name="newSize">The new size.</param>
         /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The new resized array</returns>
+        /// <returns>The new resized array.</returns>
         protected T[] ResizeArray<T>(T[] original, Vector2Int previousSize, Vector2Int newSize)
         {
             var newArray = new T[newSize.x * newSize.y];
