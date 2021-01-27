@@ -52,9 +52,6 @@ namespace Opsive.UltimateInventorySystem.UI
         public bool ValidTabIndex(int index) => (index >= 0 && index < m_TabToggles.Length);
         public TabToggle CurrentTab => ValidTabIndex(m_TabIndex) ? m_TabToggles[m_TabIndex] : null;
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
         private void Awake()
         {
             Initialize(false);

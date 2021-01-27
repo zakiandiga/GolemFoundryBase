@@ -11,6 +11,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
     /// </summary>
     public static class AssetInfo
     {
-        public static string Version { get { return "1.1.4"; } }
+        public static string Version { get { return "1.1.3"; } }
     }
 }

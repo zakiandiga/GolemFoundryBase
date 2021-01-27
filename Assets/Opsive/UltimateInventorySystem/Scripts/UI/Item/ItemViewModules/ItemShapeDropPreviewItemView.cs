@@ -11,26 +11,23 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
     using Opsive.UltimateInventorySystem.UI.Item.DragAndDrop;
     using Opsive.UltimateInventorySystem.UI.Views;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using UnityEngine.UI;
 
     /// <summary>
     /// Item Shape Drop Preview.
     /// </summary>
-    public class ItemShapeDropPreviewItemView : ItemViewModule, IItemViewSlotDropHoverSelectable, IViewModuleMovable
+    public class ItemShapeDropPreviewItemView : ItemViewModule, IItemViewSlotDropHoverSelectable
     {
-        [Tooltip("The item shape item view.")]
-        [SerializeField] protected ItemShapeItemView m_ItemShapeItemView;
-        [Tooltip("The color filter image.")]
+        [FormerlySerializedAs("m_ShapeItemBox")] [SerializeField] protected ItemShapeItemView m_ShapeItemView;
+        [Tooltip("The icon image.")]
+        [SerializeField] protected Image m_ItemIcon;
+        [Tooltip("The icon image.")]
         [SerializeField] protected Image m_ColorFilter;
-        [Tooltip("The preview color when no condition has passed.")]
         [SerializeField] protected Color m_NoConditionsPassed;
-        [Tooltip("The preview condition when at least one condition has passed.")]
         [SerializeField] protected Color m_ConditionsPassed;
-        [Tooltip("Color")]
-        [SerializeField] protected bool m_ClearMovingSource;
 
-        public ItemShapeGrid ItemShapeGrid => m_ItemShapeItemView.ItemShapeGrid;
-        public ItemShapeGridData ItemShapeGridData => m_ItemShapeItemView.ItemShapeGrid.ItemShapeGridData;
+        public ItemShapeGridData InventoryItemShapesGridData => m_ShapeItemView.InventoryItemShapesGridData;
 
         /// <summary>
         /// Set the item info.
@@ -42,7 +39,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
                 Clear();
                 return;
             }
-            ResetIconColor();
         }
 
         /// <summary>
@@ -50,16 +46,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// </summary>
         public override void Clear()
         {
+            m_ItemIcon.enabled = false;
             m_ColorFilter.enabled = false;
-            ResetIconColor();
-        }
-
-        private void ResetIconColor()
-        {
-            m_ItemShapeItemView.Icon.color = Color.white;
-            if (m_ItemShapeItemView.ForegroundItemView != null) {
-                m_ItemShapeItemView.ForegroundItemView.Icon.color = Color.white;
-            }
         }
 
         /// <summary>
@@ -69,11 +57,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// <returns>Can the items be moved.</returns>
         public bool SameContainerCanMove(ItemViewDropHandler dropHandler)
         {
-            var sourcePos = ItemShapeGridData.OneDTo2D(dropHandler.SourceIndex);
-            var destinationPos = ItemShapeGridData.OneDTo2D(dropHandler.DestinationIndex);
+            var sourcePos = InventoryItemShapesGridData.OneDTo2D(dropHandler.SourceIndex);
+            var destinationPos = InventoryItemShapesGridData.OneDTo2D(dropHandler.DestinationIndex);
 
             if (dropHandler.SourceContainer == dropHandler.DestinationContainer) {
-                return ItemShapeGridData.CanMoveIndex(sourcePos, destinationPos);
+                return InventoryItemShapesGridData.CanMoveIndex(sourcePos, destinationPos);
             }
 
             return false;
@@ -85,69 +73,161 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// <param name="dropHandler">The drop handler.</param>
         public virtual void SelectWith(ItemViewDropHandler dropHandler)
         {
-            ClearGridColorPreview();
-
-            PreviewColor(dropHandler);
-        }
-
-        /// <summary>
-        /// Clear the grid color preview.
-        /// </summary>
-        protected void ClearGridColorPreview()
-        {
-            for (int i = 0; i < ItemShapeGrid.ItemViewSlots.Count; i++) {
-                var view = ItemShapeGrid.GetItemViewAt(i);
-                var itemShapePreview = view.GetViewModule<ItemShapeDropPreviewItemView>();
-
-                itemShapePreview.m_ColorFilter.enabled = false;
-            }
-        }
-
-        /// <summary>
-        /// Preview the condition color.
-        /// </summary>
-        /// <param name="dropHandler">The item view drop handler.</param>
-        private void PreviewColor(ItemViewDropHandler dropHandler)
-        {
             var dropActionAndCondition =
                 dropHandler.ItemViewSlotDropActionSet.GetFirstPassingCondition(dropHandler);
-            var canDrop = dropActionAndCondition != null;
-            var color = canDrop ? m_ConditionsPassed : m_NoConditionsPassed;
 
-            var sourceItemInfo = dropHandler.SourceItemInfo;
+            var failedCondition = dropActionAndCondition == null;
 
-            if (sourceItemInfo.Item == null ||
-                sourceItemInfo.Item.TryGetAttributeValue<ItemShape>(ItemShapeGridData.ShapeAttributeName, out var itemShape) == false
-                || itemShape.Count <= 1) {
+            m_ColorFilter.color = failedCondition ? m_NoConditionsPassed : m_ConditionsPassed;
+            m_ColorFilter.enabled = true;
 
-                // Item takes a 1x1 shape.
-                m_ColorFilter.color = color;
-                m_ColorFilter.enabled = true;
-                return;
+            if (dropHandler.SourceContainer == dropHandler.DestinationContainer) {
+                if (SameContainerCanMove(dropHandler)) { PreviewCanMove(dropHandler); } else { PreviewCannotMove(dropHandler); }
+            }
+        }
+
+        /// <summary>
+        /// The preview cannot move.
+        /// </summary>
+        /// <param name="dropHandler">The drop handler.</param>
+        protected void PreviewCannotMove(ItemViewDropHandler dropHandler)
+        {
+            InventoryItemShapesGridData.TryFindAnchorForItem(dropHandler.SourceItemInfo, out var anchor);
+
+            var anchoredSource = dropHandler.SourceContainer.GetItemViewAt(
+                InventoryItemShapesGridData.TwoDTo1D(anchor));
+
+            PreviewIcon(anchoredSource, dropHandler.SourceItemInfo);
+
+            PreviewAllIcons(dropHandler, anchoredSource, null, null, null);
+        }
+
+        /// <summary>
+        /// Preview that the item can move.
+        /// </summary>
+        /// <param name="dropHandler">The drop handler.</param>
+        protected void PreviewCanMove(ItemViewDropHandler dropHandler)
+        {
+            var sourceItemInfo = dropHandler.StreamData.SourceItemInfo;
+            var destinationItemInfo = ItemInfo;
+
+            if (sourceItemInfo.ItemStack == destinationItemInfo.ItemStack) {
+                //The same item is being moved, only show the source item.
+                destinationItemInfo = ItemInfo.None;
             }
 
-            var destinationAnchorPos = ItemShapeGridUtility.GetDestinationAnchorPos(dropHandler);
+            var sourcePos = InventoryItemShapesGridData.OneDTo2D(dropHandler.SourceIndex);
+            var destinationPos = InventoryItemShapesGridData.OneDTo2D(dropHandler.DestinationIndex);
 
-            for (int row = 0; row < itemShape.Rows; row++) {
-                for (int col = 0; col < itemShape.Cols; col++) {
+            var sourcePreviewItemViewSlot = dropHandler.SlotCursorManager.SourceItemViewSlot;
 
-                    if (itemShape.IsIndexOccupied(col, row) == false) { continue; }
+            if (destinationItemInfo != ItemInfo.None) {
 
-                    var position = new Vector2Int(
-                        destinationAnchorPos.x + col,
-                        destinationAnchorPos.y + row);
+                // Find the box where the item needs to be previewed from.
+                var anchorOffset = InventoryItemShapesGridData.GetAnchorOffset(destinationItemInfo, destinationPos);
 
-                    if (ItemShapeGridData.IsPositionValid(position) == false) { continue; };
+                sourcePreviewItemViewSlot = dropHandler.DestinationContainer.GetItemViewSlot(
+                    InventoryItemShapesGridData.TwoDTo1D(
+                        sourcePos + anchorOffset));
 
-                    var index = ItemShapeGridData.TwoDTo1D(position);
+                //Hide the destination anchor if the destination is not the anchor.
+                InventoryItemShapesGridData.TryFindAnchorForItem(destinationItemInfo, out var anchor);
 
-                    var view = ItemShapeGrid.GetItemViewAt(index);
-                    var previewView = view.GetViewModule<ItemShapeDropPreviewItemView>();
+                var previousAnchoredDestinationBox = dropHandler.DestinationContainer.GetItemViewAt(
+                    InventoryItemShapesGridData.TwoDTo1D(anchor));
 
-                    previewView.m_ColorFilter.color = color;
-                    previewView.m_ColorFilter.enabled = true;
+                PreviewIcon(previousAnchoredDestinationBox, ItemInfo.None);
+            }
+
+            var destinationPreviewBox = View;
+            var itemSourceAnchorView = dropHandler.SourceItemViewSlot.ItemView;
+
+            if (sourceItemInfo != ItemInfo.None) {
+
+                // Find the box where the item needs to be previewed from.
+                var anchorOffset = InventoryItemShapesGridData.GetAnchorOffset(sourceItemInfo, sourcePos);
+
+                destinationPreviewBox = dropHandler.DestinationContainer.GetItemViewAt(
+                    InventoryItemShapesGridData.TwoDTo1D(
+                        destinationPos + anchorOffset));
+
+                InventoryItemShapesGridData.TryFindAnchorForItem(sourceItemInfo, out var sourceAnchor);
+                itemSourceAnchorView = dropHandler.SourceContainer.GetItemViewAt(
+                    InventoryItemShapesGridData.TwoDTo1D(sourceAnchor));
+            }
+
+            var itemDestinationAnchorView = dropHandler.DestinationItemView;
+
+            if (destinationItemInfo != ItemInfo.None) {
+
+                // Find the box where the item needs to be previewed from.
+                var anchorOffset = InventoryItemShapesGridData.GetAnchorOffset(destinationItemInfo, destinationPos); ;
+
+                InventoryItemShapesGridData.TryFindAnchorForItem(destinationItemInfo, out var destinationAnchor);
+                itemDestinationAnchorView = dropHandler.DestinationContainer.GetItemViewAt(
+                    InventoryItemShapesGridData.TwoDTo1D(destinationAnchor));
+
+            }
+
+            PreviewIcon(itemDestinationAnchorView, ItemInfo.None);
+
+            PreviewIcon(itemSourceAnchorView, ItemInfo.None);
+
+            PreviewIcon(sourcePreviewItemViewSlot.ItemView, destinationItemInfo);
+
+            PreviewIcon(destinationPreviewBox, sourceItemInfo);
+
+            PreviewAllIcons(dropHandler, itemDestinationAnchorView, sourcePreviewItemViewSlot.ItemView, destinationPreviewBox, itemSourceAnchorView);
+        }
+
+        /// <summary>
+        /// Preview all the icons on the grid.
+        /// </summary>
+        /// <param name="dropHandler">The drop handler.</param>
+        /// <param name="ignoreView1">Exception 1.</param>
+        /// <param name="ignoreView2">Exception 2.</param>
+        /// <param name="ignoreView3">Exception 3.</param>
+        /// <param name="ignoreView4">Exception 4.</param>
+        private void PreviewAllIcons(ItemViewDropHandler dropHandler, View<ItemInfo> ignoreView1, View<ItemInfo> ignoreView2, View<ItemInfo> ignoreView3, View<ItemInfo> ignoreView4)
+        {
+            var itemViewCount = dropHandler.SourceContainer.GetItemViewSlotCount();
+            for (int i = 0; i < itemViewCount; i++) {
+                var otherItemView = dropHandler.SourceContainer.GetItemViewAt(i);
+
+                if (ignoreView1 == otherItemView) { continue; }
+                if (ignoreView2 == otherItemView) { continue; }
+                if (ignoreView3 == otherItemView) { continue; }
+                if (ignoreView4 == otherItemView) { continue; }
+
+                if (InventoryItemShapesGridData.GetElementAt(i).IsAnchor) {
+                    PreviewIcon(otherItemView, otherItemView.ItemInfo);
+                } else { PreviewIcon(otherItemView, ItemInfo.None); }
+            }
+        }
+
+        /// <summary>
+        /// Preview the icon.
+        /// </summary>
+        /// <param name="view">The item view.</param>
+        /// <param name="info">The item info.</param>
+        protected virtual void PreviewIcon(View<ItemInfo> view, ItemInfo info)
+        {
+            var destinationModules = view.Modules;
+
+            for (int i = 0; i < destinationModules.Count; i++) {
+                if (destinationModules[i] is ItemShapeDropPreviewItemView destinationPreviewModule) {
+                    destinationPreviewModule.PreviewIcon(info);
                 }
             }
+        }
+
+        /// <summary>
+        /// Preview the icon.
+        /// </summary>
+        /// <param name="itemInfo">The item info.</param>
+        protected virtual void PreviewIcon(ItemInfo itemInfo)
+        {
+            m_ShapeItemView.SetIcon(itemInfo);
         }
 
         /// <summary>
@@ -156,29 +236,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// <param name="dropHandler">The drop handler.</param>
         public virtual void DeselectWith(ItemViewDropHandler dropHandler)
         {
-            ClearGridColorPreview();
-        }
-
-        /// <summary>
-        /// Set this modules as moving.
-        /// </summary>
-        public void SetAsMoving()
-        {
-        }
-
-        /// <summary>
-        /// Set this view as the moving source or not.
-        /// </summary>
-        /// <param name="movingSource">True if it is the moving source.</param>
-        public void SetAsMovingSource(bool movingSource)
-        {
-            if (movingSource) {
-                if (m_ClearMovingSource) {
-                    m_ItemShapeItemView.ForegroundItemView.Clear();
-                } else {
-                    m_ItemShapeItemView.ForegroundItemView.SetAsItemSelectable(false);
-                }
-            }
+            m_ColorFilter.enabled = false;
         }
     }
 }

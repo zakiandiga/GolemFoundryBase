@@ -83,7 +83,17 @@ namespace Opsive.UltimateInventorySystem.UI.Monitors
             }
 
             if (m_MonitoredInventory == null) {
-                if (RetrieveMonitoredInventory() == false) { return; }
+                if (m_InventoryID != 0) {
+                    if (InventorySystemManager.InventoryIdentifierRegister.TryGetValue(m_InventoryID,
+                        out var inventoryIdentifier)) {
+                        m_MonitoredInventory = inventoryIdentifier.Inventory;
+                    }
+                }
+
+                if (m_MonitoredInventory == null) {
+                    Debug.LogWarning("The Inventory Monitor cannot find an Inventory reference.", this);
+                    return;
+                }
             }
 
             EventHandler.RegisterEvent<bool>(m_MonitoredInventory.gameObject, EventNames.c_InventoryGameObject_InventoryMonitorListen_Bool, Listen);
@@ -115,28 +125,6 @@ namespace Opsive.UltimateInventorySystem.UI.Monitors
             m_FadeOut = FadeOut;
         }
 
-        /// <summary>
-        /// Retrieve the monitored Inventory.
-        /// </summary>
-        /// <returns>True if the monitored inventory was found.</returns>
-        protected virtual bool RetrieveMonitoredInventory()
-        {
-            if (m_InventoryID != 0) {
-                if (InventorySystemManager.InventoryIdentifierRegister.TryGetValue(m_InventoryID,
-                    out var inventoryIdentifier)) { m_MonitoredInventory = inventoryIdentifier.Inventory; }
-            }
-
-            if (m_MonitoredInventory != null) { return true; }
-
-            Debug.LogWarning("The Inventory Monitor cannot find an Inventory reference.", this);
-            return false;
-
-        }
-
-        /// <summary>
-        /// Listen or stop listening to the event.
-        /// </summary>
-        /// <param name="listen">listen or stop listening?</param>
         private void Listen(bool listen)
         {
             if (listen) {
@@ -168,7 +156,8 @@ namespace Opsive.UltimateInventorySystem.UI.Monitors
         public void StartListening()
         {
             if (m_MonitoredInventory == null) {
-                if (RetrieveMonitoredInventory() == false) { return; }
+                Debug.LogWarning("The Inventory Monitor cannot find an Inventory reference.", this);
+                return;
             }
 
             if (m_IsListening) { return; }

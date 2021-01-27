@@ -16,7 +16,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
     [Serializable]
     public class ItemViewDropFromItemCollectionCondition : ItemViewDropCondition
     {
-        [Tooltip("The source item collection id.")]
         [SerializeField] protected ItemCollectionID m_SourceItemCollectionID;
 
         /// <summary>

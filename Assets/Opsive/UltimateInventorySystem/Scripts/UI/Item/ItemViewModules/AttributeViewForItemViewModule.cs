@@ -15,7 +15,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
     /// </summary>
     public class AttributeViewForItemViewModule : ItemViewModule
     {
-        [Tooltip("The Attribute name.")]
+        [Tooltip("The Attribute name")]
         [SerializeField] protected string m_AttributeName;
         [Tooltip("The categories attribute UIs.")]
         [SerializeField] internal AttributeView m_AttributeView;

@@ -164,7 +164,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         /// <summary>
         /// Replace any object that is not in the database by an equivalent object in the specified database.
         /// </summary>
-        /// <param name="object">The object to modify.</param>
+        /// <param name="object">The object to modify</param>
         /// <param name="database">The database.</param>
         public static void ReplaceInventoryObjectsBySelectedDatabaseEquivalents(IDatabaseSwitcher @object,
             InventorySystemDatabase database, bool dirtyMainObject)

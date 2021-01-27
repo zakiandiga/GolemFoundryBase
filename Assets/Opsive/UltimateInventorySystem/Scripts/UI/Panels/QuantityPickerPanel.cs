@@ -31,13 +31,13 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         /// <summary>
         /// Set up the panel.
         /// </summary>
-        public override void Setup(DisplayPanelManager manager, bool force)
+        public override void Setup(DisplayPanelManager manager)
         {
             if (m_IsSetup) { return; }
 
-            base.Setup(manager, force);
+            base.Setup(manager);
 
-            m_ConfirmCancelPanel.Setup(manager, force);
+            m_ConfirmCancelPanel.Setup(manager);
 
             m_QuantityPicker.OnAmountChanged += (x) => OnAmountChanged?.Invoke(x);
             m_QuantityPicker.OnMainButtonClicked += QuantityPickerClicked;

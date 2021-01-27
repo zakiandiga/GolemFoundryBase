@@ -26,10 +26,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
 
         public MultiCurrencyView MultiCurrencyView => m_MultiCurrencyView;
 
-        /// <summary>
-        /// Initialize the currency Item View.
-        /// </summary>
-        /// <param name="view">The view for this module.</param>
         public override void Initialize(View view)
         {
             base.Initialize(view);

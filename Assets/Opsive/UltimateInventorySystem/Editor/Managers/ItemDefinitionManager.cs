@@ -35,12 +35,12 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         protected ItemCategoryField m_ItemCategoryField;
         protected ItemDefinitionField m_ParentField;
         protected UnityObjectFieldWithPreview m_IconField;
-
+        
         private VisualElement m_AttributesBox;
         protected TabToolbar m_AttributeCollectionsTabToolbar;
         protected AttributeVisualElement m_AttributeVisualElement;
         protected ReorderableList m_AttributesReorderableList;
-
+        
         private VisualElement m_RelationshipBox;
         protected TabToolbar m_RelationshipsTabToolbar;
         protected VisualElement m_RelationshipTabSelection;
@@ -163,9 +163,9 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
             m_RelationshipTabSelection = new VisualElement();
             m_RelationshipBox.Add(m_RelationshipTabSelection);
-
+            
             m_ItemDefinitionDetails = new ItemDefinitionDetails();
-
+            
             m_RelationshipsReorderableList = new ReorderableList(null, (VisualElement parent, int index) =>
             {
                 //parent.Add(new ViewName());
@@ -246,7 +246,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 m_ItemDefinitionDetails.Refresh(itemDefinition);
                 return;
             }
-
+            
             m_RelationshipTabSelection.Add(m_RelationshipsReorderableList);
 
             var itemCategories = new ItemCategory[0];
@@ -464,13 +464,13 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
         protected ItemCategoryViewName m_ItemCategoryViewName;
         protected Label m_ItemCategoryID;
-
+        
         protected Label m_Mutable;
         protected Label m_Unique;
 
         protected ItemDefinitionViewName m_ItemDefinitionViewName;
         protected Label m_ItemDefinitionID;
-
+        
         protected Label m_DefaultItemName;
         protected Label m_DefaultItemID;
 
@@ -480,7 +480,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         {
             style.marginLeft = 10;
             m_DetailsContainer = new VisualElement();
-
+            
             //Category
             var categoryContainer = new VisualElement();
             categoryContainer.AddToClassList("horizontal-layout");
@@ -491,12 +491,12 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
             m_ItemCategoryID = new Label();
             m_DetailsContainer.Add(m_ItemCategoryID);
-
+            
             m_Mutable = new Label();
             m_DetailsContainer.Add(m_Mutable);
             m_Unique = new Label();
             m_DetailsContainer.Add(m_Unique);
-
+            
             // Definition
             var definitionContainer = new VisualElement();
             definitionContainer.AddToClassList("horizontal-layout");
@@ -504,14 +504,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             m_ItemDefinitionViewName = new ItemDefinitionViewName();
             definitionContainer.Add(m_ItemDefinitionViewName);
             m_DetailsContainer.Add(definitionContainer);
-
+            
             m_ItemDefinitionID = new Label();
             m_DetailsContainer.Add(m_ItemDefinitionID);
-
+            
             // Default Item
             m_DefaultItemName = new Label();
             m_DetailsContainer.Add(m_DefaultItemName);
-
+            
             m_DefaultItemID = new Label();
             m_DetailsContainer.Add(m_DefaultItemID);
         }
@@ -525,22 +525,22 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         public void Refresh()
         {
             Clear();
-
+            
             if (m_ItemDefinition == null) {
                 Add(new Label("Please select an object."));
                 return;
             }
-
+            
             Add(m_DetailsContainer);
 
             var itemCategory = m_ItemDefinition.GetItemCategory();
-
+            
             m_ItemCategoryViewName.Refresh(itemCategory);
             m_ItemCategoryID.text = $"Item Category ID: {itemCategory?.ID}";
-
+            
             m_Mutable.text = $"Mutable: {m_ItemDefinition.IsMutable}";
             m_Unique.text = $"Unique: {m_ItemDefinition.IsUnique}";
-
+            
             m_ItemDefinitionViewName.Refresh(m_ItemDefinition);
             m_ItemDefinitionID.text = $"Item Definition ID: {m_ItemDefinition.ID}";
 

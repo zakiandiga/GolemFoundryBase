@@ -84,6 +84,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
             } else {
                 m_ItemHotbar.AddItem(itemInfo, awaitedValue);
             }
+
         }
 
         /// <summary>
@@ -112,7 +113,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
             var hotbarPanel = panelManager.GetPanel(m_HotbarPanelName);
 
             if (hotbarPanel == null) {
-                Debug.LogError($"The Assign Hotbar Item Action could find the panel named : '{m_HotbarPanelName}' .");
+                Debug.LogError($"The Assign Hotbar Item Action could the panel named : '{m_HotbarPanelName}' .");
                 return false;
             }
 

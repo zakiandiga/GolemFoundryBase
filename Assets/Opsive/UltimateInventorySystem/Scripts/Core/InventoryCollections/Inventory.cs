@@ -79,7 +79,6 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             m_CachedItemInfos.Initialize(10);
 
             Deserialize();
-            AssignMainCollection();
 
             if (Application.isPlaying == false) { return; }
 
@@ -100,20 +99,6 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             InitializeCurrencies();
 
             UpdateInventory();
-        }
-
-        /// <summary>
-        /// Set the item collection main to index 0 if it does not exist.
-        /// </summary>
-        protected virtual void AssignMainCollection()
-        {
-            for (int i = 0; i < m_ItemCollections.Count; i++) {
-                if (m_ItemCollections[i].Purpose == ItemCollectionPurpose.Main) { return; }
-            }
-
-            if (m_ItemCollections[0].Purpose == ItemCollectionPurpose.None) {
-                m_ItemCollections[0].Purpose = ItemCollectionPurpose.Main;
-            }
         }
 
         /// <summary>
@@ -802,7 +787,7 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         /// Send an event that the inventory changed.
         /// </summary>
         /// <param name="updateInventoryCache">Update the inventory cache if true.</param>
-        public virtual void UpdateInventory(bool updateInventoryCache = true)
+        protected virtual void UpdateInventory(bool updateInventoryCache = true)
         {
             if (updateInventoryCache) {
                 UpdateCachedInventory();

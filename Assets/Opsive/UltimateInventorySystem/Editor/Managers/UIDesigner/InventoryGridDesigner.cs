@@ -37,7 +37,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
     public enum InventoryGridOption
     {
         Grid,            //Simple grid.
-        List            //Simple list.
+        List,            //Simple list.
+        ItemShapeGrid    //Grid using the item shapes.
     }
 
     public class InventoryGridDesigner : UIDesignerCreateEditTabContent<
@@ -57,9 +58,9 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         public override string Description => " Inventory Grids are used for main inventories, storage, chests, etc.";
 
         protected EnumField m_PanelOption;
-        protected UnicodeTextField m_PanelName;
+        protected TextField m_PanelName;
         protected EnumField m_GridOption;
-        protected UnicodeTextField m_ItemViewSlotContainerName;
+        protected TextField m_ItemViewSlotContainerName;
         protected Vector2IntField m_GridSize;
         protected IntegerField m_ListLength;
         protected ObjectField m_InventoryField;
@@ -72,7 +73,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             m_PanelOption.RegisterValueChangedCallback(evt => { Refresh(); });
             container.Add(m_PanelOption);
 
-            m_PanelName = new UnicodeTextField("Panel Name");
+            m_PanelName = new TextField("Panel Name");
             m_PanelName.value = "My Inventory Grid Panel";
             container.Add(m_PanelName);
 
@@ -86,7 +87,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             m_GridOption.RegisterValueChangedCallback(evt => { Refresh(); });
             container.Add(m_GridOption);
 
-            m_ItemViewSlotContainerName = new UnicodeTextField("Inventory Grid Name");
+            m_ItemViewSlotContainerName = new TextField("Inventory Grid Name");
             m_ItemViewSlotContainerName.value = "Inventory Grid";
 
             m_GridOptionContainer = new VisualElement();
@@ -123,6 +124,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                     "This option will use the list prefabs from the UI Designer schema."));
                 m_GridOptionContainer.Add(m_ItemViewSlotContainerName);
                 m_GridOptionContainer.Add(m_ListLength);
+            } else if (option == InventoryGridOption.ItemShapeGrid) {
+                m_GridOptionContainer.Add(new SubDescriptionLabel(
+                    "A grid with item shapes allow for items which take multiple slots. It is used in a few action RPG games. " +
+                    "It has some strict requirements for item views, filters, etc. and it is not compatible with all grid customizations. " +
+                    "Refer to the documentation for more information.\n" +
+                    "The Inventory field is required as some components need to be added to the inventory GameObject."));
+                m_GridOptionContainer.Add(m_ItemViewSlotContainerName);
+                m_GridOptionContainer.Add(m_GridSize);
             }
         }
 
@@ -130,6 +139,13 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         {
             var result = base.BuildCondition(logWarnings);
             if (result == false) { return false; }
+
+            var gridOption = (InventoryGridOption)m_GridOption.value;
+
+            if (gridOption == InventoryGridOption.ItemShapeGrid && m_InventoryField.value == null) {
+                m_ConditionHelpBox.SetMessage("An inventory (such as the player inventory) must be assigned to the Inventory field.");
+                return false;
+            }
 
             var panelOption = (InventoryGridDisplayPanelOption)m_PanelOption.value;
             if (panelOption == InventoryGridDisplayPanelOption.MainMenu) {
@@ -162,7 +178,10 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             var gridOption = (InventoryGridOption)m_GridOption.value;
 
             var inventoryGrid = UIDesignerManager.InstantiateSchemaPrefab<InventoryGrid>(
-                UIDesignerSchema.InventoryGrid, displayPanel.MainContent);
+                gridOption != InventoryGridOption.ItemShapeGrid
+                    ? UIDesignerSchema.InventoryGrid
+                    : UIDesignerSchema.ItemShapeInventoryGrid,
+                displayPanel.MainContent);
 
             var drawer = inventoryGrid.gameObject.GetComponent<ItemViewDrawer>();
 
@@ -180,6 +199,23 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                     layoutGroup.cellSize = new Vector2(550, 120);
                 }
 
+            } else if (gridOption == InventoryGridOption.ItemShapeGrid) {
+                drawer.CategoryItemViewSet = UIDesignerSchema.ItemShapeCategoryItemViewSet;
+                inventoryGrid.Grid.GridSize = m_GridSize.value;
+                var viewPort = inventoryGrid.transform.GetChild(0) as RectTransform;
+                viewPort.sizeDelta = new Vector2(m_GridSize.value.x * 100, m_GridSize.value.y * 100);
+
+                if (inventoryGrid.GetComponent<ItemShapeInventoryGridBinding>() == null) {
+                    inventoryGrid.gameObject.AddComponent<ItemShapeInventoryGridBinding>();
+                }
+
+                if (inventory.GetComponent<ItemShapeInventoryGridController>() == null) {
+                    var controller = inventory.gameObject.AddComponent<ItemShapeInventoryGridController>();
+                    var itemShapeData = inventory.gameObject.AddComponent<ItemShapeGridData>();
+                    itemShapeData.m_GridSize = m_GridSize.value;
+
+                    controller.m_ItemShapeGridData = new List<ItemShapeGridData>() { itemShapeData };
+                }
             }
 
             inventoryGrid.Grid.GridEventSystem.ButtonPrefab = UIDesignerSchema.ItemViewSlot.gameObject;
@@ -241,6 +277,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         public override string Title => "Inventory Grid Editor";
         public override string Description => "Edit an existing inventory grid. Any changes made will take effect immediately.";
 
+        protected ItemShapeGridOption m_ItemShapeGridOptions;
+
         protected DisplayPanelOptions m_DisplayPanelOptions;
         protected LayoutGroupOption m_LayoutGroupOption;
         protected GridNavigationOptions m_GridNavigationOptions;
@@ -252,6 +290,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         {
 
             m_DisplayPanelOptions = new DisplayPanelOptions();
+
+            m_ItemShapeGridOptions = new ItemShapeGridOption(this);
 
             m_LayoutGroupOption = new LayoutGroupOption();
 
@@ -271,14 +311,23 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             m_TargetOptionsContainer.Add(m_DisplayPanelOptions);
 
-            m_TargetOptionsContainer.Add(m_LayoutGroupOption);
-            m_LayoutGroupOption.Refresh(m_Target?.Grid);
+            if (m_Target.GetComponent<ItemShapeInventoryGridBinding>() == null) {
 
-            m_TargetOptionsContainer.Add(m_GridNavigationOptions);
-            m_GridNavigationOptions.Refresh(m_Target?.Grid);
+                m_TargetOptionsContainer.Add(m_LayoutGroupOption);
+                m_LayoutGroupOption.Refresh(m_Target?.Grid);
 
-            m_TargetOptionsContainer.Add(m_FiltersAndSorterOptions);
-            m_FiltersAndSorterOptions.Refresh(m_Target);
+                m_TargetOptionsContainer.Add(m_GridNavigationOptions);
+                m_GridNavigationOptions.Refresh(m_Target?.Grid);
+
+                m_TargetOptionsContainer.Add(m_FiltersAndSorterOptions);
+                m_FiltersAndSorterOptions.Refresh(m_Target);
+            } else {
+                m_TargetOptionsContainer.Add(m_ItemShapeGridOptions);
+                m_ItemShapeGridOptions.Refresh(m_Target);
+
+                m_TargetOptionsContainer.Add(m_LayoutGroupOption);
+                m_LayoutGroupOption.Refresh(m_Target?.Grid);
+            }
 
             m_TargetOptionsContainer.Add(m_InventoryGridTabsOptions);
 
@@ -308,6 +357,167 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         public virtual void Refresh(InventoryGrid inventoryGrid)
         {
             m_InventoryGrid = inventoryGrid;
+        }
+    }
+
+
+    public class ItemShapeGridOption : InventoryGridEditorOption
+    {
+        public override string DocumentationURL =>
+            "https://opsive.com/support/documentation/ultimate-inventory-system/editor-window/inventory-grid/";
+        public override string Title => "Item Shape Grid";
+
+        public override string Description =>
+            "The grid selected is a grid with item shapes, options available may be different from standard inventory grids.\n" +
+            "Filters work slightly differently. Filters are added on the Inventory GameObject with the Grid Item Shape Data instead of on the UI components.";
+
+        public override Func<Component> SelectTargetGetter => () => m_InventorGridBinding;
+
+        protected ItemShapeInventoryGridBinding m_InventorGridBinding;
+
+        protected Inventory m_Inventory;
+        protected ItemShapeInventoryGridController m_ItemShapeInventoryGridController;
+        protected ComponentSelectionButton m_SelectInventoryButton;
+
+        protected List<ItemShapeGridData> m_ItemShapeDataList;
+        protected ReorderableList m_ReorderableList;
+
+        protected VisualElement m_ItemShapDataSelectedContainer;
+        protected FiltersField m_FiltersField;
+        protected ItemInfoMultiFilterSorter m_MultiFilterSorter;
+
+
+        public ItemShapeGridOption(InventoryGridBuilderEditor gridEditor) : base(gridEditor)
+        {
+            m_SelectInventoryButton = new ComponentSelectionButton("Select Inventory Grid Shape Controller", () => m_ItemShapeInventoryGridController);
+            Add(m_SelectInventoryButton);
+
+            m_ItemShapeDataList = new List<ItemShapeGridData>();
+
+            m_ReorderableList = new ReorderableList(
+                m_ItemShapeDataList,
+                (parent, index) =>
+                {
+                    var listElement = new Label("New");
+                    parent.Add(listElement);
+                }, (parent, index) =>
+                {
+                    var listElement = parent.ElementAt(0) as Label;
+
+                    if (index >= m_ItemShapeDataList.Count) {
+                        Debug.LogWarning("Index " + index + " does not exist.");
+                        return;
+                    }
+
+                    listElement.text = $"ID: {m_ItemShapeDataList[index].ID} and TabID: {m_ItemShapeDataList[index].TabID}";
+                }, (parent) =>
+                {
+                    parent.Add(new Label("Inventory Item Shapes Grid Data"));
+                },
+                (index) =>
+                {
+                    HandleDataSelected(index);
+                }, () =>
+                {
+                    var data = m_Inventory.gameObject.AddComponent<ItemShapeGridData>();
+                    data.m_GridSize = m_InventoryGrid.Grid.GridSize;
+                    m_ItemShapeInventoryGridController.m_ItemShapeGridData.Add(data);
+                    Refresh(m_InventoryGrid);
+                    m_ReorderableList.SelectedIndex = m_ItemShapeDataList.Count - 1;
+                }, (index) =>
+                {
+                    var data = m_ItemShapeDataList[index];
+                    var filter = data.m_ItemInfoFilter;
+                    if (filter != null) {
+                        if (filter is ItemInfoMultiFilterSorter multiFilterSorter) {
+                            m_FiltersField.DeleteMultiFilter(multiFilterSorter);
+                        } else {
+                            RemoveComponent(filter);
+                        }
+                    }
+
+                    RemoveComponent(m_ItemShapeDataList[index]);
+                    m_ItemShapeInventoryGridController.m_ItemShapeGridData.RemoveAt(index);
+                    Refresh(m_InventoryGrid);
+                    HandleDataSelected(-1);
+                }, null);
+
+            Add(m_ReorderableList);
+
+            m_ItemShapDataSelectedContainer = new VisualElement();
+            Add(m_ItemShapDataSelectedContainer);
+        }
+
+        public override void Refresh(InventoryGrid inventoryGrid)
+        {
+            base.Refresh(inventoryGrid);
+
+            m_InventorGridBinding = m_InventoryGrid.GetComponent<ItemShapeInventoryGridBinding>();
+
+            m_Inventory = DisplayPanel.GetComponent<ItemViewSlotsContainerPanelBinding>().Inventory;
+            if (m_Inventory == null) {
+                Debug.LogWarning("The Inventory is missing from the ItemViewSlotsContainerPanelBinding.");
+                return;
+            }
+            m_ItemShapeInventoryGridController = m_Inventory.GetComponent<ItemShapeInventoryGridController>();
+
+            if (m_ItemShapeInventoryGridController.m_ItemShapeGridData == null) {
+                m_ItemShapeInventoryGridController.m_ItemShapeGridData = new List<ItemShapeGridData>();
+            }
+
+            m_ItemShapeDataList = m_ItemShapeInventoryGridController.m_ItemShapeGridData;
+
+            m_ReorderableList.Refresh(m_ItemShapeDataList);
+        }
+
+        private void HandleDataSelected(int index)
+        {
+            m_ItemShapDataSelectedContainer.Clear();
+
+            if (index < 0 || index >= m_ItemShapeDataList.Count) {
+                return;
+            }
+
+            var selectedData = m_ItemShapeDataList[index];
+
+            var dataSelect = new ComponentSelectionButton("Select Item Shape Grid Data", () => selectedData);
+            dataSelect.SelectInHierarchy();
+            m_ItemShapDataSelectedContainer.Add(dataSelect);
+
+            m_MultiFilterSorter = selectedData.m_ItemInfoFilter as ItemInfoMultiFilterSorter;
+
+            m_FiltersField = new FiltersField("Item Shape Data Filters",
+                () => m_MultiFilterSorter,
+                () => m_MultiFilterSorter?.m_GridFilters,
+                () =>
+                {
+                    m_MultiFilterSorter = selectedData.gameObject.AddComponent<ItemInfoMultiFilterSorter>();
+
+                    selectedData.m_ItemInfoFilter = m_MultiFilterSorter;
+                },
+                () =>
+                {
+                    if (m_MultiFilterSorter == null) { return; }
+
+                    for (int i = 0; i < m_MultiFilterSorter.m_GridFilters.Count; i++) {
+                        UIDesignerUtility.RemoveComponent(m_MultiFilterSorter.m_GridFilters[i]);
+                    }
+
+                    UIDesignerUtility.RemoveComponent(m_MultiFilterSorter);
+                },
+                (filter) =>
+                {
+                    if (m_MultiFilterSorter.m_GridFilters == null) {
+                        m_MultiFilterSorter.m_GridFilters = new List<ItemInfoFilterSorterBase>();
+                    }
+
+                    m_MultiFilterSorter.m_GridFilters.Add(filter);
+                },
+                (indexToRemove) =>
+                {
+                    m_MultiFilterSorter.m_GridFilters.RemoveAt(indexToRemove);
+                });
+            m_ItemShapDataSelectedContainer.Add(m_FiltersField);
         }
     }
 
@@ -424,7 +634,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             tabSelect.SelectInHierarchy();
             m_TabSelectedContainer.Add(tabSelect);
 
-            var tabName = new UnicodeTextField("Tab Name");
+            var tabName = new TextField("Tab Name");
             tabName.value = selectedTab.GetText();
             tabName.RegisterValueChangedCallback(evt =>
             {

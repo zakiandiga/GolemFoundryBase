@@ -30,7 +30,7 @@
 }
 
 .add-remove-field Label{
-	width: 90px;
+	width: 60px;
 }
 
 .add-remove-field-button

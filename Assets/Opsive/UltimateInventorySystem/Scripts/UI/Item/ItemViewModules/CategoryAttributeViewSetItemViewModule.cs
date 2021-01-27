@@ -23,10 +23,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         [Tooltip("The attribute UIs parent.")]
         [SerializeField] protected RectTransform m_AttributeUIParent;
 
-        /// <summary>
-        /// Initialize the category attribute view set item view module.
-        /// </summary>
-        /// <param name="view">The view for this module.</param>
         public override void Initialize(View view)
         {
             base.Initialize(view);

@@ -1,12 +1,5 @@
-﻿/// ---------------------------------------------
-/// Ultimate Inventory System
-/// Copyright (c) Opsive. All Rights Reserved.
-/// https://www.opsive.com
-/// ---------------------------------------------
-
-namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
+﻿namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
 {
-    using Opsive.UltimateInventorySystem.UI.Grid;
     using Opsive.UltimateInventorySystem.UI.Panels.Hotbar;
     using System;
     using UnityEngine;
@@ -17,7 +10,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
     [Serializable]
     public class ItemViewDropContainerCanSmartExchangeCondition : ItemViewDropCondition
     {
-        [Tooltip("Log some useful information to debug smart exchanges.")]
         [SerializeField] protected bool m_Debug = false;
 
         /// <summary>
@@ -30,16 +22,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
             // If they are equal items should be moved not exchanged.
             if (itemViewDropHandler.SourceContainer == itemViewDropHandler.DestinationContainer) { return false; }
 
-            //Item Shapes work a bit differently so this needs to return false in case we are using an item shape grid.
-            if (itemViewDropHandler.DestinationContainer is ItemShapeGrid) { return false; }
-
             var sourceCanGive = itemViewDropHandler.SourceContainer.CanGiveItem(
                 itemViewDropHandler.SourceItemInfo,
                 itemViewDropHandler.SourceIndex);
 
             var destinationCanGive = itemViewDropHandler.DestinationContainer.CanGiveItem(
                 itemViewDropHandler.DestinationItemInfo,
-                itemViewDropHandler.DestinationIndex);
+                itemViewDropHandler.DestinationIndex); ;
 
             var sourceCanAdd = itemViewDropHandler.SourceContainer.CanAddItem(
                 itemViewDropHandler.StreamData.DestinationItemInfo,
@@ -112,10 +101,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
             var destinationGiveSourceReceive = destinationIsNull == false && (destinationCanGive && sourceCanAdd);
 
             // Make an exception for Item Hotbars as they look for items within the Inventory.
-            if (sourceGiveDestinationReceive) {
-                if (!(itemViewDropHandler.DestinationContainer is ItemHotbar)) {
-                    itemViewDropHandler.StreamData.SourceItemInfo = itemViewDropHandler.SourceContainer.RemoveItem(itemViewDropHandler.StreamData.SourceItemInfo, itemViewDropHandler.SourceIndex);
-                }
+            if (sourceGiveDestinationReceive && !(itemViewDropHandler.DestinationContainer is ItemHotbar)) {
+                itemViewDropHandler.StreamData.SourceItemInfo = itemViewDropHandler.SourceContainer.RemoveItem(itemViewDropHandler.StreamData.SourceItemInfo, itemViewDropHandler.SourceIndex);
             }
 
             if (destinationGiveSourceReceive) {
@@ -123,18 +110,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
             }
 
             if (sourceGiveDestinationReceive) {
-                var addToDestination = false;
-                if (!(itemViewDropHandler.SourceContainer is ItemHotbar itemHotbar)) {
-                    addToDestination = true;
-                } else {
-                    if (itemHotbar.Inventory != itemViewDropHandler.DestinationContainer.Inventory) {
-                        addToDestination = true;
-                    }
-                }
-
-                if (addToDestination) {
-                    itemViewDropHandler.DestinationContainer.AddItem(itemViewDropHandler.StreamData.SourceItemInfo, itemViewDropHandler.DestinationIndex);
-                }
+                itemViewDropHandler.DestinationContainer.AddItem(itemViewDropHandler.StreamData.SourceItemInfo, itemViewDropHandler.DestinationIndex);
             }
 
             if (destinationGiveSourceReceive) {

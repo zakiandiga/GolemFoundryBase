@@ -25,9 +25,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
 
         public ItemUser ItemUser => m_ItemActionsBinding.ItemUser;
 
-        /// <summary>
-        /// Initialize before setting the inventory.
-        /// </summary>
         protected override void OnInitializeBeforeSettingInventory()
         {
             base.OnInitializeBeforeSettingInventory();
@@ -41,11 +38,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
             }
         }
 
-        /// <summary>
-        /// Handle the inventory being changed.
-        /// </summary>
-        /// <param name="previousInventory">The previous inventory.</param>
-        /// <param name="newInventory">The new inventory.</param>
         protected override void OnInventoryChanged(Inventory previousInventory, Inventory newInventory)
         {
             base.OnInventoryChanged(previousInventory, newInventory);
@@ -55,9 +47,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
             m_ItemActionsBinding.SetItemUser(m_Inventory.ItemUser);
         }
 
-        /// <summary>
-        /// Handle a new inventory being bound.
-        /// </summary>
         protected override void OnInventoryBound()
         {
             base.OnInventoryBound();
@@ -67,9 +56,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
             EventHandler.RegisterEvent<int>(m_Inventory.gameObject, EventNames.c_GameObject_OnInput_HotbarUseItem_Int, UseItem);
         }
 
-        /// <summary>
-        /// Handle inventor being unbound.
-        /// </summary>
         protected override void OnInventoryUnbound()
         {
             base.OnInventoryUnbound();
@@ -79,9 +65,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
             EventHandler.UnregisterEvent<int>(m_Inventory.gameObject, EventNames.c_GameObject_OnInput_HotbarUseItem_Int, UseItem);
         }
 
-        /// <summary>
-        /// Draw the Item Hotbar and refresh all the views.
-        /// </summary>
         public override void Draw()
         {
             var slots = m_ItemViewSlots;

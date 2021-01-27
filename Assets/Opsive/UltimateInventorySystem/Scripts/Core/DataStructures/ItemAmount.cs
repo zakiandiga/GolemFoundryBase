@@ -91,8 +91,7 @@ namespace Opsive.UltimateInventorySystem.Core.DataStructures
         /// <returns>The string.</returns>
         public override string ToString()
         {
-            var item = m_Item == null ? "Item is NULL" : m_Item.ToString();
-            return string.Format("{0} {1}", m_Amount, item);
+            return string.Format("{0} {1}", m_Amount, m_Item);
         }
 
         /// <summary>

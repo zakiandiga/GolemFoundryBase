@@ -66,10 +66,10 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 
             m_Grid.Initialize(force);
 
-            var itemViewSlotAmount = m_Grid.ViewDrawer.ViewSlots.Length;
+            var itemViewSlotAmount = m_Grid.ViewDrawer.BoxParents.Length;
             m_ItemViewSlots = new ItemViewSlot[itemViewSlotAmount];
             for (int i = 0; i < itemViewSlotAmount; i++) {
-                var boxSlot = m_Grid.ViewDrawer.ViewSlots[i] as ItemViewSlot;
+                var boxSlot = m_Grid.ViewDrawer.BoxParents[i] as ItemViewSlot;
                 if (boxSlot == null) {
                     Debug.LogWarning("The item view slot container must use ItemViewSlots and not IViewSlots");
                 }
@@ -124,10 +124,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 
             var addedItem = Inventory.AddItem(itemInfo);
             m_InventoryGridIndexer.SetStackIndex(addedItem.ItemStack, index);
-
-            //The grid needs to be refreshed
-            Draw();
-
             return itemInfo;
         }
 
@@ -155,9 +151,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
             var sourceItemIndex = m_Grid.StartIndex + sourceIndex;
             var destinationItemIndex = m_Grid.StartIndex + destinationIndex;
             m_InventoryGridIndexer.MoveItemStackIndex(sourceItemIndex, destinationItemIndex);
-
-            //The grid needs to be refreshed
-            Draw();
         }
 
         /// <summary>

@@ -43,9 +43,7 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
         [Tooltip("The ingredients Item Viewes.")]
         [SerializeField] internal List<ItemViewWithDescription> m_IngredientItems;
 
-        [Tooltip("The ingredient view parent.")]
         [SerializeField] internal RectTransform m_IngredientViewParent;
-        [Tooltip("The ingredient description parent.")]
         [SerializeField] internal RectTransform m_IngredientDescriptionParent;
 
         protected CraftingRecipe m_Recipe;
@@ -60,17 +58,10 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
         public int Quantity => m_Quantity;
         public Inventory Inventory => m_Inventory;
 
-        /// <summary>
-        /// Initialize the Recipe panel.
-        /// </summary>
-        /// <param name="display">The display panel.</param>
-        /// <param name="force">Force the initialize.</param>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
-
+            if (m_IsInitialized) { return; }
+            base.Initialize(display);
             m_TemporaryCurrencyCollection = new CurrencyCollection();
             m_CurrencyTextBaseColor = m_TotalCraftCost.GetTextColor();
 
@@ -112,10 +103,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Crafting
             }
         }
 
-        /// <summary>
-        /// Assign an inventory to the item view.
-        /// </summary>
-        /// <param name="itemView">The item view to assign the inventory to.</param>
         private void AssignInventoryToItemView(ItemView itemView)
         {
             for (int j = 0; j < itemView.Modules.Count; j++) {

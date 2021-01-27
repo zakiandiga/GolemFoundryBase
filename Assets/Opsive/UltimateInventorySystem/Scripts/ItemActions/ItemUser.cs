@@ -18,7 +18,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
     /// </summary>
     public class ItemUser : MonoBehaviour
     {
-        [Tooltip("The component used to get input from the player to control UI and use items.")]
+        [Tooltip("The component used to get input from the player to control UI and use items")]
         [SerializeField] protected InventoryInput m_InventoryInput;
 
         public InventoryInput InventoryInput {

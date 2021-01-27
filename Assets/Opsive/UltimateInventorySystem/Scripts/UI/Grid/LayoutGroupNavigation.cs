@@ -25,13 +25,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         private VerticalLayoutGroup m_VerticalLayout;
         private HorizontalLayoutGroup m_HorizontalLayout;
 
-        public GridLayoutGroup GridLayoutGroup =>
-            m_GridLayoutGroup != null ? m_GridLayoutGroup : GetComponent<GridLayoutGroup>();
-        public VerticalLayoutGroup VerticalLayoutGroup =>
-            m_VerticalLayout != null ? m_VerticalLayout : GetComponent<VerticalLayoutGroup>();
-        public HorizontalLayoutGroup HorizontalLayoutGroup =>
-            m_HorizontalLayout != null ? m_HorizontalLayout : GetComponent<HorizontalLayoutGroup>();
-
         /// <summary>
         /// Validate by setting the selectables movement references.
         /// </summary>
@@ -265,17 +258,12 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
             UINavigationUtility.SetExplicitAutoNavigation(selectables);
         }
+
+
     }
 
-    /// <summary>
-    /// The UI Navigation Utility copied from the Unity source code.
-    /// </summary>
     public static class UINavigationUtility
     {
-        /// <summary>
-        /// Set the selectables.
-        /// </summary>
-        /// <param name="selectables">The selectables.</param>
         public static void SetExplicitAutoNavigation(List<Selectable> selectables)
         {
             for (int i = 0; i < selectables.Count; i++) {
@@ -292,13 +280,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             }
         }
 
-        /// <summary>
-        /// Find the selectable.
-        /// </summary>
-        /// <param name="selectable">The selectable.</param>
-        /// <param name="dir">The direction.</param>
-        /// <param name="selectables">List of selectables.</param>
-        /// <returns>The best selectable.</returns>
         public static Selectable FindSelectable(Selectable selectable, Vector3 dir, List<Selectable> selectables)
         {
             dir = dir.normalized;
@@ -361,12 +342,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             return bestPick;
         }
 
-        /// <summary>
-        /// Get the point On Rect Edge.
-        /// </summary>
-        /// <param name="rect">The rect.</param>
-        /// <param name="dir">The direction.</param>
-        /// <returns>The point.</returns>
         private static Vector3 GetPointOnRectEdge(RectTransform rect, Vector2 dir)
         {
             if (rect == null)

@@ -70,7 +70,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
 
             var instance = ObjectPool.Instantiate(m_QuantityPanelPrefab, m_PanelParentTransform);
             m_QuantityPickerPanel = instance.GetCachedComponent<QuantityPickerPanel>();
-            m_QuantityPickerPanel.Setup(m_PanelParentPanel.Manager, false);
+            m_QuantityPickerPanel.Setup(m_PanelParentPanel.Manager);
 
             SetupQuantityPickerSettings(itemInfo, itemUser, m_QuantityPickerPanel);
 

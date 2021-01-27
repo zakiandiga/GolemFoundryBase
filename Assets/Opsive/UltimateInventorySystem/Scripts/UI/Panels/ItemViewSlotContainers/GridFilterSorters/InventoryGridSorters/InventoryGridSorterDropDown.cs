@@ -33,18 +33,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
         [Tooltip("Sort once one click or Bind the sorter to continuously sort the grid on refresh?.")]
         [SerializeField] protected bool m_BindTheSorter;
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
         private void Awake()
         {
             m_Dropdown.onValueChanged.AddListener(HandleValueChange);
         }
 
-        /// <summary>
-        /// Handle the value changed event.
-        /// </summary>
-        /// <param name="index">The new index.</param>
         public void HandleValueChange(int index)
         {
             // Unbind or don't sort if index is 0.

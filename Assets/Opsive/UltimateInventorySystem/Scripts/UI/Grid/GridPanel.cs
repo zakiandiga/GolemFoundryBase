@@ -21,12 +21,11 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// Initialize.
         /// </summary>
         /// <param name="display">The display panel.</param>
-        /// <param name="force"></param>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            base.Initialize(display, force);
+            base.Initialize(display);
             m_GridBase.SetParentPanel(m_DisplayPanel);
-            m_GridBase.Initialize(force);
+            m_GridBase.Initialize(false);
         }
     }
 }

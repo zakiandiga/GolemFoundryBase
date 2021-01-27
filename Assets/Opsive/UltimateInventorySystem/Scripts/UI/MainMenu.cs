@@ -51,32 +51,26 @@ namespace Opsive.UltimateInventorySystem.UI
         /// <summary>
         /// Set up the panel.
         /// </summary>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
+            if (m_IsInitialized) { return; }
+            base.Initialize(display);
 
-            if (wasInitialized == false) {
-                //Do it only once even if forced.
-                for (int i = 0; i < m_Panels.Count; i++) {
-                    if (m_Panels[i].Button == null) {
-                        Debug.LogWarning("One of the buttons on the MainMenu is null", gameObject);
-                        continue;
-                    }
-                    var localI = i;
-                    m_Panels[i].Button.OnSubmitE += () => OpenSubPanel(localI);
+            for (int i = 0; i < m_Panels.Count; i++) {
+                if (m_Panels[i].Button == null) {
+                    Debug.LogWarning("One of the buttons on the MainMenu is null", gameObject);
+                    continue;
                 }
-
-                if (m_CloseButton != null) {
-                    m_CloseButton.OnSubmitE += () => m_DisplayPanel.Close(true);
-                }
-
-                if (m_QuitButton != null) { m_QuitButton.OnSubmitE += Application.Quit; }
+                var localI = i;
+                m_Panels[i].Button.OnSubmitE += () => OpenSubPanel(localI);
             }
+
+            if (m_CloseButton != null) {
+                m_CloseButton.OnSubmitE += () => m_DisplayPanel.Close(true);
+            }
+
+            if (m_QuitButton != null) { m_QuitButton.OnSubmitE += Application.Quit; }
         }
-
-
 
         /// <inheritdoc />
         public override void OnOpen()
@@ -106,18 +100,12 @@ namespace Opsive.UltimateInventorySystem.UI
             m_Panels[index].Panel.Open(m_DisplayPanel, m_Panels[index].Button);
         }
 
-        /// <summary>
-        /// Open the previous panel.
-        /// </summary>
         public void OpenPrevious()
         {
             if (m_SelectedPanelIndex <= 0) { return; }
             OpenSubPanel(m_SelectedPanelIndex - 1);
         }
 
-        /// <summary>
-        /// Open the next panel.
-        /// </summary>
         public void OpenNext()
         {
             if (m_SelectedPanelIndex >= m_Panels.Count - 1) { return; }

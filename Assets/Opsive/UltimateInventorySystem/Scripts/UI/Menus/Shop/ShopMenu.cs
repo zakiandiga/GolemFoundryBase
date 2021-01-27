@@ -24,7 +24,7 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
     /// </summary>
     public class ShopMenu : InventoryPanelBinding
     {
-        [Tooltip("The shop component to show in the UI.")]
+        [Tooltip("The shop component to show in the UI")]
         [SerializeField] internal ShopBase m_Shop;
         [Tooltip("The inventory grid UI.")]
         [SerializeField] internal InventoryGrid m_InventoryGrid;
@@ -67,43 +67,39 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
         /// <summary>
         /// Set up the panel.
         /// </summary>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
+            if (m_IsInitialized) { return; }
+            base.Initialize(display);
 
-            if (wasInitialized == false) {
-                //only do it once even if forced.
-                if (m_BuyButton != null) {
-                    m_BuyButton.onClick.RemoveAllListeners();
-                    m_BuyButton.onClick.AddListener(OpenBuy);
-                }
-
-                if (m_SellButton != null) {
-                    m_SellButton.onClick.RemoveAllListeners();
-                    m_SellButton.onClick.AddListener(OpenSell);
-                }
-
-                if (m_CloseButton != null) {
-                    m_CloseButton.onClick.RemoveAllListeners();
-                    m_CloseButton.onClick.AddListener(() => m_DisplayPanel.Close(true));
-                }
-
-                m_TempCurrencyCollection = new CurrencyCollection();
-
-                m_InventoryGrid.Initialize(false);
-
-                m_InventoryGrid.Grid.ViewDrawer.AfterDrawing += DrawBuySellPrice;
-
-                m_InventoryGrid.OnItemViewSlotClicked += OnItemClicked;
-                m_InventoryGrid.OnItemViewSlotSelected += OnItemSelected;
-
-                m_QuantityPickerPanel.OnAmountChanged += QuantityPickerAmountChanged;
-                m_QuantityPickerPanel.ConfirmCancelPanel.OnConfirm += BuySellItem;
-
-                SetShop(m_Shop);
+            if (m_BuyButton != null) {
+                m_BuyButton.onClick.RemoveAllListeners();
+                m_BuyButton.onClick.AddListener(OpenBuy);
             }
+
+            if (m_SellButton != null) {
+                m_SellButton.onClick.RemoveAllListeners();
+                m_SellButton.onClick.AddListener(OpenSell);
+            }
+
+            if (m_CloseButton != null) {
+                m_CloseButton.onClick.RemoveAllListeners();
+                m_CloseButton.onClick.AddListener(() => m_DisplayPanel.Close(true));
+            }
+
+            m_TempCurrencyCollection = new CurrencyCollection();
+
+            m_InventoryGrid.Initialize(false);
+
+            m_InventoryGrid.Grid.ViewDrawer.AfterDrawing += DrawBuySellPrice;
+
+            m_InventoryGrid.OnItemViewSlotClicked += OnItemClicked;
+            m_InventoryGrid.OnItemViewSlotSelected += OnItemSelected;
+
+            m_QuantityPickerPanel.OnAmountChanged += QuantityPickerAmountChanged;
+            m_QuantityPickerPanel.ConfirmCancelPanel.OnConfirm += BuySellItem;
+
+            SetShop(m_Shop);
         }
 
         /// <summary>
@@ -122,9 +118,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
             SetModifierUIs();
         }
 
-        /// <summary>
-        /// Handle the Inventory Bound event.
-        /// </summary>
         protected override void OnInventoryBound()
         {
             m_ShopperClientCurrencyOwner = m_Inventory.GetCurrencyComponent<CurrencyCollection>();
@@ -134,9 +127,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
             SetModifierUIs();
         }
 
-        /// <summary>
-        /// Handle the On Open event.
-        /// </summary>
         public override void OnOpen()
         {
             base.OnOpen();
@@ -178,10 +168,7 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
         /// <returns>The currency collection.</returns>
         protected CurrencyCollection GetPrice(ItemInfo itemInfo)
         {
-            if (itemInfo.Item == null) {
-                Debug.LogWarning("Cannot get the price of a NULL item");
-                return null;
-            }
+            if (itemInfo.Item == null) { return null; }
             var shop = (Shop)m_Shop;
 
             if (m_IsBuying) {
@@ -193,9 +180,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
                     return m_TempCurrencyCollection;
                 }
             }
-
-            var buySell = m_IsBuying ? "Buy" : "Sell";
-            Debug.LogWarning($"Was unable to find the {buySell} price for item: " + itemInfo);
 
             return null;
         }
@@ -233,10 +217,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
         /// <param name="itemInfo">The item info.</param>
         protected virtual void DrawBuySellPrice(View<ItemInfo> itemView, ItemInfo itemInfo)
         {
-            if (itemInfo.Item == null) {
-                return;
-            }
-
             if (m_IsBuying) {
                 DrawBuyPrice(itemView, itemInfo);
             } else {
@@ -336,7 +316,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Shop
             if (m_OpenQuantityPickerOnItemClick == false) { return; }
 
             var itemInfo = slotEventData.ItemViewSlot.ItemInfo;
-            if (itemInfo.Item == null) { return; }
 
             m_SelectedItemInfo = itemInfo;
             m_QuantityPickerPanel.Open(m_InventoryGrid.Panel, slotEventData.ItemViewSlot);

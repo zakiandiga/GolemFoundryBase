@@ -39,7 +39,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
     public class UIDesignerManager : Manager
     {
         public const string UIDesignerSchemaClassicGUID = "11cd918b7dca149428d825071dbd2b87";
-        public const string UIDesignerSchemaRPGGUID = "6e555dbd8631923458f1c491cdeded1d";
+        public const string UIDesignerSchemaShooterGUID = "b5929dd6bcdf6034289f4ce00e4d2abd";
 
         // The UIBuilderConfig path is based on the project.
         private static string UIBuilderConfigGUIDKey => "Opsive.UltimateInventorySystem.UIBuilderConfigGUID." + Application.productName;
@@ -55,7 +55,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         protected SetupDesigner m_SetupDesigner;
         protected MainMenuDesigner m_MainMenuDesigner;
         protected InventoryGridDesigner m_InventoryGridDesigner;
-        protected ItemShapeGridDesigner m_ItemShapeGridDesigner;
         protected EquipmentDesigner m_EquipmentDesigner;
         protected HotbarDesigner m_HotbarDesigner;
         protected ShopDesigner m_ShopDesigner;
@@ -106,7 +105,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             m_SetupDesigner = new SetupDesigner();
             m_MainMenuDesigner = new MainMenuDesigner();
             m_InventoryGridDesigner = new InventoryGridDesigner();
-            m_ItemShapeGridDesigner = new ItemShapeGridDesigner();
             m_EquipmentDesigner = new EquipmentDesigner();
             m_HotbarDesigner = new HotbarDesigner();
             m_ShopDesigner = new ShopDesigner();
@@ -125,7 +123,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                 m_SetupDesigner,
                 m_MainMenuDesigner,
                 m_InventoryGridDesigner,
-                m_ItemShapeGridDesigner,
                 m_EquipmentDesigner,
                 m_HotbarDesigner,
                 m_ShopDesigner,
@@ -220,14 +217,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 #pragma warning disable 0162
 
 #if UIS_DEV
-            return false;
+                return false;
 #endif
 
             if (UIDesignerSchema == null) { return false; }
 
             var schemaGUID = AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(UIDesignerSchema));
             if (schemaGUID == UIDesignerSchemaClassicGUID
-                || schemaGUID == UIDesignerSchemaRPGGUID) {
+                || schemaGUID == UIDesignerSchemaShooterGUID) {
                 return true;
             }
 
@@ -262,7 +259,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             EditorPrefs.SetInt(UIBuilderTabIndexKey, index);
             m_Container.Add(m_Builders[index]);
-
+            
             m_Builders[index].Refresh();
 
             if (m_Toolbar.Selected != index) {

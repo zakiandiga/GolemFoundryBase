@@ -9,28 +9,15 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     using Opsive.UltimateInventorySystem.UI.Item;
     using UnityEngine;
 
-    public interface IItemViewSlotContainerBinding
-    {
-        ItemViewSlotsContainerBase ItemViewSlotsContainer { get; }
-
-        void BindItemViewSlotContainer();
-
-        void BindItemViewSlotContainer(ItemViewSlotsContainerBase itemViewSlotsContainer);
-
-        void UnbindItemViewSlotContainer();
-    }
-
     /// <summary>
     /// Bas class to for object bound to an item view slot container.
     /// </summary>
-    public abstract class ItemViewSlotsContainerBinding : MonoBehaviour, IItemViewSlotContainerBinding
+    public abstract class ItemViewSlotsContainerBinding : MonoBehaviour
     {
 
         protected ItemViewSlotsContainerBase m_ItemViewSlotsContainer;
 
         protected bool m_IsInitialized;
-
-        public ItemViewSlotsContainerBase ItemViewSlotsContainer => m_ItemViewSlotsContainer;
 
         /// <summary>
         /// Initialize.
@@ -52,51 +39,43 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         }
 
         /// <summary>
-        /// Bind the item view slots container.
-        /// </summary>
-        public virtual void BindItemViewSlotContainer()
-        {
-            BindItemViewSlotContainer(m_ItemViewSlotsContainer);
-        }
-
-        /// <summary>
         /// Bind an item view slots container.
         /// </summary>
         /// <param name="container">The container.</param>
-        public virtual void BindItemViewSlotContainer(ItemViewSlotsContainerBase container)
+        public virtual void Bind(ItemViewSlotsContainerBase container)
         {
             Initialize(false);
             if (m_ItemViewSlotsContainer == container) { return; }
 
-            UnbindItemViewSlotContainer();
+            UnBind();
 
             m_ItemViewSlotsContainer = container;
 
-            OnBindItemViewSlotContainer();
+            OnBind();
 
         }
 
         /// <summary>
         /// Item View Slot Container was bound.
         /// </summary>
-        protected abstract void OnBindItemViewSlotContainer();
+        protected abstract void OnBind();
 
         /// <summary>
         /// Unbind the item view slot container.
         /// </summary>
-        public virtual void UnbindItemViewSlotContainer()
+        public virtual void UnBind()
         {
             Initialize(false);
             if (m_ItemViewSlotsContainer == null) { return; }
 
-            OnUnbindItemViewSlotContainer();
+            OnUnBind();
             m_ItemViewSlotsContainer = null;
         }
 
         /// <summary>
         /// The Item View Slot Container was unbound.
         /// </summary>
-        protected abstract void OnUnbindItemViewSlotContainer();
+        protected abstract void OnUnBind();
     }
 
     /// <summary>
@@ -111,12 +90,12 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// Bind an inventory grid.
         /// </summary>
         /// <param name="container">The inventory grid.</param>
-        public override void BindItemViewSlotContainer(ItemViewSlotsContainerBase container)
+        public override void Bind(ItemViewSlotsContainerBase container)
         {
             Initialize(false);
             if (m_ItemViewSlotsContainer == container) { return; }
 
-            UnbindItemViewSlotContainer();
+            UnBind();
 
             var inventoryGrid = container as InventoryGrid;
             if (inventoryGrid == null) { return; }
@@ -124,18 +103,18 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
             m_ItemViewSlotsContainer = container;
             m_InventoryGrid = inventoryGrid;
 
-            OnBindItemViewSlotContainer();
+            OnBind();
         }
 
         /// <summary>
         /// Unbind the inventory.
         /// </summary>
-        public override void UnbindItemViewSlotContainer()
+        public override void UnBind()
         {
             Initialize(false);
             if (m_ItemViewSlotsContainer == null) { return; }
 
-            OnUnbindItemViewSlotContainer();
+            OnUnBind();
             m_ItemViewSlotsContainer = null;
             m_InventoryGrid = null;
         }

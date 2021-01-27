@@ -24,11 +24,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         [SerializeField] protected uint m_ID = 1;
         [Tooltip("The canvas where this grid exist.")]
         [SerializeField] protected Canvas m_Canvas;
-        [Tooltip("The position offset always added on the position.")]
+        [Tooltip("The position offset always added on the position")]
         [SerializeField] protected Vector2 m_PositionOffset;
         [Tooltip("Should the moving Item View be spawned using the container or the local Category Item View Set.")]
         [SerializeField] protected bool m_UseContainerToSpawnItemView = true;
-        [Tooltip("The Category Item View Set used to spawn the moving Item View.")]
+        [Tooltip("The Category Item View Set used to spawn the moving Item View")]
         [SerializeField] protected CategoryItemViewSet m_CategoryItemViewSet;
 
         protected bool m_IsInitialized = false;
@@ -86,23 +86,12 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         }
 
         /// <summary>
-        /// Can the Manager be used to move an item view.
-        /// </summary>
-        /// <returns>True if it can move.</returns>
-        public bool CanMove()
-        {
-            return m_IsMoving == false && m_FloatingItemView == null;
-        }
-
-        /// <summary>
         /// Start to move and Item.
         /// </summary>
         /// <param name="sourceSlotEventData">The slot event data of the source.</param>
         /// <param name="position">The position where the moving item view should.</param>
         public void StartMove(ItemViewSlotEventData sourceSlotEventData, Vector2 position)
         {
-            if (CanMove() == false) { return; }
-
             StartMove(sourceSlotEventData);
             SetPosition(position);
         }
@@ -113,8 +102,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="slotEventData">The slot event data.</param>
         public void StartMove(ItemViewSlotEventData slotEventData)
         {
-            if (CanMove() == false) { return; }
-
             m_PointerSlotEventData = slotEventData;
             StartMove(slotEventData.ItemViewSlot, slotEventData.ItemViewSlotsContainer);
         }
@@ -126,8 +113,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="viewSlotsContainer">The view slot container.</param>
         protected void StartMove(ItemViewSlot itemViewSlot, ItemViewSlotsContainerBase viewSlotsContainer)
         {
-            if (CanMove() == false) { return; }
-
             m_SourceItemViewSlot = itemViewSlot;
             m_SourceContainer = viewSlotsContainer;
 
@@ -149,7 +134,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="viewSlotsContainer">The item view slot container.</param>
         /// <param name="element">The item info.</param>
         /// <returns>The item view created for displaying th item moving.</returns>
-        protected ItemView SetMovingItemView(ItemViewSlotsContainerBase viewSlotsContainer, ItemInfo element)
+        public ItemView SetMovingItemView(ItemViewSlotsContainerBase viewSlotsContainer, ItemInfo element)
         {
             var itemViewPrefab = m_UseContainerToSpawnItemView ?
                 viewSlotsContainer.GetViewPrefabFor(element) :

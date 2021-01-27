@@ -49,7 +49,7 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
             m_Database = database;
             m_ItemCollection = itemCollection;
 
-            var nameField = new UnicodeTextField("Name");
+            var nameField = new TextField("Name");
             nameField.value = itemCollection.Name;
             nameField.isDelayed = true;
             nameField.RegisterValueChangedCallback(evt =>

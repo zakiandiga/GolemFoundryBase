@@ -27,7 +27,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// On bind.
         /// </summary>
-        protected override void OnBindItemViewSlotContainer()
+        protected override void OnBind()
         {
             if (m_ItemDescriptionPanel != null) {
                 m_ItemDescription = m_ItemDescriptionPanel.ItemDescription;
@@ -39,7 +39,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// On unbind.
         /// </summary>
-        protected override void OnUnbindItemViewSlotContainer()
+        protected override void OnUnBind()
         {
             m_ItemViewSlotsContainer.OnItemViewSlotSelected -= DrawDescription;
         }

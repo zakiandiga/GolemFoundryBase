@@ -34,9 +34,7 @@ MonoBehaviour:
     type: 3}
   m_InventoryGrid: {fileID: 8798033766220748082, guid: 295d74f53db1c564ead0c9040e6f7171,
     type: 3}
-  m_ItemShapeGrid: {fileID: 8755210283033333747, guid: 70a45cbcf230c0c459a38a1f691043e4,
-    type: 3}
-  m_ItemShapeViewSlot: {fileID: 4012611375531495872, guid: b73c965dfba38d9448d19d731b18a02c,
+  m_ItemShapeInventoryGrid: {fileID: 4091642388917835068, guid: 70a45cbcf230c0c459a38a1f691043e4,
     type: 3}
   m_EquipmentItemViewSlotContainer: {fileID: 749471216824709623, guid: bf396443be40ee4419ad2d1833025fd4,
     type: 3}

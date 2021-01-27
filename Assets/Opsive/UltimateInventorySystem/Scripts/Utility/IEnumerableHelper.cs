@@ -13,15 +13,6 @@ namespace Opsive.UltimateInventorySystem.Utility
 
     public static class IEnumerableHelper
     {
-        /// <summary>
-        /// Depth First Search of a Tree.
-        /// </summary>
-        /// <param name="stack">The stack.</param>
-        /// <param name="root">The root.</param>
-        /// <param name="includeRoot">Should the root be included in the search?</param>
-        /// <param name="getChildren">The function to get the children.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The IEnumerable.</returns>
         public static IEnumerable<T> DepthFirstTreeTraversal<T>(Stack<T> stack, T root, bool includeRoot, Func<T, ResizableArray<T>> getChildren)
         {
             stack.Push(root);
@@ -40,15 +31,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             }
         }
 
-        /// <summary>
-        /// Depth First Search of a Tree.
-        /// </summary>
-        /// <param name="stack">The stack.</param>
-        /// <param name="root">The root.</param>
-        /// <param name="includeRoot">Should the root be included in the search?</param>
-        /// <param name="getChildren">The function to get the children.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The IEnumerable.</returns>
         public static IEnumerable<T> DepthFirstTreeTraversal<T>(Stack<T> stack, T root, bool includeRoot, Func<T, IEnumerable<T>> getChildren)
         {
             stack.Push(root);
@@ -71,15 +53,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             }
         }
 
-        /// <summary>
-        /// Breadth First Search of a Tree.
-        /// </summary>
-        /// <param name="queue">The queue.</param>
-        /// <param name="root">The root.</param>
-        /// <param name="includeRoot">Should the root be included in the search?</param>
-        /// <param name="getChildren">The function to get the children.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The IEnumerable.</returns>
         public static IEnumerable<T> BreadthFirstTreeTraversal<T>(ConcurrentQueue<T> queue, T root, bool includeRoot, Func<T, T[]> getChildren)
         {
             queue.Enqueue(root);

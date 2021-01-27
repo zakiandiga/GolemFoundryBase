@@ -22,9 +22,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
 
         public Dictionary<ItemStack, int> IndexedItems => m_IndexedItems;
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public InventoryGridIndexer()
         {
             m_CachedItemInfos = new List<ItemInfo>();

@@ -73,7 +73,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
             }
             var instance = ObjectPool.Instantiate(m_AsyncFuncActionPanelPrefab, m_PanelParentTransform);
             m_AsyncFuncActionPanel = instance.GetComponent<AsyncFuncActionsPanel<T>>();
-            m_AsyncFuncActionPanel.Setup(m_PanelParentPanel.Manager, false);
+            m_AsyncFuncActionPanel.Setup(m_PanelParentPanel.Manager);
             m_AsyncFuncActionPanel.AssignActions(m_AsyncFuncActions);
             m_AsyncFuncActionPanel.Open(m_PanelParentPanel, m_PreviousSelected);
 #pragma warning disable 4014

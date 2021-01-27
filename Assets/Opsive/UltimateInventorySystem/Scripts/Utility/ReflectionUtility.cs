@@ -10,13 +10,6 @@ namespace Opsive.UltimateInventorySystem.Utility
 
     public static class ReflectionUtility
     {
-        /// <summary>
-        /// Get a non public field.
-        /// </summary>
-        /// <param name="objectInstance">The object instance.</param>
-        /// <param name="fieldName">The field name.</param>
-        /// <typeparam name="T">The object type.</typeparam>
-        /// <returns>The field value.</returns>
         public static object GetNonPublicField<T>(T objectInstance, string fieldName)
         {
             return objectInstance.GetType()
@@ -24,13 +17,6 @@ namespace Opsive.UltimateInventorySystem.Utility
                 .GetValue(objectInstance);
         }
 
-        /// <summary>
-        /// Set a non public field.
-        /// </summary>
-        /// <param name="objectInstance">The object instance.</param>
-        /// <param name="fieldName">The field name.</param>
-        /// <param name="newValue">The new value to set within the field.</param>
-        /// <typeparam name="T">The object type.</typeparam>
         public static void SetNonPublicField<T>(T objectInstance, string fieldName, object newValue)
         {
             objectInstance.GetType()
@@ -38,11 +24,6 @@ namespace Opsive.UltimateInventorySystem.Utility
                 .SetValue(objectInstance, newValue);
         }
 
-        /// <summary>
-        /// Copy an object using reflection.
-        /// </summary>
-        /// <param name="copyFrom">The object ot copy from.</param>
-        /// <param name="copyTo">The object to copy to.</param>
         public static void ObjectCopy(object copyFrom, object copyTo)
         {
             var bindingFlags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;

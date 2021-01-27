@@ -4,8 +4,6 @@
 /// https://www.opsive.com
 /// ---------------------------------------------
 
-//#define DEBUG_ITEM_SAVER
-
 namespace Opsive.UltimateInventorySystem.SaveSystem
 {
     using Opsive.Shared.Utility;
@@ -85,10 +83,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
             }
         }
 
-        /// <summary>
-        /// Remove a key from the save data.
-        /// </summary>
-        /// <param name="saverFullKey">The saver full key to remove.</param>
         public void RemoveKey(string saverFullKey)
         {
             if (m_SaversItemIDs == null) { return; }
@@ -112,10 +106,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         /// <returns>The serialize data.</returns>
         public override Serialization SerializeSaveData()
         {
-#if DEBUG_ITEM_SAVER
-            Debug.Log("Save Item Saver");
-#endif
-
             if (InventorySystemManager.IsNull) { return null; }
 
             if (m_SaversItemIDs == null || m_SaversItemIDs.Count == 0) {
@@ -142,10 +132,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
                     item.Serialize();
                     itemsToSave.Push(item);
 
-#if DEBUG_ITEM_SAVER
-                    Debug.Log("Save "+item);
-#endif
-
                     if (m_UsingNestedItems) { AddNestedItemsToSave(item, itemsToSave); }
                 }
             }
@@ -158,11 +144,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
             return Serialization.Serialize(m_CurrentSaveData);
         }
 
-        /// <summary>
-        /// Add nested items to the save data.
-        /// </summary>
-        /// <param name="item">The item containing nested items.</param>
-        /// <param name="itemsToSave">The item list.</param>
         protected virtual void AddNestedItemsToSave(Item item, Stack<Item> itemsToSave)
         {
             for (int i = 0; i < item.ItemAttributeCollection.Count; i++) {
@@ -192,10 +173,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         /// <param name="serializedSaveData">The serialized save data.</param>
         public override void DeserializeAndLoadSaveData(Serialization serializedSaveData)
         {
-#if DEBUG_ITEM_SAVER
-            Debug.Log("Load Item Saver");
-#endif
-
             if (InventorySystemManager.IsNull) { return; }
 
             var savedData = serializedSaveData.DeserializeFields(MemberVisibility.All) as ItemsSaveData?;
@@ -248,10 +225,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
 
                 // Assign the item back to keep the current save data info relevant.
                 m_CurrentSaveData.Items[i] = item;
-
-#if DEBUG_ITEM_SAVER
-                Debug.Log("Loaded "+item);
-#endif
             }
 
             if (m_UsingNestedItems) {
@@ -259,10 +232,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
             }
         }
 
-        /// <summary>
-        /// Load Nested items.
-        /// </summary>
-        /// <param name="items">The list of items which may contain nested items.</param>
         protected virtual void LoadNestedItems(Item[] items)
         {
 

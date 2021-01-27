@@ -26,9 +26,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             set => m_CloseOnClick = value;
         }
 
-        /// <summary>
-        /// Initialize the panel closer.
-        /// </summary>
         protected override void Awake()
         {
             if (m_DisplayPanel == null) { m_DisplayPanel = GetComponent<DisplayPanel>(); }

@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.UIElements;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using UnityEngine.UIElements;
@@ -18,7 +17,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
     {
         private IListPanelProvider<T> m_Provider;
 
-        private UnicodeTextField m_AddField;
+        private TextField m_AddField;
         private Button m_AddButton;
         private SearchableList<T> m_SearchableList;
 
@@ -38,7 +37,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             var addListItemContainer = new VisualElement();
             addListItemContainer.AddToClassList(CommonStyles.s_AddListItemContainer);
 
-            m_AddField = new UnicodeTextField();
+            m_AddField = new TextField();
             m_AddField.RegisterCallback<ChangeEvent<string>>(evt =>
             {
                 var valid = !string.IsNullOrEmpty(evt.newValue) && m_Provider.IsObjectNameValidAndUnique(evt.newValue);

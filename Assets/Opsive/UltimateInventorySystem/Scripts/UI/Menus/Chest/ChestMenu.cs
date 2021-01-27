@@ -36,29 +36,20 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
         /// <summary>
         /// Setup the component.
         /// </summary>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
+            base.Initialize(display);
 
-            if (wasInitialized == false) {
-                //Do it only once even if forced.
-                m_TakeAllButton.onClick.AddListener(TakeAll);
-                m_CancelButton.onClick.AddListener(() => m_DisplayPanel.Close());
-            }
-
-            m_InventoryGrid.Initialize(force);
+            m_InventoryGrid.Initialize(false);
             m_InventoryGrid.SetDisplayPanel(m_DisplayPanel);
-            m_InventoryGrid.OnItemViewSlotClicked -= ItemClicked;
             m_InventoryGrid.OnItemViewSlotClicked += ItemClicked;
+
+            m_TakeAllButton.onClick.AddListener(TakeAll);
+            m_CancelButton.onClick.AddListener(() => m_DisplayPanel.Close());
 
             FindAndBindChests();
         }
 
-        /// <summary>
-        /// Handle the inventory being bound.
-        /// </summary>
         protected override void OnInventoryBound()
         { }
 
@@ -82,9 +73,6 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
                 m_Inventory.MainItemCollection, null);
         }
 
-        /// <summary>
-        /// Handle the On Open event.
-        /// </summary>
         public override void OnOpen()
         {
             base.OnOpen();

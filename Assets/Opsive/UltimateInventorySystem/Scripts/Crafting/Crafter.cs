@@ -8,6 +8,7 @@ namespace Opsive.UltimateInventorySystem.Crafting
 {
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
+    using Opsive.UltimateInventorySystem.Crafting.Processors;
     using Opsive.UltimateInventorySystem.Storage;
     using System.Collections.Generic;
     using UnityEngine;
@@ -17,12 +18,12 @@ namespace Opsive.UltimateInventorySystem.Crafting
     /// </summary>
     public class Crafter : MonoBehaviour, IDatabaseSwitcher
     {
-        [Tooltip("The item collections serialized data.")]
-        [SerializeField] protected Serialization m_CraftingProcessorData;
         [Tooltip("The recipes to display in the menu.")]
         [SerializeField] protected DynamicCraftingRecipeArray m_MiscellaneousRecipes;
         [Tooltip("The recipes with the categories specified will be visible in the menu.")]
         [SerializeField] protected DynamicCraftingCategoryArray m_CraftingCategories;
+        [Tooltip("Use crafting processor callback to remove ingredient items from the inventory.")]
+        [SerializeField] protected bool m_RemoveItemsWithCallback = false;
 
         protected bool m_IsInitialized;
         protected List<CraftingRecipe> m_CraftingRecipes;
@@ -66,7 +67,10 @@ namespace Opsive.UltimateInventorySystem.Crafting
             }
 
             m_CraftingRecipes = new List<CraftingRecipe>(m_MiscellaneousRecipes.Value);
-            Deserialize();
+            if (m_Processor == null) {
+                m_Processor = new SimpleCraftingProcessorWithCurrency(m_RemoveItemsWithCallback);
+            }
+
 
             for (int i = 0; i < CraftingCategories.Length; i++) {
                 var pooledArray = GenericObjectPool.Get<CraftingRecipe[]>();
@@ -76,24 +80,6 @@ namespace Opsive.UltimateInventorySystem.Crafting
                 }
                 GenericObjectPool.Return(pooledArray);
             }
-        }
-
-        /// <summary>
-        /// Deserialize the Crafting Processor.
-        /// </summary>
-        public void Deserialize()
-        {
-            if (m_CraftingProcessorData != null) {
-                m_Processor = m_CraftingProcessorData.DeserializeFields(MemberVisibility.Public) as CraftingProcessor;
-            }
-        }
-
-        /// <summary>
-        /// Serialize the Crafting processor.
-        /// </summary>
-        public void Serialize()
-        {
-            m_CraftingProcessorData = Serialization.Serialize(m_Processor);
         }
 
         /// <summary>

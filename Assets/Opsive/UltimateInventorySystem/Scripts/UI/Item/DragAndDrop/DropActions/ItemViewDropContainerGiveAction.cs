@@ -15,9 +15,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
     [Serializable]
     public class ItemViewDropContainerGiveAction : ItemViewDropAction
     {
-        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_AddToDestinationContainer = true;
-        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_RemoveFromSourceContainer = true;
 
         /// <summary>
@@ -70,13 +70,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropActions
     [Serializable]
     public class ItemViewDropContainerExchangeAction : ItemViewDropAction
     {
-        [Tooltip("Remove the item from the source container.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_RemoveFromSourceContainer = true;
-        [Tooltip("Remove the item from the destination container.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_RemoveFromDestinationContainer = true;
-        [Tooltip("Add to the destination container.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_AddToDestinationContainer = true;
-        [Tooltip("Add to the source container.")]
+        [Tooltip("Only used if the ItemBoxDropActionsWithConditions is null")]
         [SerializeField] protected bool m_AddToSourceContainer = true;
 
         /// <summary>

@@ -30,10 +30,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         /// Initialize the display binding.
         /// </summary>
         /// <param name="display">The display to bind to.</param>
-        /// <param name="force"></param>
-        public virtual void Initialize(DisplayPanel display, bool force)
+        public virtual void Initialize(DisplayPanel display)
         {
-            if (m_IsInitialized && display == m_DisplayPanel && !force) { return; }
+            if (m_IsInitialized && display == m_DisplayPanel) { return; }
             m_DisplayPanel = display;
             m_IsInitialized = true;
         }

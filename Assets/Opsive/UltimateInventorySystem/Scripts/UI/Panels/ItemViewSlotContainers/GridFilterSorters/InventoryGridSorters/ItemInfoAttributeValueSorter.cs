@@ -14,17 +14,12 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
 
     public class ItemInfoAttributeValueSorter : ItemInfoSorterBase
     {
-        [Tooltip("The attribute name of the value to sort for.")]
         [SerializeField] protected string m_AttributeName;
-        [Tooltip("Should the attribute be sorted in ascending or descending order?")]
         [SerializeField] protected bool m_Ascending = true;
 
         protected Comparer<ItemInfo> m_Comparer;
         public override Comparer<ItemInfo> Comparer => m_Comparer;
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
         protected override void Awake()
         {
             base.Awake();

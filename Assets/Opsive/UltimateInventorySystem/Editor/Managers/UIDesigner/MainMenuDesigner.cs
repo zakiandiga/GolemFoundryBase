@@ -42,12 +42,12 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
     {
         public override string DocumentationURL => "https://opsive.com/support/documentation/ultimate-inventory-system/editor-window/main-menu/";
 
-        protected UnicodeTextField m_NameTextField;
+        protected TextField m_NameTextField;
         protected Toggle m_Vertical;
 
         protected override void CreateOptionsContent(VisualElement container)
         {
-            m_NameTextField = new UnicodeTextField("Panel name");
+            m_NameTextField = new TextField("Panel name");
             m_NameTextField.value = "Main Menu";
             container.Add(m_NameTextField);
 
@@ -71,7 +71,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             panelManager.MainMenu = mainMenu.GetComponent<DisplayPanel>();
 
             var gameplayPanel = panelManager.GameplayPanel;
-
+            
             if (gameplayPanel != null) {
                 var button = UIDesignerManager.InstantiateSchemaPrefab<ActionButton>(UIDesignerSchema.MainMenuTabButton, gameplayPanel.MainContent);
 
@@ -138,37 +138,37 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
         private void AddNewSubPanel()
         {
-
+            
             var displayPanel = UIDesignerManager.InstantiateSchemaPrefab<DisplayPanel>(UIDesignerSchema.MainMenuInnerPanel, DisplayPanel.MainContent);
 
             var panelName = "BlankSubPanel";
             displayPanel.SetName(panelName);
             displayPanel.gameObject.name = panelName;
-
-            UIDesignerManager.GetTab<MainMenuDesigner>().AddInnerPanel("BlankSubPanel", displayPanel);
+            
+            UIDesignerManager.GetTab<MainMenuDesigner>().AddInnerPanel("BlankSubPanel",displayPanel);
 
             Refresh();
         }
 
         private void RemoveSubPanel(int index)
         {
-            if (index < 0 || index >= m_List.Count) { return; }
+            if(index < 0 || index >= m_List.Count){return;}
 
             var panelName = m_List[m_SelectedIndex].Panel?.name ?? "Null";
-
+            
             var removeSubPanel = EditorUtility.DisplayDialog("Remove Sub Panel?",
                 $"Removing the sub Panel '{panelName}' will completely remove the button, the panel and the reference to it in the Main Menu component.\n" +
                 $"Are you sure you wish to remove this subPanel",
                 "Yes",
                 "No");
 
-            if (removeSubPanel == false) { return; }
+            if(removeSubPanel == false){ return; }
 
             DestroyGameObject(m_List[m_SelectedIndex].Button);
             DestroyGameObject(m_List[m_SelectedIndex].Panel);
 
             m_List.RemoveAt(index);
-
+            
             RefreshSubPanelList();
         }
 
@@ -206,8 +206,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             var panel = m_List[m_SelectedIndex].Panel;
 
             m_SelectionContainer.Add(new SubTitleLabel(panel?.name ?? "NULL"));
-            m_SelectionContainer.Add(new Label("Panel name: " + (panel?.UniqueName ?? "NULL")));
-            m_SelectionContainer.Add(new Label("Button text: " + (button?.GetButtonName() ?? "NULL")));
+            m_SelectionContainer.Add(new Label("Panel name: "+(panel?.UniqueName ?? "NULL")));
+            m_SelectionContainer.Add(new Label("Button text: "+(button?.GetButtonName() ?? "NULL")));
             m_SelectionContainer.Add(m_ButtonsContainer);
 
             m_ButtonsContainer.Add(m_SelectPanel);

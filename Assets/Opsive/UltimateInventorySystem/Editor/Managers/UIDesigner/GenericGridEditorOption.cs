@@ -172,7 +172,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
         public GridSizeField()
         {
-            m_AddRemoveRow = new AddRemoveField("Columnss : 1");
+            m_AddRemoveRow = new AddRemoveField("Row : 1");
             m_AddRemoveRow.OnAddRemove += (add) =>
             {
                 var newX = Mathf.Clamp(m_GridSize.x + (add ? 1 : -1), m_SizeLimits.x, m_SizeLimits.y);
@@ -184,7 +184,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             Add(m_AddRemoveRow);
 
-            m_AddRemoveColumn = new AddRemoveField("Rows : 1");
+            m_AddRemoveColumn = new AddRemoveField("Col : 1");
             m_AddRemoveColumn.OnAddRemove += (add) =>
             {
                 var newY = Mathf.Clamp(m_GridSize.y + (add ? 1 : -1), m_SizeLimits.x, m_SizeLimits.y);
@@ -207,8 +207,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         public void SetValueNoNotify(Vector2Int gridSize)
         {
             m_GridSize = gridSize;
-            m_AddRemoveRow.Label.text = "Columns : " + gridSize.x;
-            m_AddRemoveColumn.Label.text = "Rows : " + gridSize.y;
+            m_AddRemoveRow.Label.text = "Row : " + gridSize.x;
+            m_AddRemoveColumn.Label.text = "Col : " + gridSize.y;
         }
     }
 

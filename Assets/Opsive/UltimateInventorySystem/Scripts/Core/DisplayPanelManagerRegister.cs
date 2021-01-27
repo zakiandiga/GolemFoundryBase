@@ -1,10 +1,4 @@
-﻿/// ---------------------------------------------
-/// Ultimate Inventory System
-/// Copyright (c) Opsive. All Rights Reserved.
-/// https://www.opsive.com
-/// ---------------------------------------------
-
-namespace Opsive.UltimateInventorySystem.Core
+﻿namespace Opsive.UltimateInventorySystem.Core
 {
     using Opsive.UltimateInventorySystem.Core.Registers;
     using Opsive.UltimateInventorySystem.UI.Panels;

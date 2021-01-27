@@ -13,14 +13,14 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     /// <summary>
     /// Set the panel position depending on the selected item view slot. 
     /// </summary>
-    public class ItemViewSlotPanelToTooltip : DisplayPanelBinding, IItemViewSlotContainerBinding
+    public class ItemViewSlotPanelToTooltip : DisplayPanelBinding
     {
         [Tooltip("The transform to place next to the Item View selected/clicked.")]
         [SerializeField] protected RectTransform m_PanelToPlace;
         [Tooltip("The inventory grid to monitor.")]
         [SerializeField] internal ItemViewSlotsContainerBase m_ItemViewSlotContainer;
         [Tooltip("Set the anchor position of the panel each time it is placed.")]
-        [SerializeField] protected bool m_SetAnchorPosition = true;
+        [SerializeField] protected bool m_SetAnchorPosition = false;
         [Tooltip("The anchor position of the panel to place (Only used if the SetAnchorPosition is true).")]
         [SerializeField] protected Vector2 m_AnchorPosition = new Vector2(0, 0.5f);
         [FormerlySerializedAs("m_AnchorOffset")]
@@ -44,23 +44,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         protected Vector3[] m_BoundCorner;
         protected Canvas m_Canvas;
         protected bool m_TooltipInitialize;
-        protected bool m_IsItemViewSlotContainerBound;
 
-        public bool IsItemViewSlotContainerBound => m_IsItemViewSlotContainerBound;
-        public ItemViewSlotsContainerBase ItemViewSlotsContainer => m_ItemViewSlotContainer;
-
-        /// <summary>
-        /// Initialize.
-        /// </summary>
-        /// <param name="display">The display panel.</param>
-        /// <param name="force">Force Initialize.</param>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
-
-            Initialize(force);
+            base.Initialize(display);
+            Initialize(false);
         }
 
         /// <summary>
@@ -71,10 +59,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
             Initialize(false);
         }
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
-        /// <param name="force">Force initialize.</param>
         private void Initialize(bool force)
         {
             if (m_TooltipInitialize && !force) { return; }
@@ -89,70 +73,25 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
                 m_PanelBounds.GetWorldCorners(m_BoundCorner);
             }
 
-            if (m_Canvas == null) {
-                m_Canvas = GetComponentInParent<Canvas>();
-            }
-
             if (m_ItemViewSlotContainer == null) {
                 Debug.LogError("An Item View Slot Container is missing on the panel placer.", gameObject);
             }
 
-            BindItemViewSlotContainer();
-
-            m_TooltipInitialize = true;
-        }
-
-        /// <summary>
-        /// Bind the item view slot container.
-        /// </summary>
-        public virtual void BindItemViewSlotContainer()
-        {
-            BindItemViewSlotContainer(m_ItemViewSlotContainer);
-        }
-
-        /// <summary>
-        /// Bind the item view slot container.
-        /// </summary>
-        /// <param name="itemViewSlotsContainer">The item view slot container to bind.</param>
-        public virtual void BindItemViewSlotContainer(ItemViewSlotsContainerBase itemViewSlotsContainer)
-        {
-            UnbindItemViewSlotContainer();
-
-            m_ItemViewSlotContainer = itemViewSlotsContainer;
-
-            if (m_ItemViewSlotContainer == null) {
-                m_IsItemViewSlotContainerBound = false;
-                return;
+            if (m_Canvas == null) {
+                m_Canvas = GetComponentInParent<Canvas>();
             }
 
             m_ItemViewSlotContainer.OnItemViewSlotClicked += OnItemClicked;
-            m_ItemViewSlotContainer.OnItemViewSlotDeselected += OnItemDeselected;
+            m_ItemViewSlotContainer.OnItemViewSlotDeselected += (x) =>
+            {
+                if (m_HideShowOnDeselect) {
+                    m_PanelToPlace.gameObject.SetActive(false);
+                }
+            };
+
             m_ItemViewSlotContainer.OnItemViewSlotSelected += OnItemSelected;
 
-            m_IsItemViewSlotContainerBound = true;
-        }
-
-        /// <summary>
-        /// Unbind the item view slot container.
-        /// </summary>
-        public virtual void UnbindItemViewSlotContainer()
-        {
-            if (!m_IsItemViewSlotContainerBound) { return; }
-
-            m_ItemViewSlotContainer.OnItemViewSlotClicked -= OnItemClicked;
-            m_ItemViewSlotContainer.OnItemViewSlotDeselected -= OnItemDeselected;
-            m_ItemViewSlotContainer.OnItemViewSlotSelected -= OnItemSelected;
-
-            m_IsItemViewSlotContainerBound = false;
-        }
-
-        /// <summary>
-        /// Handle the item deselected event.
-        /// </summary>
-        /// <param name="slotEventData">The slot event data.</param>
-        private void OnItemDeselected(ItemViewSlotEventData slotEventData)
-        {
-            if (m_HideShowOnDeselect) { m_PanelToPlace.gameObject.SetActive(false); }
+            m_TooltipInitialize = true;
         }
 
         /// <summary>

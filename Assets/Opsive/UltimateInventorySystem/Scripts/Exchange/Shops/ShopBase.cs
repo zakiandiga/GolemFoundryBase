@@ -45,9 +45,6 @@ namespace Opsive.UltimateInventorySystem.Exchange.Shops
         public virtual string BuyPriceAttributeName => m_BuyAttributeName;
         public virtual string SellPriceAttributeName => m_SellAttributeName;
 
-        /// <summary>
-        /// Initialize on awake.
-        /// </summary>
         protected virtual void Awake()
         {
             m_BuyConditions = GetComponents<IShopBuyCondition>();

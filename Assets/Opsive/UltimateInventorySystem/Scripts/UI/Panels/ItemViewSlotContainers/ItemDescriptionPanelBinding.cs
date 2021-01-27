@@ -28,12 +28,9 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         /// <summary>
         /// Set up the panel.
         /// </summary>
-        public override void Initialize(DisplayPanel display, bool force)
+        public override void Initialize(DisplayPanel display)
         {
-            var wasInitialized = m_IsInitialized;
-            if (wasInitialized && !force) { return; }
-            base.Initialize(display, force);
-
+            base.Initialize(display);
             if (m_ItemDescription == null) { return; }
             m_ItemDescription.Initialize();
         }

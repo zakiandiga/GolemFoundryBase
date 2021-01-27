@@ -13,7 +13,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
     /// </summary>
     public class DisplayPanelDragHandler : PanelDragHandler
     {
-        [Tooltip("The display panel which should be selected when this gameobject is dragged.")]
         [SerializeField] protected DisplayPanel m_Panel;
 
         /// <summary>

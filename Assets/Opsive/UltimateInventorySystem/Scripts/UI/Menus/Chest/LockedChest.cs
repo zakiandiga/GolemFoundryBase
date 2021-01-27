@@ -9,6 +9,7 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.Storage;
+    using Opsive.UltimateInventorySystem.Utility;
     using UnityEngine;
     using UnityEngine.Events;
 
@@ -21,12 +22,18 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
 
         [Tooltip("The amount of second the text will hte displayed for.")]
         [SerializeField] protected GameObject[] m_DisableWhenUnlocked;
-        [Tooltip("Event called when trying to open without a key.")]
+        [Tooltip("Event called when trying to open without a key")]
         [SerializeField] protected UnityEvent m_OnTryOpenNoKey;
         [Tooltip("Event called when trying to open with a key.")]
         [SerializeField] protected UnityEvent m_OnTryOpenHasKey;
 
         protected bool m_Unlocked = false;
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            if (OnValidateUtility.IsPrefab(this)) { return; }
+        }
 
         /// <summary>
         /// Use the interactor to reference its inventory in the chest menu.
@@ -58,17 +65,11 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
             }
         }
 
-        /// <summary>
-        /// Handle a try open success.
-        /// </summary>
         protected virtual void OnTryOpenSuccess()
         {
             m_OnTryOpenHasKey.Invoke();
         }
 
-        /// <summary>
-        /// Handle a try open failed.
-        /// </summary>
         protected virtual void OnTryOpenFailed()
         {
             m_OnTryOpenNoKey.Invoke();

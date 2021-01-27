@@ -25,10 +25,7 @@ namespace Opsive.UltimateInventorySystem.UI
         public override void SetMaterialDirty() { return; }
         public override void SetVerticesDirty() { return; }
 
-        /// <summary>
         /// Probably not necessary since the chain of calls `Rebuild()`->`UpdateGeometry()`->`DoMeshGeneration()`->`OnPopulateMesh()` won't happen; so here really just as a fail-safe.
-        /// </summary>
-        /// <param name="vh">The vertex helper.</param>
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             vh.Clear();
@@ -77,21 +74,11 @@ namespace Opsive.UltimateInventorySystem.UI
 
         }
 
-        /// <summary>
-        /// Is the passthrough gameobject valid
-        /// </summary>
-        /// <param name="otherGameObject">The other gameobject.</param>
-        /// <returns></returns>
         protected virtual bool IsPassthroughGameObjectValid(GameObject otherGameObject)
         {
             return !(otherGameObject == null || otherGameObject == gameObject || gameObject.transform.IsChildOf(otherGameObject.transform));
         }
 
-        /// <summary>
-        /// Get the clickable gameobject.
-        /// </summary>
-        /// <param name="result">The raycast result.</param>
-        /// <returns>The clickable gameobject.</returns>
         protected virtual GameObject GetClickableGameObject(RaycastResult result)
         {
             var selectable = result.gameObject.GetComponentInParent<Selectable>();

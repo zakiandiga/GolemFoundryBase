@@ -25,28 +25,18 @@ namespace Opsive.UltimateInventorySystem.Input
         public virtual bool IsInputActive => isActiveAndEnabled && m_IsInputActive;
         public virtual bool IsCharacterInputActive => m_IsCharacterInputActive && IsInputActive;
 
-        /// <summary>
-        /// Initialize on awake.
-        /// </summary>
         protected virtual void Awake()
         {
             EventHandler.RegisterEvent<bool>(gameObject, EventNames.c_GameObject_OnGameplayPanelSelected_Bool, HandleGameplayPanelSelected);
             EventHandler.RegisterEvent<bool>(gameObject, EventNames.c_GameObject_OnEnableCharacterInput_Bool, SetCharacterInputActive);
         }
 
-        /// <summary>
-        /// Stop listening to events.
-        /// </summary>
         protected virtual void OnDestroy()
         {
             EventHandler.UnregisterEvent<bool>(gameObject, EventNames.c_GameObject_OnGameplayPanelSelected_Bool, HandleGameplayPanelSelected);
             EventHandler.UnregisterEvent<bool>(gameObject, EventNames.c_GameObject_OnEnableCharacterInput_Bool, SetCharacterInputActive);
         }
 
-        /// <summary>
-        /// Handle the gameplay panel being selected.
-        /// </summary>
-        /// <param name="isSelected">is selected.</param>
         protected virtual void HandleGameplayPanelSelected(bool isSelected)
         {
             if (m_EnableCharacterInputOnGameplayPanelSelected == false) { return; }

@@ -36,15 +36,15 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
         protected VisualElement m_CategorySizeContainer;
         protected IntegerField m_CategorySize;
-        protected UnicodeTextField m_CategorySizeAttributeName;
+        protected TextField m_CategorySizeAttributeName;
 
         protected VisualElement m_DefinitionSizeContainer;
         protected IntegerField m_DefinitionSize;
-        protected UnicodeTextField m_DefinitionSizeAttributeName;
+        protected TextField m_DefinitionSizeAttributeName;
 
         protected VisualElement m_ItemSizeContainer;
         protected IntegerField m_ItemSize;
-        protected UnicodeTextField m_ItemSizeAttributeName;
+        protected TextField m_ItemSizeAttributeName;
 
         protected VisualElement m_RejectCategoriesContainer;
         protected Toggle m_RejectCategories;
@@ -127,7 +127,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             });
             m_CategorySizeContainer.Add(m_CategorySize);
 
-            m_CategorySizeAttributeName = new UnicodeTextField("Category Size Limit Attribute Name");
+            m_CategorySizeAttributeName = new TextField("Category Size Limit Attribute Name");
             m_CategorySizeAttributeName.value = m_GroupItemRestriction.LimitPerCategoryAttributeName;
             m_CategorySizeAttributeName.RegisterValueChangedCallback(evt =>
             {
@@ -148,7 +148,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             });
             m_DefinitionSizeContainer.Add(m_DefinitionSize);
 
-            m_DefinitionSizeAttributeName = new UnicodeTextField("Definition Size Limit Attribute Name");
+            m_DefinitionSizeAttributeName = new TextField("Definition Size Limit Attribute Name");
             m_DefinitionSizeAttributeName.value = m_GroupItemRestriction.LimitPerDefinitionAttributeName;
             m_DefinitionSizeAttributeName.RegisterValueChangedCallback(evt =>
             {
@@ -169,7 +169,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             });
             m_ItemSizeContainer.Add(m_ItemSize);
 
-            m_ItemSizeAttributeName = new UnicodeTextField("Item Size Limit Attribute Name");
+            m_ItemSizeAttributeName = new TextField("Item Size Limit Attribute Name");
             m_ItemSizeAttributeName.value = m_GroupItemRestriction.ItemSizeLimitAttributeName;
             m_ItemSizeAttributeName.RegisterValueChangedCallback(evt =>
             {

@@ -4,8 +4,6 @@
 /// https://www.opsive.com
 /// ---------------------------------------------
 
-//#define DEBUG_SYSTEM_SAVER
-
 namespace Opsive.UltimateInventorySystem.SaveSystem
 {
     using Opsive.Shared.Utility;
@@ -13,7 +11,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
     using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization.Formatters.Binary;
-    using System.Text;
     using UnityEngine;
     using UnityEngine.SceneManagement;
 
@@ -33,11 +30,9 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         [Tooltip("The save file name when saved on disk.")]
         [SerializeField] protected string m_SaveFileName = "SaveFile";
         [Tooltip("The maximum number of save files possible.")]
-        [SerializeField] protected int m_MaxSaves = 5;
+        [SerializeField] protected int m_MaxSaves = 100;
         [Tooltip("The Inventory System Manager Item Save used to save items that were created at runtime.")]
         [SerializeField] internal InventorySystemManagerItemSaver m_InventorySystemManagerItemSaver;
-        [Tooltip("This will make a copy of the save file as Json, should only be used to debug save data.")]
-        [SerializeField] protected bool m_DebugJsonCopy;
 
         protected SaveData m_SaveData;
         protected Dictionary<int, SaveData> m_Saves;
@@ -146,11 +141,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
             SceneManager.sceneLoaded -= SceneLoaded;
         }
 
-        /// <summary>
-        /// Handle the scene being loaded.
-        /// </summary>
-        /// <param name="scene">The scene.</param>
-        /// <param name="loadSceneMode">The loading mode.</param>
         protected virtual void SceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
             if (m_AutoLoadOnSceneLoaded && m_Saves != null && m_Saves.ContainsKey(0)) {
@@ -158,10 +148,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
             }
         }
 
-        /// <summary>
-        /// Handle a scene being unloaded.
-        /// </summary>
-        /// <param name="scene">The scene being unloaded.</param>
         protected virtual void SceneUnloaded(Scene scene)
         {
             if (m_AutoSaveOnSceneUnloaded) {
@@ -237,7 +223,7 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         /// <summary>
         /// Try get the save data.
         /// </summary>
-        /// <param name="fullKey">The serialized data key.</param>
+        /// <param name="fullKey">The serialized data key</param>
         /// <param name="serializedData">The serialize data.</param>
         /// <returns>True if the save data exists.</returns>
         public static bool TryGetSaveData(string fullKey, out Serialization serializedData)
@@ -423,9 +409,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         /// <param name="saveIndex">The save index.</param>
         protected virtual void LoadInternal(int saveIndex)
         {
-#if DEBUG_SYSTEM_SAVER
-            Debug.Log("Load file at index "+saveIndex);
-#endif
             if (m_Saves == null || !m_Saves.ContainsKey(saveIndex)) {
                 Debug.LogError($"Cannot load save at index {saveIndex}.");
                 return;
@@ -449,12 +432,14 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         }
 
         /// <summary>
-        /// Return the save folder path.
+        /// Get the save file path.
         /// </summary>
-        [ContextMenu("PrintSaveFolderPath")]
-        public void PrintSaveFolderPath()
+        /// <param name="saveIndex">The save index.</param>
+        /// <returns>The save file path.</returns>
+        protected virtual string GetSaveFilePath(int saveIndex)
         {
-            Debug.Log(GetSaveFolderPath());
+            return string.Format("{0}/{1}_{2:000}.save",
+                GetSaveFolderPath(), m_SaveFileName, saveIndex);
         }
 
         /// <summary>
@@ -467,92 +452,22 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         }
 
         /// <summary>
-        /// Get the save file path.
-        /// </summary>
-        /// <param name="saveIndex">The save index.</param>
-        /// <returns>The save file path.</returns>
-        protected virtual string GetSaveFilePath(int saveIndex)
-        {
-            return string.Format("{0}/{1}_{2:000}.save",
-                GetSaveFolderPath(), m_SaveFileName, saveIndex);
-        }
-
-        /// <summary>
         /// Save to disk.
         /// </summary>
         /// <param name="saveIndex">The save index.</param>
         protected virtual void SaveToDiskInternal(int saveIndex)
         {
-#if DEBUG_SYSTEM_SAVER
-            Debug.Log("Save file at index "+saveIndex);
-#endif
             var saveFilePath = GetSaveFilePath(saveIndex);
-
-#if DEBUG_SYSTEM_SAVER
-            Debug.Log($"Save file at index {saveIndex} with path {saveFilePath}" +
-                      $"\nThere are {m_SaveData.Count} Savers");
-#endif
-
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(saveFilePath);
 
             m_SaveData.SetDateTime(DateTime.Now);
             var json = JsonUtility.ToJson(m_SaveData);
 
-            //Save binary file
             bf.Serialize(file, json);
             file.Close();
 
             m_Saves[saveIndex] = new SaveData(m_SaveData);
-
-            if (!m_DebugJsonCopy) { return; }
-
-            var jsonFilePath = saveFilePath + ".json";
-            Debug.Log("You are making a Debug Json Copy of the save file at the path: " + jsonFilePath);
-            CreateDebugSaveFile(jsonFilePath, m_SaveData);
-        }
-
-        /// <summary>
-        /// Create a Text Save File.
-        /// </summary>
-        /// <param name="filePath">The File Path.</param>
-        /// <param name="value">The string to save.</param>
-        private void CreateDebugSaveFile(string filePath, SaveData saveData)
-        {
-            // Delete the file if it exists.
-            if (File.Exists(filePath)) { File.Delete(filePath); }
-
-            var standardSaveDataJson = JsonUtility.ToJson(saveData, true);
-
-            //Create the file.
-            using (FileStream fs = File.Create(filePath)) {
-                //Write the Entire save file
-                WriteToFile(fs, "{\n\t\"StandardSaveData\": " + standardSaveDataJson + ",\n");
-
-                WriteToFile(fs, "\t\"ReadableSaveData\": [\n");
-
-                for (int i = 0; i < saveData.Count; i++) {
-
-                    WriteToFile(fs, "{\n\t\t\"SaverKey\": \"" + saveData.SaveDataKeys[i] + "\",\n");
-
-                    var jsonSaverData =
-                        JsonUtility.ToJson(saveData.SerializedSaveData[i].DeserializeFields(MemberVisibility.All), true);
-                    WriteToFile(fs, "\t\t\"SaverData\": " + jsonSaverData + "\n},\n");
-                }
-
-                WriteToFile(fs, "\t]\n}");
-            }
-        }
-
-        /// <summary>
-        /// Write to a file.
-        /// </summary>
-        /// <param name="fs">The file stream.</param>
-        /// <param name="value">The string to write.</param>
-        private static void WriteToFile(FileStream fs, string value)
-        {
-            var info = new UTF8Encoding(true).GetBytes(value);
-            fs.Write(info, 0, info.Length);
         }
 
         /// <summary>
@@ -582,9 +497,6 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
         /// <param name="saveIndex">The save index.</param>
         private void DeleteFromDiskInternal(int saveIndex)
         {
-#if DEBUG_SYSTEM_SAVER
-            Debug.Log("Delete file at index "+saveIndex);
-#endif
             var saveFilePath = GetSaveFilePath(saveIndex);
             if (!File.Exists(saveFilePath)) { return; }
 

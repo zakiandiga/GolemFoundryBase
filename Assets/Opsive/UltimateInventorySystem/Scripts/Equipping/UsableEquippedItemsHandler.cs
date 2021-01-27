@@ -18,7 +18,6 @@ namespace Opsive.UltimateInventorySystem.Equipping
     /// </summary>
     public class UsableEquippedItemsHandler : MonoBehaviour
     {
-        [Tooltip("The item user.")]
         [SerializeField] protected ItemUser m_ItemUser;
 
         protected IEquipper m_Equipper;

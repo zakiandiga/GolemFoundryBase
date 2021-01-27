@@ -30,7 +30,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected ItemViewSlotRestriction[] m_ItemViewSlotRestrictions;
 
         public int Index => m_Index;
-        public ItemInfo ItemInfo => m_ItemView == null ? ItemInfo.None : m_ItemView.ItemInfo;
+        public ItemInfo ItemInfo => m_ItemView?.CurrentValue ?? ItemInfo.None;
         public ItemView ItemView {
             get => m_ItemView;
         }
@@ -72,7 +72,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
                 UpdateUI();
                 return;
             }
-
             m_ItemView.SetValue(itemInfo);
             UpdateUI();
         }
@@ -114,7 +113,6 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
-
             if (m_ItemView != null) {
                 m_ItemView.Select(false);
             }
@@ -165,8 +163,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         {
             base.OnPointerEnter(eventData);
 
-            //if (eventData.IsPointerMoving() == false) { return; }
-            //m_ItemView.Select(true);
+            if (eventData.IsPointerMoving() == false) { return; }
+
+            m_ItemView.Select(true);
         }
 
         /// <summary>
@@ -176,7 +175,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public override void OnPointerExit(PointerEventData eventData)
         {
             base.OnPointerExit(eventData);
-            //m_ItemView.Select(false);
+            m_ItemView.Select(false);
         }
 
         /// <summary>

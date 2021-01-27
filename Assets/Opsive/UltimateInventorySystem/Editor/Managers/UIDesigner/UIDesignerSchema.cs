@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
+    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Demo.UI.Menus.Storage;
     using Opsive.UltimateInventorySystem.UI;
@@ -30,8 +31,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
     using Opsive.UltimateInventorySystem.UI.Panels.Save;
     using System;
     using System.Reflection;
+    using UnityEditor;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using Object = UnityEngine.Object;
 
     [Serializable]
@@ -77,18 +78,11 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         [Header("Inventory Grid")]
         [UIDesignerSchemaValidation(new[] { typeof(ItemViewDrawer), typeof(ItemInfoGrid) })]
         [SerializeField] protected InventoryGrid m_InventoryGrid;
+        [UIDesignerSchemaValidation(new[] { typeof(ItemViewDrawer), typeof(ItemInfoGrid), typeof(ItemShapeInventoryGridBinding) })]
+        [SerializeField] protected InventoryGrid m_ItemShapeInventoryGrid;
 
         public InventoryGrid InventoryGrid => m_InventoryGrid;
-
-
-        [Header("Item Shape Grid")]
-        [FormerlySerializedAs("m_ItemShapeInventoryGrid")]
-        [UIDesignerSchemaValidation(new[] { typeof(ItemViewDrawer) })]
-        [SerializeField] protected ItemShapeGrid m_ItemShapeGrid;
-        [SerializeField] protected ItemViewSlot m_ItemShapeViewSlot;
-
-        public ItemShapeGrid ItemShapeGrid => m_ItemShapeGrid;
-        public ItemViewSlot ItemShapeViewSlot => m_ItemShapeViewSlot;
+        public InventoryGrid ItemShapeInventoryGrid => m_ItemShapeInventoryGrid;
 
         [Header("Equipment")]
         [UIDesignerSchemaValidation(new[] { typeof(ItemViewDrawer) })]
@@ -288,7 +282,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                 }
 
                 var fieldValue = field.GetValue(this) as Object;
-                if (ReferenceEquals(fieldValue, null)) {
+                if (ReferenceEquals(fieldValue,null)) {
                     message += $"The field '{fieldName}' is null.\n";
                     valid = false;
                     continue;

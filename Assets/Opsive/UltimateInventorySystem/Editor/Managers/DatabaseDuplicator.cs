@@ -485,7 +485,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         /// Duplicates the object in the array.
         /// </summary>
         /// <param name="array">The array of object ot duplicate.</param>
-        /// <param name="folderPath">The folder where the objects should be added.</param>
+        /// <param name="folderPath">The folder where the objects should be added</param>
         /// <typeparam name="T">The object type.</typeparam>
         /// <returns>A dictionary of name to object.</returns>
         private static Dictionary<string, T> DuplicateObjectArray<T>(T[] array, string folderPath) where T : ScriptableObject, IObjectWithID

@@ -14,17 +14,10 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
 
     public class ItemInfoMultiFilterSorter : ItemInfoFilterSorterBase
     {
-        [Tooltip("A list of frig filters and sorters.")]
         [SerializeField] internal List<ItemInfoFilterSorterBase> m_GridFilters;
 
         public List<ItemInfoFilterSorterBase> GridFilters => m_GridFilters;
 
-        /// <summary>
-        /// Filter the list of item infos.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="outputPooledArray">Reference to the output.</param>
-        /// <returns>The list slice of filter.</returns>
         public override ListSlice<ItemInfo> Filter(ListSlice<ItemInfo> input, ref ItemInfo[] outputPooledArray)
         {
             var list = input;
@@ -35,11 +28,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFi
             return list;
         }
 
-        /// <summary>
-        /// Can the input be contained.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns>True if can be contained.</returns>
         public override bool CanContain(ItemInfo input)
         {
             for (int i = 0; i < m_GridFilters.Count; i++) {

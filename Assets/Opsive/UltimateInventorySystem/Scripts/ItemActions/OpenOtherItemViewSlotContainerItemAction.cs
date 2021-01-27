@@ -19,7 +19,6 @@ namespace Opsive.UltimateInventorySystem.ItemActions
     [System.Serializable]
     public class OpenOtherItemViewSlotContainerItemAction : ItemViewSlotsContainerItemAction
     {
-        [Tooltip("The Display Panel Unique Name.")]
         [SerializeField] protected string m_DisplayUniqueName;
 
         protected DisplayPanel m_TargetDisplayPanel;

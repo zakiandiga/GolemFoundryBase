@@ -51,9 +51,6 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
             m_Inventory = gameObject.GetCachedComponent<Inventory>();
             m_CurrencyOwner = gameObject.GetCachedComponent<CurrencyOwner>();
             m_ItemUser = gameObject.GetCachedComponent<ItemUser>();
-            if (m_ItemUser == null) {
-                m_ItemUser = m_Inventory.ItemUser;
-            }
 
             InventorySystemManager.InventoryIdentifierRegister.Register(this);
         }

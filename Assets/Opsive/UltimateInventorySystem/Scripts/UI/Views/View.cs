@@ -169,17 +169,6 @@ namespace Opsive.UltimateInventorySystem.UI.Views
                 }
             }
         }
-
-        public T GetViewModule<T>() where T : ViewModule
-        {
-            for (int i = 0; i < m_Modules.Count; i++) {
-                if (m_Modules[i] is T moduleWithType) {
-                    return moduleWithType;
-                }
-            }
-
-            return null;
-        }
     }
 
 

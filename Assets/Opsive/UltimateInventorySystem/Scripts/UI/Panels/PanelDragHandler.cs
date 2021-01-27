@@ -14,7 +14,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
     /// </summary>
     public class PanelDragHandler : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
-        [Tooltip("The panel rect transform.")]
         [SerializeField] protected RectTransform m_PanelRect;
 
         protected Canvas m_Canvas;

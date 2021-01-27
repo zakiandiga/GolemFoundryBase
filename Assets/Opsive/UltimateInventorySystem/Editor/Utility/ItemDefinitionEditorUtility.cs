@@ -134,7 +134,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
                 $"{assetDirectory}\\ItemDefinitions\\{itemDefinition.name}",
                 new string[] { database.name, itemDefinition.Category.name });
 
-            SetItemDefinitionDirty(itemDefinition, true);
             ItemCategoryEditorUtility.SetItemCategoryDirty(original.Category, false);
             InspectorUtility.SetDirty(database);
             return itemDefinition;

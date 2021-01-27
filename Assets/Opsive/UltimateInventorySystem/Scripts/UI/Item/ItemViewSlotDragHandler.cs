@@ -22,7 +22,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         [FormerlySerializedAs("m_ItemViewSlotMouseCursor")]
         [FormerlySerializedAs("m_ItemViewCursorManager")]
         [FormerlySerializedAs("m_ItemBoxCursorManager")]
-        [Tooltip("The Item View cursor manager.")]
+        [Tooltip("The Item View cursor manager")]
         [SerializeField] internal ItemViewSlotCursorManager m_ItemViewSlotCursorManager;
         [Tooltip("If true the slots with no items will not be able to be dragged.")]
         [SerializeField] internal bool m_DisableDragOnEmptySlot = true;
@@ -93,6 +93,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="eventData">The event data.</param>
         protected virtual void HandleItemViewSlotEndDrag(ItemViewSlotPointerEventData eventData)
         {
+            if (m_DisableDragOnEmptySlot && eventData.ItemViewSlot?.ItemInfo.Item == null) { return; }
             m_ItemViewSlotCursorManager.DragEnded();
             OnDragEnded?.Invoke(eventData);
         }

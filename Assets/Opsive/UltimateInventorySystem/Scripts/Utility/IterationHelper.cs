@@ -88,15 +88,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return index;
         }
 
-        /// <summary>
-        /// Get all the elements using Recursive Depth First Search.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="index">The index of depth.</param>
-        /// <param name="subObject">The current object to look at.</param>
-        /// <param name="func">The function to use to look within the object.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The count.</returns>
         public static int GetAllRecursiveDFS<T>(ref T[] array, int index, T subObject, Func<T, IList<T>> func)
             where T : class
         {
@@ -121,15 +112,7 @@ namespace Opsive.UltimateInventorySystem.Utility
             return index;
         }
 
-        /// <summary>
-        /// Get all the elements using Recursive Depth First Search.
-        /// </summary>
-        /// <param name="array">Reference to the array.</param>
-        /// <param name="includeThis">Should the search include the object.</param>
-        /// <param name="mainThis">The object to look at.</param>
-        /// <param name="func">The function to look within the object.</param>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The count.</returns>
+
         public static int GetAllRecursiveDFS<T>(ref T[] array, bool includeThis, T mainThis,
             Func<T, T> func) where T : class
         {
@@ -145,15 +128,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return count;
         }
 
-        /// <summary>
-        /// Get all the elements using Recursive Depth First Search.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="index">The index of depth.</param>
-        /// <param name="subObject">The current object to look at.</param>
-        /// <param name="func">The function to use to look within the object.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The count.</returns>
         private static int GetAllRecursiveDFS<T>(ref T[] array, int index, T subObject,
             Func<T, T> func) where T : class
         {
@@ -171,14 +145,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return count;
         }
 
-        /// <summary>
-        /// Get the leafs within the object tree.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="mainThis">The object to look at.</param>
-        /// <param name="func">The function to look within the object.</param>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The count of element.</returns>
         public static int GetLeafRecursiveDFS<T>(ref T[] array, T mainThis,
             Func<T, IList<T>> func) where T : class
         {
@@ -198,15 +164,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return index;
         }
 
-        /// <summary>
-        /// Get the leafs within the object tree.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="index">The index of depth.</param>
-        /// <param name="subObject">The current object to look at.</param>
-        /// <param name="func">The function to use to look within the object.</param>
-        /// <typeparam name="T">The type of the element.</typeparam>
-        /// <returns>The count.</returns>
         private static int GetLeafRecursiveDFS<T>(ref T[] array, int index, T subObject, Func<T, IList<T>> func)
         where T : class
         {
@@ -230,15 +187,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return index;
         }
 
-        /// <summary>
-        /// Get the leafs within the object tree with a condition.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="mainThis">The object to look at.</param>
-        /// <param name="func">The function to look within the object.</param>
-        /// <param name="condition">The condition.</param>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The count.</returns>
         public static int GetLeafConditionalRecursiveDFS<T>(ref T[] array, T mainThis,
             Func<T, IList<T>> func, Func<T, bool> condition) where T : class
         {
@@ -266,16 +214,6 @@ namespace Opsive.UltimateInventorySystem.Utility
             return index;
         }
 
-        /// <summary>
-        /// Get the leafs within the object tree.
-        /// </summary>
-        /// <param name="array">Reference to the array containing all the elements.</param>
-        /// <param name="index">The index of depth.</param>
-        /// <param name="subObject">The current object to look at.</param>
-        /// <param name="func">The function to look within the object.</param>
-        /// <param name="condition">The condition.</param>
-        /// <typeparam name="T">The element type.</typeparam>
-        /// <returns>The count.</returns>
         private static int GetLeafConditionalRecursiveDFS<T>(ref T[] array, int index, T subObject, Func<T, IList<T>> func, Func<T, bool> condition)
             where T : class
         {

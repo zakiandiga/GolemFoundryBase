@@ -24,8 +24,6 @@ namespace Opsive.UltimateInventorySystem.ItemActions
         [SerializeField] protected bool m_RemoveOnDrop;
         [Tooltip("The radius where the item should be dropped around the item user.")]
         [SerializeField] protected float m_DropRadius = 2f;
-        [Tooltip("The center of the random drop radius.")]
-        [SerializeField] protected Vector3 m_CenterOffset;
 
         public GameObject PickUpItemPrefab {
             get => m_PickUpItemPrefab;
@@ -110,10 +108,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
             }
 
             m_ItemPickup = ObjectPool.Instantiate(m_PickUpItemPrefab,
-                gameObject.transform.position + m_CenterOffset + new Vector3(
-                    Random.value * m_DropRadius - m_DropRadius / 2f,
-                    Random.value * m_DropRadius,
-                    Random.value * m_DropRadius - m_DropRadius / 2f),
+                gameObject.transform.position + new Vector3(Random.value * m_DropRadius - m_DropRadius / 2f, Random.value * m_DropRadius, Random.value * m_DropRadius - m_DropRadius / 2f),
                 Quaternion.identity).GetComponent<ItemPickup>();
 
             if (m_ItemPickup == null) {

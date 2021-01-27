@@ -73,8 +73,7 @@ namespace Opsive.UltimateInventorySystem.Core.DataStructures
         /// <returns>The overridden string.</returns>
         public override string ToString()
         {
-            var itemCollection = m_ItemCollection == null ? "ItemCollection is NULL" : m_ItemCollection.ToString();
-            return string.Format("ItemStack({0})[ {1} in {2}]", GetHashCode(), ItemAmount, itemCollection);
+            return string.Format("ItemStack[ {0} {1} in {2}]", m_Amount, m_Item, m_ItemCollection);
         }
     }
 }

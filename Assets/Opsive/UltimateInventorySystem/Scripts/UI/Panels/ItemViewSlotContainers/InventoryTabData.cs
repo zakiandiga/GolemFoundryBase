@@ -15,9 +15,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     /// </summary>
     public class InventoryTabData : MonoBehaviour
     {
-        [Tooltip("The inventory to use for this tab data (optional).")]
         [SerializeField] protected Inventory m_Inventory;
-        [Tooltip("The item info filter.")]
         [SerializeField] protected internal ItemInfoFilterSorterBase m_ItemInfoFilter;
 
         protected InventoryGridIndexer m_Indexer;
@@ -31,18 +29,11 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
             set => m_Indexer = value;
         }
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
         private void Awake()
         {
             Initialize(false);
         }
 
-        /// <summary>
-        /// Initialize.
-        /// </summary>
-        /// <param name="force">Force initialize.</param>
         public void Initialize(bool force)
         {
             if (m_IsInitialized && force == false) { return; }
