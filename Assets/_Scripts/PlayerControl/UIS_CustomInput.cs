@@ -1,39 +1,60 @@
 namespace Opsive.UltimateInventorySystem.Input
 {
+    using System;
     using UnityEngine;
     using UnityEngine.InputSystem;
 
     public class UIS_CustomInput : InventoryInput
     {
         //[SerializeField] private InputActionReference interact; //InteractInput - Player
-        [SerializeField] private InputActionReference menu; //OpenTogglePanelInput, define each menu button binding - Player
+        //[SerializeField] private InputActionReference menu; //OpenTogglePanelInput, define each menu button binding - Player
         [SerializeField] private InputActionReference previous; //TriggerPreviousInput - UI
         [SerializeField] private InputActionReference next; //TriggerNextInput - UI
         [SerializeField] private InputActionReference back; //ClosePanelInput - UI        
         [SerializeField] private InputActionReference confirm; //ItemActionInput - UI
         //[SerializeField] private InputActionReference hotbar0; //define hotbars
 
+        //public static event Action<> 
+
+        private MenuState menuState = MenuState.Inactive;
+        public enum MenuState
+        {
+            Active,
+            Inactive
+        }
+
         //Open specific menu (like Golem Assembly) triggered from interact event
         //action from interact with interactable triggered from PlayerMovement
 
+     
+
         private void OnEnable()
         {
+            //Control
             //interact.action.Enable();
-            menu.action.Enable();
+            //menu.action.Enable();
             previous.action.Enable();
             next.action.Enable();
             back.action.Enable();            
             confirm.action.Enable();
+
+            //Observer
+            PlayerMovement.OnOpenMenu += OpenMenu;
         }
 
         private void OnDisable()
         {
             //interact.action.Disable();
-            menu.action.Disable();
+            //menu.action.Disable();
             previous.action.Disable();
             next.action.Disable();
             back.action.Disable();
             confirm.action.Disable();
+        }
+
+        private void OpenMenu(PlayerMovement player)
+        {
+            OpenTogglePanel("Main Menu", true);
         }
 
         private void Update()
@@ -64,10 +85,10 @@ namespace Opsive.UltimateInventorySystem.Input
                 ClosePanel();
             }
 
-            if(menu.action.triggered) //temp
-            {
-                OpenTogglePanel("Main Menu", true);
-            }
+            //if(menu.action.triggered) //temp
+            //{
+            //    OpenTogglePanel("Main Menu", true);
+            //}
             
 
 

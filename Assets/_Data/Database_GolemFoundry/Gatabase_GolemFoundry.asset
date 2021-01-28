@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0da10bd5304324a46b6e9c87409bc530, type: 2}
   - {fileID: 11400000, guid: c6ce4198fe9328f499a4bd327124fa18, type: 2}
   - {fileID: 11400000, guid: 3ffb66151a4d1c44db57b3aeab03ac00, type: 2}
+  - {fileID: 11400000, guid: e2ad806941ff8134e87a3fc5f61aaf02, type: 2}
   m_ItemDefinitions:
   - {fileID: 11400000, guid: f377e7e797733264f899a98778627a0b, type: 2}
   - {fileID: 11400000, guid: f26af142c476d464e9386f0347a3ca3b, type: 2}
@@ -39,6 +40,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6e0a8d85a9f977a4da0e482df871d4bc, type: 2}
   - {fileID: 11400000, guid: a9562a9b35198e04c9dcda8ddaea4cf3, type: 2}
   - {fileID: 11400000, guid: 89c6427327c8ae3499aa481a2e05eabe, type: 2}
+  - {fileID: 11400000, guid: d57db126a82897a44a9dd7dcf29ffd6d, type: 2}
+  - {fileID: 11400000, guid: 4536e622846f93b4a86447daca0b733c, type: 2}
   m_Currencies:
   - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
   m_CraftingRecipes:

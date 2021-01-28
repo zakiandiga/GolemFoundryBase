@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
+
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
 {
@@ -50,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     #region OtherRequiredComponent
     private CharacterController controller;
     private Animator anim;
+
     #endregion
 
     #region ActionAnnouncer
@@ -109,6 +111,7 @@ public class PlayerMovement : MonoBehaviour
         cam = Camera.main.transform;
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
+
         //InventoryUI.OnAssembling += AssemblingControl;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -294,11 +297,12 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         if (openMenu.action.triggered)
-        {
+        {            
             OnOpenMenu?.Invoke(this);
             if(movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
+                
             }
             else
             {

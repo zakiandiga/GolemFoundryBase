@@ -896,7 +896,7 @@ MonoBehaviour:
   m_PanelOwner: {fileID: 1519720840}
   m_PanelOwnerInventoryIdentifierID: 1
   m_GameplayPanel: {fileID: 454386692}
-  m_MainMenuPanel: {fileID: 1972762889}
+  m_MainMenuPanel: {fileID: 0}
   m_SetTimeScaleToZeroWhenMenuIsOpened: 0
   m_CloseMenuWhenOpeningAnother: 0
 --- !u!114 &656494188
@@ -1820,6 +1820,18 @@ MonoBehaviour:
     m_KeyCode: 27
     m_InputType: 4
   m_OpenTogglePanelInput:
+  - Toggle: 1
+    PanelName: Main Menu
+    Input:
+      m_ButtonName: 
+      m_KeyCode: 105
+      m_InputType: 4
+  - Toggle: 1
+    PanelName: Main Menu
+    Input:
+      m_ButtonName: 
+      m_KeyCode: 105
+      m_InputType: 4
   - Toggle: 1
     PanelName: Main Menu
     Input:
