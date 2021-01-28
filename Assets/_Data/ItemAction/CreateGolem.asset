@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CreateGolem
   m_EditorClassIdentifier: 
   m_CategoriesItemActions:
-  - {fileID: 11400000, guid: d524f889380add74ca9cfa43eafe0fa0, type: 2}
+  - {fileID: 11400000, guid: 3ededa9b41d9bc34fb7e854812065bcb, type: 2}

@@ -113,8 +113,8 @@ public class PlayerMovement : MonoBehaviour
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
         //InventoryUI.OnAssembling += AssemblingControl;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
+        //Cursor.visible = false;
     }
 
     private void DisablingMovement()  //when opening UI
@@ -170,14 +170,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if(movementState == MovementState.OnMenu)
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.Confined;  //CURSOR MODE CHECK
+            //Cursor.visible = true;
             DisablingMovement();
         }
         else if(movementState != MovementState.OnMenu)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
+            //Cursor.visible = false;
             EnablingMovement();
         }
     }

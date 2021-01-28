@@ -34,9 +34,9 @@ MonoBehaviour:
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
         Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d324459e79e
-      m_ValuePositions: 0000000004000000050000000500000009000000090000000d0000000d000000
-      m_Values: 436f73740100000000c381ee23
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43b
+      m_ValuePositions: 0000000004000000050000000500000009000000090000000d0000000d0000001100000011000000
+      m_Values: 436f73740100000000c381ee230000000000000000
       m_UnityObjects: []
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.Sprite,
@@ -48,6 +48,13 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
       - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
       m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
+      m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+      m_Values: 426c75657072696e74204c61796f757401000000003c1fb77effffffffffffffff
+      m_UnityObjects: []
+      m_Version: 3.1
   m_DefaultItem:
     m_ID: 231839460
     m_Name: Prototype Golem 001
@@ -57,9 +64,9 @@ MonoBehaviour:
       m_AttributeCollectionData:
       - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
           Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d324459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
-        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e0000000e000000120000001200000016000000
-        m_Values: 50726963650100000000b764eeda010000000000000000000000
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
+        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
+        m_Values: 50726963650100000000b764eeda00000000010000000000000000000000
         m_UnityObjects:
         - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
         m_Version: 3.1
