@@ -15,6 +15,6 @@ MonoBehaviour:
   m_EmptyItemView: {fileID: 5170322735752414516, guid: c6d82625f05fdc842aa70e10c8a5030a, type: 3}
   m_CategoriesItemViews:
   - m_Category:
-      m_Name: 
-      m_ItemCategory: {fileID: 0}
+      m_Name: GolemForMenu
+      m_ItemCategory: {fileID: 11400000, guid: e2ad806941ff8134e87a3fc5f61aaf02, type: 2}
     m_ItemViewPrefab: {fileID: 5170322735752414516, guid: c6d82625f05fdc842aa70e10c8a5030a, type: 3}

@@ -104,5 +104,12 @@ MonoBehaviour:
       m_Values: 526172697479010000000066acc96f436f6d6d6f6e
       m_UnityObjects: []
       m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
+      m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+      m_Values: 476f6c656d526563697065496e64657801010000003e0d70b00000000000000000
+      m_UnityObjects: []
+      m_Version: 3.1
   m_IsMutable: 1
   m_IsUnique: 1

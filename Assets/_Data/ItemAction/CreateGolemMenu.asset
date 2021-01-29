@@ -31,3 +31,9 @@ MonoBehaviour:
       m_Values: 53656c6563742045787465726e616c4974656d416374696f6e
       m_UnityObjects: []
       m_Version: 3.1
+    - m_ObjectType: ItemActionUsingBlueprint
+      m_ValueHashes: 0d00eb25
+      m_ValuePositions: 00000000
+      m_Values: 4f70656e20426c75657072696e74
+      m_UnityObjects: []
+      m_Version: 3.1

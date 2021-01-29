@@ -51,12 +51,14 @@ MonoBehaviour:
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-      m_Values: 426c75657072696e74204c61796f757401000000003c1fb77effffffffffffffff
-      m_UnityObjects: []
+      m_Values: 426c75657072696e74204c61796f757401010000003c1fb77e0000000001000000
+      m_UnityObjects:
+      - {fileID: 7458060509141378492, guid: 5213128f3ff113f468966a4bea6faa20, type: 3}
+      - {fileID: 7458060509141378492, guid: 5213128f3ff113f468966a4bea6faa20, type: 3}
       m_Version: 3.1
   m_DefaultItem:
     m_ID: 456047548
-    m_Name: Prototype Golem 002_1
+    m_Name: Prototype Golem 003
     m_ItemDefinitionID: 2840732369
     m_ItemDefinition: {fileID: 11400000}
     m_ItemAttributeCollection:
@@ -74,6 +76,13 @@ MonoBehaviour:
         m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
         m_ValuePositions: 000000000600000007000000070000000b0000000b0000000f0000000f000000
         m_Values: 526172697479000000000066acc96f436f6d6d6f6e
+        m_UnityObjects: []
+        m_Version: 3.1
+      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
+          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
+        m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+        m_Values: 476f6c656d526563697065496e64657801010000003e0d70b00300000003000000
         m_UnityObjects: []
         m_Version: 3.1
   m_EditorIcon: {fileID: 0}
