@@ -1,6 +1,6 @@
 namespace Opsive.UltimateInventorySystem.Input
 {
-    using System;
+    using System.Collections;
     using UnityEngine;
     using UnityEngine.InputSystem;
 
@@ -50,11 +50,24 @@ namespace Opsive.UltimateInventorySystem.Input
             next.action.Disable();
             back.action.Disable();
             confirm.action.Disable();
+
+            PlayerMovement.OnOpenMenu -= OpenMenu;
         }
 
         private void OpenMenu(PlayerMovement player)
         {
-            OpenTogglePanel("Main Menu", true);
+            StartCoroutine(WaitCamera());
+
+            
+        }
+
+        IEnumerator WaitCamera()
+        {
+            float waitTime = 2f;
+
+            yield return new WaitForSeconds(waitTime);
+            OpenTogglePanel("Assembling Menu", true);
+
         }
 
         private void Update()

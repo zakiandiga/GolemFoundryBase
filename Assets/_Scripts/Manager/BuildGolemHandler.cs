@@ -85,7 +85,7 @@ public class BuildGolemHandler : MonoBehaviour
         //crafterPanel.SmartClose();   
         blueprintPanel.SmartClose();
         assemblingMenu.SmartClose();
-        Instantiate(targetGolem, spawner.position, Quaternion.identity); //Should we pool this?
+        Instantiate(targetGolem, spawner.position, spawner.rotation); //Should we pool this?
         Debug.Log("Item Assembly Success!");
     }
 

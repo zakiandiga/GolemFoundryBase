@@ -1852,7 +1852,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7458060509141378493
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1943,7 +1943,7 @@ MonoBehaviour:
   spawner: {fileID: 0}
   assemblingMenu: {fileID: 0}
   availableParts: {fileID: 0}
-  targetGolem: {fileID: 1077356408, guid: c6cfc32748fb5004aa11a1be074b5c58, type: 3}
+  targetGolem: {fileID: 1067925524328404, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
 --- !u!1 &7458060509161506978
 GameObject:
   m_ObjectHideFlags: 0
