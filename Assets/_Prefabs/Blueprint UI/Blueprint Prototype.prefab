@@ -1943,7 +1943,7 @@ MonoBehaviour:
   spawner: {fileID: 0}
   assemblingMenu: {fileID: 0}
   availableParts: {fileID: 0}
-  targetGolem: {fileID: 1067925524328404, guid: 6bbfea6690ef7724ba495c866081f855, type: 3}
+  targetGolem: {fileID: 3220407065250198828, guid: 8dde4d36955c10240992be829a1ca22f, type: 3}
 --- !u!1 &7458060509161506978
 GameObject:
   m_ObjectHideFlags: 0
