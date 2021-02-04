@@ -12,10 +12,10 @@ public class BuildGolemHandler : MonoBehaviour
 {
     [SerializeField] private int maxSlotFill;
     [SerializeField] private int currentSlotFill;
-    public ActionButton assemblyButton;
+
+    public GameObject buildButton;
 
     public Transform spawner;
-    //public Inventory crafterInventory;
 
     public DisplayPanel assemblingMenu;
     public GameObject availableParts;
@@ -23,26 +23,25 @@ public class BuildGolemHandler : MonoBehaviour
     public GameObject targetGolem; //Assign in runtime from blueprintPanel?
     private DisplayPanel blueprintPanel;
 
-    public static event Action<BuildGolemHandler> OnBuildPressed;
+    public static event Action<string> OnBuildPressed;
 
-    // Start is called before the first frame update
     void Start()
     {
         blueprintPanel = GetComponent<DisplayPanel>();
         
-        assemblyButton.interactable = false;
+        buildButton.SetActive(false);   
 
     }
 
     private void OnEnable()
     {
-        ItemTransferHandler.OnCancelBuild += ResetSlotFill;
+        ItemTransferHandler.OnRefreshTransfer += ResetSlotFill;
         ItemViewDropContainerSmartExchangeActionCustom.OnItemDrop += ItemDropListener;
     }
 
     private void OnDisable()
     {
-        ItemTransferHandler.OnCancelBuild -= ResetSlotFill;
+        ItemTransferHandler.OnRefreshTransfer -= ResetSlotFill;
         ItemViewDropContainerSmartExchangeActionCustom.OnItemDrop -= ItemDropListener;
     }
 
@@ -55,38 +54,39 @@ public class BuildGolemHandler : MonoBehaviour
             currentSlotFill = 0;
         }
 
-        if (assemblyButton.interactable)
-        {
-            assemblyButton.interactable = false;
-        }
-        Debug.Log("currentSlotFill reset to " + currentSlotFill);
+        buildButton.SetActive(false);        
+        
     }
 
     private void ItemDropListener(int amount)
     {
         currentSlotFill += amount;
+        Debug.Log("Item Dropped");
 
         if(currentSlotFill >= maxSlotFill)
         {
             ActivateAssemblyButton();
-        }
-        Debug.Log("Item Dropped, currentSlotFill = " + currentSlotFill);
+        }        
     }
 
     private void ActivateAssemblyButton()
     {
-        assemblyButton.interactable = true;
+        buildButton.SetActive(true);
     }
 
     public void Build()
     {
-        OnBuildPressed?.Invoke(this);
-        //playerPanel.SmartClose();
-        //crafterPanel.SmartClose();   
-        blueprintPanel.SmartClose();
-        assemblingMenu.SmartClose();
+        buildButton.SetActive(false);
+        OnBuildPressed?.Invoke("buildHandler");
+        currentSlotFill = 0;
+
         Instantiate(targetGolem, spawner.position, spawner.rotation); //Should we pool this?
-        Debug.Log("Item Assembly Success!");
+        
+    }
+
+    public void Cancel()
+    {
+
     }
 
 }

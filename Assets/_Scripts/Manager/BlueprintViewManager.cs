@@ -6,51 +6,50 @@ using Opsive.UltimateInventorySystem.Core.InventoryCollections;
 using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers;
 using Opsive.UltimateInventorySystem.UI.Panels;
 
+//Main function: toggle between Blueprint Learned and Blueprint Grid
 public class BlueprintViewManager : MonoBehaviour
 {
     [SerializeField] private RectTransform blueprintPanel;
     [SerializeField] private DisplayPanel blueprintLearned;
     [SerializeField] private Inventory buildingPodInventory;
     public List<GameObject> blueprintPrefabs;
+
+    private int selectedBlueprintIndex;
     
     private Inventory prefabInventory;
 
-    // Start is called before the first frame update
     void Start()
     {        
-        /*
-        foreach (GameObject blueprint in blueprintPrefabs)
-        {
-            ItemViewSlotsContainerPanelBinding blueprintSpawnInventory;
-            GameObject blueprintSpawn = Instantiate(blueprint, blueprintPanel);
-            blueprintSpawnInventory = blueprintSpawn.GetComponent<ItemViewSlotsContainerPanelBinding>();
-            blueprintSpawnInventory.BindInventory();
-            blueprintSpawn.SetActive(false);            
-        }
-        */
+        
     }
 
     private void OnEnable()
     {
-        ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;
+        ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;        
+        ItemTransferHandler.OnRefreshTransfer += ClosePanel;
+        
     }
 
     private void OnDisable()
     {
         ItemActionUsingBlueprint.OnBlueprintSelected -= OpenPanel;
+        ItemTransferHandler.OnRefreshTransfer -= ClosePanel;
     }
 
     private void OpenPanel(int value)
     {
-        blueprintPrefabs[value].GetComponent<DisplayPanel>().SmartOpen();
+        selectedBlueprintIndex = value;
+        blueprintPrefabs[selectedBlueprintIndex].GetComponent<DisplayPanel>().SmartOpen();
         blueprintLearned.SmartClose();
 
     }
 
-
-    // Update is called once per frame
-    void Update()
+    private void ClosePanel(int itemCount)
     {
-        
+        if(selectedBlueprintIndex > 0)
+            blueprintPrefabs[selectedBlueprintIndex].GetComponent<DisplayPanel>().SmartClose();
+
+        blueprintLearned.SmartOpen();
     }
+
 }

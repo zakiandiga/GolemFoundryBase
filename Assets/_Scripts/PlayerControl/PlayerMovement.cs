@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using TMPro;
+using Opsive.UltimateInventorySystem.Input;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -57,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region ActionAnnouncer
-    public static event Action<PlayerMovement> OnOpenMenu; 
+    public static event Action<string> OnOpenMenu; 
     public static event Action<PlayerMovement> OnInteract;
     #endregion
 
@@ -111,7 +113,9 @@ public class PlayerMovement : MonoBehaviour
 
         InRangeAnnouncer.OnPlayerInRange += ActivateMenu; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
-        BuildGolemHandler.OnBuildPressed += EnableControl;
+        UIS_CustomInput.OnClosingBuildMenu += EnableControl;
+        //BuildGolemHandler.OnBuildPressed += EnableControl;
+        //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
 
     private void OnDisable()
@@ -119,24 +123,41 @@ public class PlayerMovement : MonoBehaviour
         movementControl.action.Disable();
         jumpControl.action.Disable();
         crouchControl.action.Disable();
-        //openMenu.action.Disable();
+        openMenu.action.Disable();
         interactControl.action.Disable();
         indoorSwitch.action.Disable(); //Temporary indoor switch
 
         InRangeAnnouncer.OnPlayerInRange -= ActivateMenu; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
-        BuildGolemHandler.OnBuildPressed -= EnableControl;
+        UIS_CustomInput.OnClosingBuildMenu -= EnableControl;
+        //UIS_CustomInput.OnBuildTrigger -= EnableControl;
     }
 
-    private void EnableControl(BuildGolemHandler golemHandler)
+    private void EnableControl(string announcer)
     {
+        if(announcer == "BlueprintOption")
+        {
+            movementState = MovementState.Idle;
+            cameraMode = CameraMode.Free;
+            CameraStateSwitch();
+            MenuControlSwitch("BlueprintMenu");
+        }
+
+        else
+            StartCoroutine(EnableControlDelay());
+    }
+
+    IEnumerator EnableControlDelay()
+    {
+        float delay = 1.2f;
+        yield return new WaitForSeconds(delay);
 
         movementState = MovementState.Idle;
         cameraMode = CameraMode.Free;
 
         CameraStateSwitch();
 
-        MenuControlSwitch();
+        MenuControlSwitch("nonPlayer");
     }
 
     private void ActivateMenu(InRangeAnnouncer announcer)
@@ -157,7 +178,9 @@ public class PlayerMovement : MonoBehaviour
         movementControl.action.Disable();
         jumpControl.action.Disable();
         crouchControl.action.Disable();
-        interactControl.action.Disable();        
+        interactControl.action.Disable();
+
+        openMenu.action.Disable();
     }
 
     private void EnablingMovement()
@@ -165,7 +188,9 @@ public class PlayerMovement : MonoBehaviour
         movementControl.action.Enable();
         jumpControl.action.Enable();
         crouchControl.action.Enable();
-        interactControl.action.Enable();        
+        interactControl.action.Enable();
+
+        openMenu.action.Enable();
     }
 
     private void CameraStateSwitch()
@@ -203,7 +228,7 @@ public class PlayerMovement : MonoBehaviour
         }        
     }
 
-    private void MenuControlSwitch()
+    private void MenuControlSwitch(string source)
     {
         if(movementState == MovementState.OnMenu)
         {
@@ -333,9 +358,9 @@ public class PlayerMovement : MonoBehaviour
 
         #endregion
 
-        if (openMenu.action.triggered)
+        if (openMenu.action.triggered)  //Build Menu Interaction
         {            
-            OnOpenMenu?.Invoke(this);
+            OnOpenMenu?.Invoke("player");
             if(movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
@@ -358,7 +383,7 @@ public class PlayerMovement : MonoBehaviour
 
             CameraStateSwitch();
 
-            MenuControlSwitch();
+            MenuControlSwitch("player");
         }
 
         if(interactControl.action.triggered)

@@ -39,13 +39,13 @@ public class NPC_Behaviour : MonoBehaviour
 
     IEnumerator GreetingsBehaviour()
     {
-        Debug.Log("start greeting");
+        //Debug.Log("start greeting");
         float delay = 2f;
         anim.SetTrigger("greetings");
 
         yield return new WaitForSeconds(delay);
 
-        Debug.Log("Exit to patrol");
+        //Debug.Log("Exit to patrol");
         golemState = GolemState.Patrol;
         StartCoroutine(DestinationDelay());
 
@@ -67,10 +67,10 @@ public class NPC_Behaviour : MonoBehaviour
 
     private void SetDestination(Vector3 destination)
     {
-        Debug.Log("SetDestination() executed");
+        //Debug.Log("SetDestination() executed");
         hasDestination = true;
         agent.SetDestination(destination);
-        Debug.Log("Set Destination destination to " + nextDestination);
+        //Debug.Log("Set Destination destination to " + nextDestination);
         anim.SetBool("isWalking", true);
 
     }
@@ -85,7 +85,7 @@ public class NPC_Behaviour : MonoBehaviour
     private void PerformDecision()
     {        
         golemState = (GolemState)Random.Range(1, 3); //doesn't consider Greeting state anymore
-        Debug.Log("exit golemState to " + golemState);
+        //Debug.Log("exit golemState to " + golemState);
         isPerforming = true;
     }
     

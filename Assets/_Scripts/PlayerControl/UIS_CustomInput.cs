@@ -1,5 +1,6 @@
 namespace Opsive.UltimateInventorySystem.Input
 {
+    using System;
     using System.Collections;
     using UnityEngine;
     using UnityEngine.InputSystem;
@@ -7,67 +8,156 @@ namespace Opsive.UltimateInventorySystem.Input
     public class UIS_CustomInput : InventoryInput
     {
         //[SerializeField] private InputActionReference interact; //InteractInput - Player
-        //[SerializeField] private InputActionReference menu; //OpenTogglePanelInput, define each menu button binding - Player
+        [SerializeField] private InputActionReference menu; //OpenTogglePanelInput, define each menu button binding - Player
         [SerializeField] private InputActionReference previous; //TriggerPreviousInput - UI
         [SerializeField] private InputActionReference next; //TriggerNextInput - UI
         [SerializeField] private InputActionReference back; //ClosePanelInput - UI        
         [SerializeField] private InputActionReference confirm; //ItemActionInput - UI
         //[SerializeField] private InputActionReference hotbar0; //define hotbars
 
-        //public static event Action<> 
-
-        private MenuState menuState = MenuState.Inactive;
-        public enum MenuState
+        public static event Action<string> OnBuildTrigger;
+        //public static event Action<string> OnOpenMenu;
+        public static event Action<string> OnClosingBuildMenu;
+        public static event Action<string> OnCancelBuild;
+ 
+        private BuildingMenuState buildingMenuState = BuildingMenuState.Inactive;
+        public enum BuildingMenuState
         {
-            Active,
+            BlueprintOption,
+            BlueprintGrid,
             Inactive
+            
         }
 
         //Open specific menu (like Golem Assembly) triggered from interact event
         //action from interact with interactable triggered from PlayerMovement
-
-     
+        private void Start()
+        {
+            buildingMenuState = BuildingMenuState.Inactive;
+        }
 
         private void OnEnable()
         {
             //Control
             //interact.action.Enable();
             //menu.action.Enable();
-            previous.action.Enable();
-            next.action.Enable();
-            back.action.Enable();            
-            confirm.action.Enable();
+            //previous.action.Enable();
+            //next.action.Enable();
+            //back.action.Enable();            
+            //confirm.action.Enable();
 
             //Observer
             PlayerMovement.OnOpenMenu += OpenMenu;
+            ItemActionUsingBlueprint.OnBlueprintSelected += BlueprintSelected;
+            BuildGolemHandler.OnBuildPressed += OpenMenu;  
         }
 
         private void OnDisable()
         {
             //interact.action.Disable();
-            //menu.action.Disable();
+            menu.action.Disable();
             previous.action.Disable();
             next.action.Disable();
             back.action.Disable();
             confirm.action.Disable();
 
             PlayerMovement.OnOpenMenu -= OpenMenu;
+            BuildGolemHandler.OnBuildPressed -= OpenMenu;
         }
 
-        private void OpenMenu(PlayerMovement player)
+        private void DisablingMenuInteraction()
         {
-            StartCoroutine(WaitCamera());
-
-            
+            menu.action.Disable();
+            previous.action.Disable();
+            next.action.Disable();
+            back.action.Disable();
+            confirm.action.Disable();
+            //Debug.Log("Menu control disabled");
         }
 
-        IEnumerator WaitCamera()
+        private void EnablingMenuInteraction()
         {
-            float waitTime = 2f;
+            menu.action.Enable();
+            previous.action.Enable();
+            next.action.Enable();
+            back.action.Enable();
+            confirm.action.Enable();
+            //Debug.Log("Menu control enabled");
+        }
+
+        private void BlueprintSelected(int value)
+        {
+            buildingMenuState = BuildingMenuState.BlueprintGrid;
+        }
+
+        private void OpenMenu(string announcer)
+        {
+            switch (buildingMenuState)
+            {
+                case BuildingMenuState.Inactive: //Open menu from PlayerMovement
+                    if(announcer == "player")
+                    {
+                        OpenTogglePanel("Assembling Menu", true);
+                        EnablingMenuInteraction();                        
+                        buildingMenuState = BuildingMenuState.BlueprintOption;
+                        Debug.Log("CustomInput OpenMenu from " + announcer + ", menuState = " + buildingMenuState);
+                    }
+                    break;
+                case BuildingMenuState.BlueprintOption: //Close menu on blueprint option opened
+                    OnClosingBuildMenu?.Invoke("BlueprintOption");
+                    DisablingMenuInteraction();
+                    OpenTogglePanel("Assembling Menu", true);
+                    buildingMenuState = BuildingMenuState.Inactive;
+                    break;
+                case BuildingMenuState.BlueprintGrid:
+                    //Enter to this state controlled by BlueprintSelecter()
+                    if(announcer == "button")
+                    {
+                        OnCancelBuild("blueprintGrid");
+                        buildingMenuState = BuildingMenuState.BlueprintOption;
+                    }
+                    else if (announcer == "buildHandler")
+                    {
+                        OnClosingBuildMenu?.Invoke("BlueprintOption");
+                        DisablingMenuInteraction();
+                        OpenTogglePanel("Assembling Menu", true);
+                        buildingMenuState = BuildingMenuState.Inactive;
+                    }
+                    
+                    break;
+
+            }
+
+
+            /*
+            if (announcer == "player")
+            {
+                Debug.Log("Open Menu Triggered");
+
+                StartCoroutine(WaitCameraFromPlayer());
+            }
+
+            else if (announcer == "buildHandler")
+            {
+                Debug.Log("Close menu from build");
+                OpenTogglePanel("Assembling Menu", true);
+                OnBuildTrigger?.Invoke("UI_Input");
+            }
+            */            
+        }
+
+        IEnumerator WaitCameraFromPlayer()
+        {
+            float waitTime = 1f;
 
             yield return new WaitForSeconds(waitTime);
             OpenTogglePanel("Assembling Menu", true);
 
+        }
+
+        public void CancelButton()
+        {
+            OpenMenu("button");
         }
 
         private void Update()
@@ -95,13 +185,15 @@ namespace Opsive.UltimateInventorySystem.Input
 
             if (back.action.triggered)
             {
-                ClosePanel();
+                CancelButton(); //Temporary, this should be on BUILDING MENU
+                Debug.Log("Open Menu pressed");
             }
 
-            //if(menu.action.triggered) //temp
-            //{
-            //    OpenTogglePanel("Main Menu", true);
-            //}
+            if(menu.action.triggered) //temp
+            {
+                CancelButton(); //Temporary, this should be on BUILDING MENU
+                Debug.Log("Open Menu pressed");
+            }
             
 
 
