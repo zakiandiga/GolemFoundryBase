@@ -17,4 +17,9 @@ public class SceneManagement : MonoBehaviour
     {
         SceneManager.LoadScene("IndoorDesigner", LoadSceneMode.Additive);
     }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
