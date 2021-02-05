@@ -27,6 +27,7 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;        
         ItemTransferHandler.OnRefreshTransfer += ClosePanel;
+        BuildGolemHandler.OnBuildPressed += ClosingPanelOnBuild;
         
     }
 
@@ -42,6 +43,11 @@ public class BlueprintViewManager : MonoBehaviour
         blueprintPrefabs[selectedBlueprintIndex].GetComponent<DisplayPanel>().SmartOpen();
         blueprintLearned.SmartClose();
 
+    }
+
+    private void ClosingPanelOnBuild(string source)
+    {
+        ClosePanel(1); //unused parameter
     }
 
     private void ClosePanel(int itemCount)

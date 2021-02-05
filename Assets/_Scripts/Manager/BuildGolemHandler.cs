@@ -61,7 +61,7 @@ public class BuildGolemHandler : MonoBehaviour
     private void ItemDropListener(int amount)
     {
         currentSlotFill += amount;
-        Debug.Log("Item Dropped");
+        
 
         if(currentSlotFill >= maxSlotFill)
         {

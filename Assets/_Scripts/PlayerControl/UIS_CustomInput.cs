@@ -96,6 +96,7 @@ namespace Opsive.UltimateInventorySystem.Input
         private void BlueprintSelected(int value)
         {
             buildingMenuState = BuildingMenuState.BlueprintGrid;
+            Debug.Log(buildingMenuState);
         }
 
         private void OpenMenu(string announcer)
@@ -126,9 +127,9 @@ namespace Opsive.UltimateInventorySystem.Input
                     }
                     else if (announcer == "buildHandler")
                     {
-                        OnClosingBuildMenu?.Invoke("BlueprintOption");
-                        DisablingMenuInteraction();
                         OpenTogglePanel("Assembling Menu", true);
+                        OnClosingBuildMenu?.Invoke("BlueprintOption");
+                        DisablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.Inactive;
                     }
                     

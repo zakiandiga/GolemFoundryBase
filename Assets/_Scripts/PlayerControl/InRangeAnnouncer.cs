@@ -26,12 +26,12 @@ public class InRangeAnnouncer : MonoBehaviour
     private void PlayerInRange()
     {
         OnPlayerInRange?.Invoke(this.gameObject.name);
-        Debug.Log("Player in range!");
+
     }
 
     private void PlayerOutRange()
     {
         OnPlayerOutRange?.Invoke(this);
-        Debug.Log("Player out of range!");
+
     }
 }

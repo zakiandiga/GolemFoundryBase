@@ -7,6 +7,7 @@ public class NPC_Behaviour : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator anim;
+    private GameObject player;
 
     [SerializeField] private Transform targetDestinator;
 
@@ -34,6 +35,9 @@ public class NPC_Behaviour : MonoBehaviour
         //On initiate
         golemState = GolemState.Greetings;
         StartCoroutine(GreetingsBehaviour());
+
+        player = GameObject.FindWithTag("Player");        
+        Physics.IgnoreCollision(GetComponentInChildren<MeshCollider>(), player.GetComponent<CharacterController>());
 
     }
 

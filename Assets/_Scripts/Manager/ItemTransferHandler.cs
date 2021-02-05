@@ -29,9 +29,9 @@ public class ItemTransferHandler : MonoBehaviour
     {        
         var allItemInfos = buildingpodInventory.AllItemInfos;
 
-        OnRefreshTransfer?.Invoke(allItemInfos.Count * -1);
+        //OnRefreshTransfer?.Invoke(allItemInfos.Count * -1);
 
-        Debug.Log("transfer amount = " + (allItemInfos.Count * -1));
+        
         buildingpodInventory.MainItemCollection.RemoveAll();
         
 
