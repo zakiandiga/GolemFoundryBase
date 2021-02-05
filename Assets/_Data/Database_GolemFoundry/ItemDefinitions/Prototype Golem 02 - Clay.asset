@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53ac5fa5da8102b468a92c21620db0d0, type: 3}
-  m_Name: Prototype Golem 003
+  m_Name: Prototype Golem 02 - Clay
   m_EditorClassIdentifier: 
   m_ID: 2840732369
   m_Category: {fileID: 11400000, guid: e2ad806941ff8134e87a3fc5f61aaf02, type: 2}
@@ -58,7 +58,7 @@ MonoBehaviour:
       m_Version: 3.1
   m_DefaultItem:
     m_ID: 456047548
-    m_Name: Prototype Golem 003
+    m_Name: Prototype Golem 02 - Clay
     m_ItemDefinitionID: 2840732369
     m_ItemDefinition: {fileID: 11400000}
     m_ItemAttributeCollection:

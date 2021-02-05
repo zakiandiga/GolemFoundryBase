@@ -160,9 +160,17 @@ public class PlayerMovement : MonoBehaviour
         MenuControlSwitch("nonPlayer");
     }
 
-    private void ActivateMenu(InRangeAnnouncer announcer)
+    private void ActivateMenu(string announcer)
     {
         openMenu.action.Enable();
+        if(announcer == "MaterialRefill")
+        {
+            interactSign.text = "[I] Refill material";
+        }
+        else if(announcer == "GolemPod")
+        {
+            interactSign.text = "[M] Open Build Menu";
+        }
         interactSign.enabled = true;
         
     }

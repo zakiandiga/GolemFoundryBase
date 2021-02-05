@@ -48,6 +48,7 @@ namespace Opsive.UltimateInventorySystem.Input
 
             //Observer
             PlayerMovement.OnOpenMenu += OpenMenu;
+            PlayerMovement.OnInteract += PlayerInteract;
             ItemActionUsingBlueprint.OnBlueprintSelected += BlueprintSelected;
             BuildGolemHandler.OnBuildPressed += OpenMenu;  
         }
@@ -62,6 +63,8 @@ namespace Opsive.UltimateInventorySystem.Input
             confirm.action.Disable();
 
             PlayerMovement.OnOpenMenu -= OpenMenu;
+            PlayerMovement.OnInteract -= PlayerInteract;
+            ItemActionUsingBlueprint.OnBlueprintSelected -= BlueprintSelected;
             BuildGolemHandler.OnBuildPressed -= OpenMenu;
         }
 
@@ -83,6 +86,11 @@ namespace Opsive.UltimateInventorySystem.Input
             back.action.Enable();
             confirm.action.Enable();
             //Debug.Log("Menu control enabled");
+        }
+
+        private void PlayerInteract(PlayerMovement player)
+        {
+            Interact();
         }
 
         private void BlueprintSelected(int value)
@@ -161,7 +169,7 @@ namespace Opsive.UltimateInventorySystem.Input
         }
 
         private void Update()
-        {
+        {            
             
             if (IsInputActive == false)
             {

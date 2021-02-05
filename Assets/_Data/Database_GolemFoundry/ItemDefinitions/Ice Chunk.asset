@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53ac5fa5da8102b468a92c21620db0d0, type: 3}
-  m_Name: Prototype Golem 001
+  m_Name: Ice Chunk
   m_EditorClassIdentifier: 
-  m_ID: 3318457145
-  m_Category: {fileID: 11400000, guid: e2ad806941ff8134e87a3fc5f61aaf02, type: 2}
-  m_Parent: {fileID: 11400000, guid: 4536e622846f93b4a86447daca0b733c, type: 2}
+  m_ID: 273943504
+  m_Category: {fileID: 11400000, guid: dce79b0ea6d220f48884da36feaa54de, type: 2}
+  m_Parent: {fileID: 0}
   m_ChildrenData:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
@@ -28,15 +28,8 @@ MonoBehaviour:
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
-      m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000048000000
-      m_Values: 4465736372697074696f6e01010000003a3e5e39546865207665727920766972737420676f6c656d20796f75206372656174652120596561682c206974277320776f726b696e6721546865207665727920766972737420676f6c656d20796f75206372656174652120596561682c206974277320776f726b696e6721
-      m_UnityObjects: []
-      m_Version: 3.1
-    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
-        Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43b
-      m_ValuePositions: 0000000004000000050000000500000009000000090000000d0000000d0000001100000011000000
-      m_Values: 436f73740100000000c381ee230000000000000000
+      m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000057000000
+      m_Values: 4465736372697074696f6e010100000091ae5dc0426173696320626f6479206d616465206f7574206f66206578706572696d656e74616c206963652e20456173696c79206d656c74206275742062656175746966756c2e426173696320626f6479206d616465206f7574206f66206578706572696d656e74616c206963652e20456173696c79206d656c74206275742062656175746966756c2e
       m_UnityObjects: []
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.Sprite,
@@ -45,22 +38,13 @@ MonoBehaviour:
       m_ValuePositions: 0000000004000000050000000500000009000000090000000d00000011000000
       m_Values: 49636f6e0101000000196fb16f0000000001000000
       m_UnityObjects:
-      - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
-      - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
-      m_Version: 3.1
-    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
-        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
-      m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-      m_Values: 426c75657072696e74204c61796f757401010000003c1fb77e0000000001000000
-      m_UnityObjects:
-      - {fileID: 7458060509141378492, guid: 653426053dc86524daa7d7f9b02b002e, type: 3}
-      - {fileID: 7458060509141378492, guid: 653426053dc86524daa7d7f9b02b002e, type: 3}
+      - {fileID: 21300000, guid: 5f1ac6bf9a0ac214eb1c5cb235687619, type: 3}
+      - {fileID: 21300000, guid: 5f1ac6bf9a0ac214eb1c5cb235687619, type: 3}
       m_Version: 3.1
   m_DefaultItem:
-    m_ID: 231839460
-    m_Name: Prototype Golem 001
-    m_ItemDefinitionID: 3318457145
+    m_ID: 1806182589
+    m_Name: Ice Chunk
+    m_ItemDefinitionID: 273943504
     m_ItemDefinition: {fileID: 11400000}
     m_ItemAttributeCollection:
       m_AttributeCollectionData:
@@ -68,7 +52,7 @@ MonoBehaviour:
           Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
         m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
         m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
-        m_Values: 50726963650100000000b764eeda00000000010000000000000000000000
+        m_Values: 50726963650000000000b764eeda00000000010000000000000000000000
         m_UnityObjects:
         - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
         m_Version: 3.1
@@ -76,14 +60,14 @@ MonoBehaviour:
           mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
         m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
         m_ValuePositions: 000000000600000007000000070000000b0000000b0000000f0000000f000000
-        m_Values: 526172697479010000000066acc96f436f6d6d6f6e
+        m_Values: 526172697479000000000066acc96f436f6d6d6f6e
         m_UnityObjects: []
         m_Version: 3.1
-      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
+      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
           mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
-        m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-        m_Values: 476f6c656d526563697065496e64657801010000003e0d70b00100000001000000
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
+        m_ValuePositions: 0000000004000000050000000500000009000000090000000d0000000d000000
+        m_Values: 4772696400000000003b9f80705468652073656374696f6e206f662074686520626c75657072696e74207768657265207468697320706172742063616e20676f657320746f
         m_UnityObjects: []
         m_Version: 3.1
   m_EditorIcon: {fileID: 0}

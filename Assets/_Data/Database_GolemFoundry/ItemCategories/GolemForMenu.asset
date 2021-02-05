@@ -33,16 +33,14 @@ MonoBehaviour:
   m_ElementsData:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-    m_ValueHashes: 4c1e4f8ec233006407c1b58994c2b589e1ccb5896eceb589fbcfb58948c9b589
-    m_ValuePositions: 0000000004000000080000000c0000001000000014000000180000001c000000
-    m_Values: 0600000006000000000000000100000002000000030000000400000005000000
+    m_ValueHashes: 4c1e4f8ec233006407c1b58994c2b589e1ccb5896eceb589
+    m_ValuePositions: 0000000004000000080000000c0000001000000014000000
+    m_Values: 040000000400000000000000010000000200000003000000
     m_UnityObjects:
     - {fileID: 11400000, guid: d57db126a82897a44a9dd7dcf29ffd6d, type: 2}
     - {fileID: 11400000, guid: 4536e622846f93b4a86447daca0b733c, type: 2}
     - {fileID: 11400000, guid: da7489e8eb5eec443ab9db69636fadab, type: 2}
     - {fileID: 11400000, guid: d0418e9830e330140b956cc32cf071a6, type: 2}
-    - {fileID: 11400000, guid: 2019464828e83ee40b680f2f386d1000, type: 2}
-    - {fileID: 11400000, guid: 2c9460abb5a8cef4a961cb2c58c7c110, type: 2}
     m_Version: 3.1
   m_IsAbstract: 0
   m_Color: {r: 0.72001475, g: 0.7840493, b: 0.5586439, a: 1}

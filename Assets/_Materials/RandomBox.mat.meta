@@ -1,11 +1,8 @@
 fileFormatVersion: 2
-guid: 2019464828e83ee40b680f2f386d1000
-labels:
-- Gatabase_GolemFoundry
-- GolemForMenu
+guid: 5a3561f02224ae1439be7b8f19ebe36d
 NativeFormatImporter:
   externalObjects: {}
-  mainObjectFileID: 11400000
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -4,7 +4,7 @@ using UnityEngine;
 //Put this script on interactable object, like guilding pod
 public class InRangeAnnouncer : MonoBehaviour
 {
-    public static event Action<InRangeAnnouncer> OnPlayerInRange;
+    public static event Action<string> OnPlayerInRange;
     public static event Action<InRangeAnnouncer> OnPlayerOutRange;
 
     private void OnTriggerEnter(Collider other)
@@ -25,7 +25,7 @@ public class InRangeAnnouncer : MonoBehaviour
 
     private void PlayerInRange()
     {
-        OnPlayerInRange?.Invoke(this);
+        OnPlayerInRange?.Invoke(this.gameObject.name);
         Debug.Log("Player in range!");
     }
 
