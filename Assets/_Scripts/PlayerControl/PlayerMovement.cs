@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using TMPro;
+using Opsive.UltimateInventorySystem.Input;
+
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -50,10 +54,12 @@ public class PlayerMovement : MonoBehaviour
     #region OtherRequiredComponent
     private CharacterController controller;
     private Animator anim;
+    [SerializeField] private TextMeshProUGUI interactSign; //TEMP
+
     #endregion
 
     #region ActionAnnouncer
-    public static event Action<PlayerMovement> OnOpenMenu; 
+    public static event Action<string> OnOpenMenu; 
     public static event Action<PlayerMovement> OnInteract;
     #endregion
 
@@ -82,14 +88,34 @@ public class PlayerMovement : MonoBehaviour
     }
     #endregion
 
+    private void Start()
+    {
+        controller = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
+        cam = Camera.main.transform;
+        cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
+        cameraBrain = cam.GetComponent<CinemachineBrain>();
+
+        //InventoryUI.OnAssembling += AssemblingControl;
+        //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
+        //Cursor.visible = false;
+        interactSign.enabled = false; //TEMP
+    }
+
     private void OnEnable()
     {
         movementControl.action.Enable(); //Enable (and disable) these reference action
         jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
         crouchControl.action.Enable();   //Instead of SetActive the component
-        openMenu.action.Enable();
+        //openMenu.action.Enable();
         interactControl.action.Enable();
         indoorSwitch.action.Enable(); //Temporary indoor switch
+
+        InRangeAnnouncer.OnPlayerInRange += ActivateMenu; //TEMP
+        InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
+        UIS_CustomInput.OnClosingBuildMenu += EnableControl;
+        //BuildGolemHandler.OnBuildPressed += EnableControl;
+        //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
 
     private void OnDisable()
@@ -100,18 +126,59 @@ public class PlayerMovement : MonoBehaviour
         openMenu.action.Disable();
         interactControl.action.Disable();
         indoorSwitch.action.Disable(); //Temporary indoor switch
+
+        InRangeAnnouncer.OnPlayerInRange -= ActivateMenu; //TEMP
+        InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
+        UIS_CustomInput.OnClosingBuildMenu -= EnableControl;
+        //UIS_CustomInput.OnBuildTrigger -= EnableControl;
     }
 
-    private void Start()
+    private void EnableControl(string announcer)
     {
-        controller = GetComponent<CharacterController>();        
-        anim = GetComponentInChildren<Animator>();
-        cam = Camera.main.transform;
-        cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
-        cameraBrain = cam.GetComponent<CinemachineBrain>();
-        //InventoryUI.OnAssembling += AssemblingControl;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if(announcer == "BlueprintOption")
+        {
+            movementState = MovementState.Idle;
+            cameraMode = CameraMode.Free;
+            CameraStateSwitch();
+            MenuControlSwitch("BlueprintMenu");
+        }
+
+        else
+            StartCoroutine(EnableControlDelay());
+    }
+
+    IEnumerator EnableControlDelay()
+    {
+        float delay = 1.2f;
+        yield return new WaitForSeconds(delay);
+
+        movementState = MovementState.Idle;
+        cameraMode = CameraMode.Free;
+
+        CameraStateSwitch();
+
+        MenuControlSwitch("nonPlayer");
+    }
+
+    private void ActivateMenu(string announcer)
+    {
+        openMenu.action.Enable();
+        if(announcer == "MaterialRefill")
+        {
+            interactSign.text = "[I] Refill material";
+        }
+        else if(announcer == "GolemPod")
+        {
+            interactSign.text = "[M] Open Build Menu";
+        }
+        interactSign.enabled = true;
+        
+    }
+
+    private void DeactivateMenu(InRangeAnnouncer announcer)
+    {
+        openMenu.action.Disable();
+        interactSign.enabled = false;
     }
 
     private void DisablingMovement()  //when opening UI
@@ -119,7 +186,9 @@ public class PlayerMovement : MonoBehaviour
         movementControl.action.Disable();
         jumpControl.action.Disable();
         crouchControl.action.Disable();
-        interactControl.action.Disable();        
+        interactControl.action.Disable();
+
+        openMenu.action.Disable();
     }
 
     private void EnablingMovement()
@@ -127,7 +196,9 @@ public class PlayerMovement : MonoBehaviour
         movementControl.action.Enable();
         jumpControl.action.Enable();
         crouchControl.action.Enable();
-        interactControl.action.Enable();        
+        interactControl.action.Enable();
+
+        openMenu.action.Enable();
     }
 
     private void CameraStateSwitch()
@@ -135,46 +206,48 @@ public class PlayerMovement : MonoBehaviour
         switch(cameraMode)
         {
             case CameraMode.Free:
-                playerFreeCam.m_Priority = 1;
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
-                Debug.Log("CameraMode = " + cameraMode);
+                playerFreeCam.m_Priority = 1;
+                //Debug.Log("CameraMode = " + cameraMode);
                 break;
             case CameraMode.LockOn:
-                playerLockCam.m_Priority = 1;
                 directObjCam.m_Priority = 0;
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
+                playerLockCam.m_Priority = 1;
+                //Debug.Log("CameraMode = " + cameraMode);
                 break;
             case CameraMode.OnObject:
-                directObjCam.m_Priority = 1;
                 playerLockCam.m_Priority = 0;
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
+                directObjCam.m_Priority = 1;
+                //Debug.Log("CaemraMode = " + cameraMode);
                 break;
             case CameraMode.Indoor:
                 playerFreeCam.m_Priority = 0;
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 1;
-                Debug.Log("CameraMode = " + cameraMode);
+                //Debug.Log("CameraMode = " + cameraMode);
                 break;
         }        
     }
 
-    private void MenuControlSwitch()
+    private void MenuControlSwitch(string source)
     {
         if(movementState == MovementState.OnMenu)
         {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;  //CURSOR MODE CHECK
+            //Cursor.visible = true;
             DisablingMovement();
         }
         else if(movementState != MovementState.OnMenu)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
+            //Cursor.visible = false;
             EnablingMovement();
         }
     }
@@ -293,18 +366,32 @@ public class PlayerMovement : MonoBehaviour
 
         #endregion
 
-        if (openMenu.action.triggered)
-        {
-            OnOpenMenu?.Invoke(this);
+        if (openMenu.action.triggered)  //Build Menu Interaction
+        {            
+            OnOpenMenu?.Invoke("player");
             if(movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
+
+                //cameraMode = CameraMode.OnObject; //temp
+                cameraMode = CameraMode.OnObject;
+
             }
             else
             {
+                
+                if (cameraMode == CameraMode.OnObject)
+                {
+                    cameraMode = CameraMode.Free;
+                }
                 movementState = MovementState.Idle;
             }
-            MenuControlSwitch();
+
+
+
+            CameraStateSwitch();
+
+            MenuControlSwitch("player");
         }
 
         if(interactControl.action.triggered)
@@ -325,6 +412,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 cameraMode = CameraMode.Free;
+                CameraStateSwitch();
             }
 
         }

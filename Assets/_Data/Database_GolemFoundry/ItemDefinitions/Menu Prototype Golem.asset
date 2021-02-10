@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ac5fa5da8102b468a92c21620db0d0, type: 3}
+  m_Name: Menu Prototype Golem
+  m_EditorClassIdentifier: 
+  m_ID: 3111839920
+  m_Category: {fileID: 11400000, guid: e2ad806941ff8134e87a3fc5f61aaf02, type: 2}
+  m_Parent: {fileID: 0}
+  m_ChildrenData:
+    m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
+      Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+    m_ValueHashes: 4c1e4f8ec233006407c1b58994c2b589e1ccb589
+    m_ValuePositions: 0000000004000000080000000c00000010000000
+    m_Values: 0300000003000000000000000100000002000000
+    m_UnityObjects:
+    - {fileID: 11400000, guid: d57db126a82897a44a9dd7dcf29ffd6d, type: 2}
+    - {fileID: 11400000, guid: da7489e8eb5eec443ab9db69636fadab, type: 2}
+    - {fileID: 11400000, guid: d0418e9830e330140b956cc32cf071a6, type: 2}
+    m_Version: 3.1
+  m_ItemDefinitionAttributeCollection:
+    m_AttributeCollectionData:
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
+      m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000014000000
+      m_Values: 4465736372697074696f6e01000000003a3e5e39476f6c656d206465736372697074696f6e20746861742073686f776e206f6e20676f6c656d206275696c642073656c656374696f6e206d656e75
+      m_UnityObjects: []
+      m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
+        Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43b
+      m_ValuePositions: 0000000004000000050000000500000009000000090000000d0000000d0000001100000011000000
+      m_Values: 436f73740100000000c381ee230000000000000000
+      m_UnityObjects: []
+      m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.Sprite,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4aaf0255e0f3d4ee4c
+      m_ValuePositions: 0000000004000000050000000500000009000000090000000d00000011000000
+      m_Values: 49636f6e0101000000196fb16f0000000001000000
+      m_UnityObjects:
+      - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
+      - {fileID: 21300000, guid: 63fdde1460481ae4dbabd764e8d41061, type: 3}
+      m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
+      m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+      m_Values: 426c75657072696e74204c61796f757401000000003c1fb77effffffffffffffff
+      m_UnityObjects: []
+      m_Version: 3.1
+  m_DefaultItem:
+    m_ID: 4164154790
+    m_Name: Menu Prototype Golem
+    m_ItemDefinitionID: 3111839920
+    m_ItemDefinition: {fileID: 11400000}
+    m_ItemAttributeCollection:
+      m_AttributeCollectionData:
+      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
+          Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
+        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
+        m_Values: 50726963650100000000b764eeda00000000010000000000000000000000
+        m_UnityObjects:
+        - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
+        m_Version: 3.1
+      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
+          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
+        m_ValuePositions: 000000000600000007000000070000000b0000000b0000000f0000000f000000
+        m_Values: 526172697479010000000066acc96f436f6d6d6f6e
+        m_UnityObjects: []
+        m_Version: 3.1
+      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
+          mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
+        m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+        m_Values: 476f6c656d526563697065496e64657801000000003e0d70b00000000000000000
+        m_UnityObjects: []
+        m_Version: 3.1
+  m_EditorIcon: {fileID: 0}
