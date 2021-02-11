@@ -10,7 +10,7 @@ public class SceneManagement : MonoBehaviour
 
     private void Start()
     {
-        EnterFactory();
+        //EnterFactory();
     }
 
     public void EnterFactory()
