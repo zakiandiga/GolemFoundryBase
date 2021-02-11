@@ -10,6 +10,7 @@
 /[Ll]ogs/
 /[Mm]emoryCaptures/
 /[Aa]ssets/Procedural Worlds/
+/[Aa]ssets/Samples/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
