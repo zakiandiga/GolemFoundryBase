@@ -11,6 +11,7 @@
 /[Mm]emoryCaptures/
 /[Aa]ssets/Procedural Worlds/
 /[Aa]ssets/Samples/
+/[Aa]ssets/Items Mega Pack/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
