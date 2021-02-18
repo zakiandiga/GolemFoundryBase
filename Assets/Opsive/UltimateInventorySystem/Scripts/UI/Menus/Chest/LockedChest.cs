@@ -48,9 +48,9 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
                         m_DisableWhenUnlocked[i].SetActive(false);
                     }
 
-                    OnTryOpenFailed();
+                    OnTryOpenSuccess();
 
-                } else { OnTryOpenSuccess(); }
+                } else { OnTryOpenFailed(); }
             }
 
             if (m_Unlocked) {

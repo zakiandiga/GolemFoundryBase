@@ -83,7 +83,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryAttributeViewSet.CategoriesAttributeBoxArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryAttributeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryAttributeViewSet);
                     Select(m_List.Count - 1);
                 }, (index) =>
                 {
@@ -93,13 +93,13 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryAttributeViewSet.CategoriesAttributeBoxArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryAttributeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryAttributeViewSet);
                     if (index >= m_List.Count) { index = m_List.Count - 1; }
                     Select(index);
                 }, (i1, i2) =>
                 {
                     m_CategoryAttributeViewSet.CategoriesAttributeBoxArray = m_List.ToArray();
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryAttributeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryAttributeViewSet);
                 });
 
             container.Add(m_ReorderableList);
@@ -181,7 +181,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_List[index] = value;
             m_CategoryAttributeViewSet.CategoriesAttributeBoxArray = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryAttributeViewSet);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryAttributeViewSet);
         }
     }
 }

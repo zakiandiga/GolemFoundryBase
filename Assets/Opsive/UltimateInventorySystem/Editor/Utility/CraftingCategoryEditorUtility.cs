@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Crafting;
     using Opsive.UltimateInventorySystem.Editor.Managers;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
@@ -130,7 +129,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
                 CraftingRecipeEditorUtility.ChangeCraftingRecipeType(recipe, category, database, DatabaseValidator.GetDatabaseDirectory(database));
             }
 
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
         }
 
         /// <summary>

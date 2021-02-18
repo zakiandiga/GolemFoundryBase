@@ -129,7 +129,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         {
             if (Application.isPlaying) { return; }
             m_CurrencyOwner.CurrencyAmount.Serialize();
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_CurrencyOwner);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_CurrencyOwner);
         }
 
         /// <summary>

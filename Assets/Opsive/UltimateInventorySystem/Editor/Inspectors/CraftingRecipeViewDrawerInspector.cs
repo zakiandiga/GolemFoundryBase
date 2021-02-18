@@ -49,7 +49,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     (newValue) =>
                     {
                         m_CraftingRecipViewDrawer.CategoryRecipeViewSet = newValue;
-                        Shared.Editor.Utility.InspectorUtility.SetDirty(m_CraftingRecipViewDrawer);
+                        Shared.Editor.Utility.EditorUtility.SetDirty(m_CraftingRecipViewDrawer);
                     });
 
             container.Add(m_CategoryItemViewSet);

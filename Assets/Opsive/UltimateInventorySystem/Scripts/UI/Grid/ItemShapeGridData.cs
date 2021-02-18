@@ -76,6 +76,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         protected GridElementData[,] m_ItemStackAnchorGrid;
         protected GridElementData[,] m_TemporaryItemStackAnchorGrid;
 
+        public ItemShapeGridController Controller => m_Controller;
         public Inventory Inventory => m_Controller.Inventory;
         public int ID => m_ID;
         public ItemCollectionID ItemCollectionID {
@@ -127,6 +128,24 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
             m_ItemStackAnchorGrid = new GridElementData[GridColumns, GridRows];
             m_TemporaryItemStackAnchorGrid = new GridElementData[GridColumns, GridRows];
+        }
+
+        /// <summary>
+        /// Set grid data.
+        /// </summary>
+        /// <param name="gridElementDatas">The grid element datas.</param>
+        public void SetNewGridData(ListSlice<GridElementData> gridElementDatas)
+        {
+            if (gridElementDatas.Count != GridSizeCount) {
+                Debug.LogWarning("The Grid data size limit does not match. The data cannot be set.");
+                return;
+            }
+
+            for (int i = 0; i < gridElementDatas.Count; i++) {
+                var position = OneDTo2D(i);
+
+                m_ItemStackAnchorGrid[position.x, position.y] = gridElementDatas[i];
+            }
         }
 
         /// <summary>
@@ -456,6 +475,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <param name="itemStackAdded">The item stack of the added item.</param>
         public void OnItemAdded(ItemInfo originItemInfo, ItemStack itemStackAdded)
         {
+            if (m_Controller.IsCollectionIgnored(itemStackAdded.ItemCollection)) { return; }
+            
             var itemInfoAdded = (ItemInfo)itemStackAdded;
             Vector2Int position = new Vector2Int(-1, -1);
 
@@ -616,7 +637,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <returns>True if the item fits.</returns>
         public virtual bool CanAddItem(ItemInfo originalItemInfo, ItemCollection receivingCollection)
         {
-            if (m_Controller.IsCollectionIgnored(receivingCollection)) { return false; }
+            if (originalItemInfo.Item == null) { return false; }
+            if (m_Controller.IsCollectionIgnored(receivingCollection)) { return true; }
 
             var collectionIsNone =
                 m_ItemCollectionID.Purpose == ItemCollectionPurpose.None

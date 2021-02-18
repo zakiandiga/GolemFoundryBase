@@ -121,7 +121,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         private void Serialize()
         {
             m_ItemObject.Item?.Serialize();
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemObject);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemObject);
         }
     }
 }

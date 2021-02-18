@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using System.Collections.Generic;
@@ -68,7 +67,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 Undo.RegisterCompleteObjectUndo(obj, "Rename Object");
                 obj.name = evt.newValue;
                 AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(obj), obj.name);
-                InspectorUtility.SetDirty(obj);
+                Shared.Editor.Utility.EditorUtility.SetDirty(obj);
 
                 Refresh();
                 m_ListPanel.SearchableList.SelectObject(obj);

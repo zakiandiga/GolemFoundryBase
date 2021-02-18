@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers.GridFilterSorters.InventoryGridFilters;
     using System.Collections.Generic;
@@ -47,7 +46,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 (newValue) =>
                 {
                     m_ItemInfoCategoryFilter.ShowItemCategory = newValue;
-                    InspectorUtility.SetDirty(m_ItemInfoCategoryFilter);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemInfoCategoryFilter);
                     m_ShowCategory.Refresh(m_ItemInfoCategoryFilter.ShowItemCategory);
                 }, null);
             m_ShowCategory.Refresh(m_ItemInfoCategoryFilter.ShowItemCategory);
@@ -60,7 +59,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 (newValue) =>
                 {
                     m_ItemInfoCategoryFilter.HideCategory = newValue;
-                    InspectorUtility.SetDirty(m_ItemInfoCategoryFilter);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemInfoCategoryFilter);
                     m_HideCategory.Refresh(m_ItemInfoCategoryFilter.HideCategory);
                 }, null);
             m_HideCategory.Refresh(m_ItemInfoCategoryFilter.HideCategory);

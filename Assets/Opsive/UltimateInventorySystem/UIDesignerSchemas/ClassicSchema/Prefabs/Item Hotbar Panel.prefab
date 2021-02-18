@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindToPanelOwnerInventory: 1
+  m_BindToInventoryByIdentifier: 0
   m_Inventory: {fileID: 0}
   m_ItemViewSlotsContainer: {fileID: 8313604035728283118}
   m_DrawOnInitialize: 0
@@ -126,6 +127,7 @@ GameObject:
   - component: {fileID: 8313604035728283118}
   - component: {fileID: 8313604035728283104}
   - component: {fileID: 8313604035728283117}
+  - component: {fileID: 4711219783364785136}
   m_Layer: 5
   m_Name: Item Hotbar
   m_TagString: Untagged
@@ -167,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ContainerName: Hotbar
   m_SlotCursor: {fileID: 0}
+  m_SlotCursorID: 1
   m_Inventory: {fileID: 0}
   m_DrawOnEnable: 0
   m_DrawOnInventoryUpdate: 1
@@ -213,6 +216,70 @@ MonoBehaviour:
   m_CategoryItemActionSet: {fileID: 11400000, guid: d468e279b7469bb4c9cab7129c84be45,
     type: 2}
   m_MaxNumberOfActions: 5
+--- !u!114 &4711219783364785136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8313604035728283106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b20bd720e7a54534bd027cc621f861c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ItemHotbar: {fileID: 0}
+  m_HotbarInput:
+  - m_InputType: 2
+    m_InputName: Equip First Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 0
+  - m_InputType: 2
+    m_InputName: Equip Second Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 1
+  - m_InputType: 2
+    m_InputName: Equip Third Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 2
+  - m_InputType: 2
+    m_InputName: Equip Fourth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 3
+  - m_InputType: 2
+    m_InputName: Equip Fifth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 4
+  - m_InputType: 2
+    m_InputName: Equip Sixth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 5
+  - m_InputType: 2
+    m_InputName: Equip Seventh Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 6
+  - m_InputType: 2
+    m_InputName: Equip Eighth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 7
+  - m_InputType: 2
+    m_InputName: Equip Ninth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 8
+  - m_InputType: 2
+    m_InputName: Equip Tenth Item
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
+    Index: 9
 --- !u!1 &8313604036091783968
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +382,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 0.49803922}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

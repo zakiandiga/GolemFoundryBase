@@ -49,7 +49,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     (newValue) =>
                     {
                         m_CategoryAttributeViewSetItemViewModule.m_CategoryAttributeViewSet = newValue;
-                        Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryAttributeViewSetItemViewModule);
+                        Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryAttributeViewSetItemViewModule);
                     });
 
             container.Add(m_CategoryAttributeBoxSet);

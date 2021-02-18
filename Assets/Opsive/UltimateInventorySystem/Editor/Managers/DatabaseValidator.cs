@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Crafting;
@@ -132,7 +131,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             }
 
             if (isValid == false && Application.isPlaying == false) {
-                InspectorUtility.SetDirty(database);
+                Shared.Editor.Utility.EditorUtility.SetDirty(database);
             }
 
             if (isValid) {
@@ -965,7 +964,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
             obj.ID = newID;
             if (obj is ScriptableObject scriptableObject) {
-                InspectorUtility.SetDirty(scriptableObject);
+                Shared.Editor.Utility.EditorUtility.SetDirty(scriptableObject);
             }
 
         }

@@ -39,8 +39,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         [SerializeField] protected GameObject[] m_ForegroundActive;
         [Tooltip("The size of a box.")]
         [SerializeField] protected GameObject[] m_BackgroundActive;
-
+        [Tooltip("The color when the item can be selected.")]
         [SerializeField] protected Color m_SelectableColor = Color.white;
+        [Tooltip("The color when the item cannot be selected.")]
         [SerializeField] protected Color m_UnselectableColor = new Color(0.8f, 0.8f, 0.8f, 0.3f);
 
         protected bool m_IsItemSelectable;

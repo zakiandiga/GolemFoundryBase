@@ -69,8 +69,8 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         protected override void Initialize(bool force)
         {
             if (m_IsInitialized && !force) { return; }
-
-            if (m_Menu != null) {
+            
+            if (m_Menu != null && !force) {
                 m_DisplayPanel = m_Menu.DisplayPanel;
                 m_IsInitialized = true;
                 return;

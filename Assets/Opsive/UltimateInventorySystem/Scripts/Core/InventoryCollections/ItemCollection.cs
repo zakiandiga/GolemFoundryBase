@@ -239,36 +239,39 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         /// Determines if the Item Collection contains the item.
         /// </summary>
         /// <param name="item">The item to check.</param>
+        /// <param name="similarItem">Find an itemInfo with that value equivalent item or just one similar?</param>
         /// <returns>Returns true if the amount of items in the collection is equal or bigger than the amount specified.</returns>
-        public virtual bool HasItem(Item item)
+        public virtual bool HasItem(Item item, bool similarItem = true)
         {
             if (item == null) { return false; }
 
-            return GetItemAmount(item) >= 1;
+            return GetItemAmount(item,similarItem) >= 1;
         }
 
         /// <summary>
         /// Determines if the Item Collection contains the item.
         /// </summary>
         /// <param name="itemAmount">The item to check.</param>
+        /// <param name="similarItem">Find an itemInfo with that value equivalent item or just one similar?</param>
         /// <returns>Returns true if the amount of items in the collection is equal or bigger than the amount specified.</returns>
-        public virtual bool HasItem(ItemAmount itemAmount)
+        public virtual bool HasItem(ItemAmount itemAmount, bool similarItem = true)
         {
             if (itemAmount.Item == null) { return false; }
 
-            return GetItemAmount(itemAmount.Item) >= itemAmount.Amount;
+            return GetItemAmount(itemAmount.Item,similarItem) >= itemAmount.Amount;
         }
 
         /// <summary>
         /// Determines if the Item Collection contains the item.
         /// </summary>
         /// <param name="itemInfo">The item to check.</param>
+        /// <param name="similarItem">Find an itemInfo with that value equivalent item or just one similar?</param>
         /// <returns>Returns true if the amount of items in the collection is equal or bigger than the amount specified.</returns>
-        public virtual bool HasItem(ItemInfo itemInfo)
+        public virtual bool HasItem(ItemInfo itemInfo, bool similarItem = true)
         {
             if (itemInfo.Item == null) { return false; }
 
-            return GetItemAmount(itemInfo.Item) >= itemInfo.Amount;
+            return GetItemAmount(itemInfo.Item,similarItem) >= itemInfo.Amount;
         }
 
         /// <summary>
@@ -734,17 +737,23 @@ namespace Opsive.UltimateInventorySystem.Core.InventoryCollections
         /// Get the amount of item that is part of the itemCollection.
         /// </summary>
         /// <param name="item">The item to look for in the collection.</param>
-        /// <param name="exact">Find an itemInfo with that exact item or just one similar?</param>
+        /// <param name="similarItem">Find an itemInfo with that value equivalent item or just one similar?</param>
         /// <returns>The amount of that item present in the collection.</returns>
-        public virtual int GetItemAmount(Item item)
+        public virtual int GetItemAmount(Item item, bool similarItem = true)
         {
             if (item == null) { return 0; }
 
             var count = 0;
 
             for (int i = 0; i < m_ItemStacks.Count; i++) {
-                if (m_ItemStacks[i].Item.SimilarTo(item)) {
-                    count += m_ItemStacks[i].Amount;
+                if (similarItem) {
+                    if (m_ItemStacks[i].Item.SimilarTo(item)) {
+                        count += m_ItemStacks[i].Amount;
+                    }
+                } else {
+                    if (m_ItemStacks[i].Item.ValueEquivalentTo(item)) {
+                        count += m_ItemStacks[i].Amount;
+                    }
                 }
             }
 

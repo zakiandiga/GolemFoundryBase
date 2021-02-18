@@ -90,7 +90,7 @@ namespace Opsive.UltimateInventorySystem.Input
 
         private void PlayerInteract(PlayerMovement player)
         {
-            Interact();
+            //Interact();
         }
 
         private void BlueprintSelected(int value)
@@ -106,7 +106,7 @@ namespace Opsive.UltimateInventorySystem.Input
                 case BuildingMenuState.Inactive: //Open menu from PlayerMovement
                     if(announcer == "player")
                     {
-                        OpenTogglePanel("Assembling Menu", true);
+                        //OpenTogglePanel("Assembling Menu", true);
                         EnablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.BlueprintOption;
                         Debug.Log("CustomInput OpenMenu from " + announcer + ", menuState = " + buildingMenuState);
@@ -115,7 +115,7 @@ namespace Opsive.UltimateInventorySystem.Input
                 case BuildingMenuState.BlueprintOption: //Close menu on blueprint option opened
                     OnClosingBuildMenu?.Invoke("BlueprintOption");
                     DisablingMenuInteraction();
-                    OpenTogglePanel("Assembling Menu", true);
+                    //OpenTogglePanel("Assembling Menu", true);
                     buildingMenuState = BuildingMenuState.Inactive;
                     break;
                 case BuildingMenuState.BlueprintGrid:
@@ -127,7 +127,7 @@ namespace Opsive.UltimateInventorySystem.Input
                     }
                     else if (announcer == "buildHandler")
                     {
-                        OpenTogglePanel("Assembling Menu", true);
+                        //OpenTogglePanel("Assembling Menu", true);
                         OnClosingBuildMenu?.Invoke("BlueprintOption");
                         DisablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.Inactive;
@@ -160,7 +160,7 @@ namespace Opsive.UltimateInventorySystem.Input
             float waitTime = 1f;
 
             yield return new WaitForSeconds(waitTime);
-            OpenTogglePanel("Assembling Menu", true);
+            //OpenTogglePanel("Assembling Menu", true);
 
         }
 
@@ -171,11 +171,12 @@ namespace Opsive.UltimateInventorySystem.Input
 
         private void Update()
         {            
-            
+            /*
             if (IsInputActive == false)
             {
                 return;
             }
+            */
 
             //if (interact.action.triggered) //Triggered from player
             //{
@@ -184,12 +185,12 @@ namespace Opsive.UltimateInventorySystem.Input
 
             if (previous.action.triggered)
             {
-                TriggerPrevious();
+                //TriggerPrevious();
             }
 
             if (next.action.triggered)
             {
-                TriggerNext();
+                //TriggerNext();
             }
 
             if (back.action.triggered)

@@ -63,7 +63,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     (newValue) =>
                     {
                         m_ItemViewSlotsContainerCategoryItemActionSetBinding.m_CategoryItemActionSet = newValue;
-                        Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemViewSlotsContainerCategoryItemActionSetBinding);
+                        Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemViewSlotsContainerCategoryItemActionSetBinding);
                     });
 
             m_InnerContainer.Add(m_CategoryItemActionSet);

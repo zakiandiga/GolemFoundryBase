@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.UI.Item.ItemViewModules;
     using Opsive.UltimateInventorySystem.UI.Views;
@@ -173,14 +173,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             Clear();
             m_ViewModules.Clear();
 
-            InspectorUtility.SetDirty(m_View);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_View);
 
             if (m_View == null) {
                 return;
             }
 
             m_View.RetrieveModules();
-            InspectorUtility.SetDirty(m_View);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_View);
 
             m_ViewModules.AddRange(m_View.Modules);
             m_ReorderableList.Refresh(m_ViewModules);

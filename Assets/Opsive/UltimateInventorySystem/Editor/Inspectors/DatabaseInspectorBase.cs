@@ -11,6 +11,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
     using Opsive.UltimateInventorySystem.Editor.Managers;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.Storage;
+    using UnityEditor.SceneManagement;
     using UnityEditor.UIElements;
     using UnityEngine;
     using UnityEngine.UIElements;
@@ -40,10 +41,16 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 parent.Add(new PropertyField(serializedObject.FindProperty("m_Script")));
             }
 
-            parent.Add(CreateDatabase());
+            var database = CreateDatabase(parent);
 
             InitializeInspector();
 
+            if (database == null) {
+                var helper = new InventoryHelpBox("The Database could not be found, please add one in the scene and set one in the Editor Manager.");
+                parent.Add(helper);
+                return;
+            }
+            
             parent.Add(m_Content);
 
             DatabaseChanged();
@@ -95,22 +102,33 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         /// Create the database field.
         /// </summary>
         /// <returns>The database field.</returns>
-        protected virtual VisualElement CreateDatabase()
+        protected virtual InventorySystemDatabase CreateDatabase(VisualElement container)
         {
             m_DatabaseField = new ObjectField("Database");
             m_DatabaseField.objectType = typeof(InventorySystemDatabase);
 
-            if (m_DatabaseField.value == null) {
-                var manager = FindObjectOfType<InventorySystemManager>();
-                m_DatabaseField.value = manager?.Database ?? MainManagerWindow.InventorySystemDatabase;
+            if (Application.isPlaying == false || InventorySystemManager.IsNull) {
+                m_Database = FindObjectOfType<InventorySystemManager>()?.Database;
+            } else {
+                m_Database = InventorySystemManager.Instance.Database;
             }
-
+            
+            if (m_Database == null) {
+                if (Application.isPlaying) {
+                    return null;
+                } else {
+                    m_Database = MainManagerWindow.InventorySystemDatabase;
+                }
+            }
+            m_DatabaseField.value = m_Database;
+            
             m_DatabaseField.RegisterValueChangedCallback(evt => { DatabaseChanged(); });
-
-            m_Database = m_DatabaseField.value as InventorySystemDatabase;
+            
             m_Database?.Initialize(false);
 
-            return m_DatabaseField;
+            container.Add(m_DatabaseField);
+            
+            return m_Database;
         }
 
         /// <summary>

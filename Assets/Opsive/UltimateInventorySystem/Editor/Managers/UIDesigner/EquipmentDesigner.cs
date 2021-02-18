@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.Editor.Inspectors;
@@ -173,7 +173,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             //Set the category restrictions.
             equipmentView.SetItemViewSlotRestrictions();
 
-            InspectorUtility.SetDirty(equipmentView);
+            Shared.Editor.Utility.EditorUtility.SetDirty(equipmentView);
 
             return equipmentView;
         }

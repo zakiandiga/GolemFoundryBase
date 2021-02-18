@@ -18,6 +18,11 @@ namespace Opsive.UltimateInventorySystem.SaveSystem
     /// </summary>
     public class InventorySaver : SaverBase
     {
+        //A higher priority (-1 > 1) will be saved first.
+        public override int SavePriority => -100;
+        //A higher priority (-1 > 1) will be loaded first.
+        public override int LoadPriority => -100;
+        
         /// <summary>
         /// The inventory save data.
         /// </summary>

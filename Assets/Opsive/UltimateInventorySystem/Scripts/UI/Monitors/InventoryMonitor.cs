@@ -15,7 +15,6 @@ namespace Opsive.UltimateInventorySystem.UI.Monitors
     using System;
     using System.Collections;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using EventHandler = Shared.Events.EventHandler;
 
     /// <summary>
@@ -30,7 +29,7 @@ namespace Opsive.UltimateInventorySystem.UI.Monitors
         [Tooltip("The parent rect transform for the pop ups.")]
         [SerializeField] protected RectTransform m_MonitorContent;
 
-        [FormerlySerializedAs("m_ItemBoxPrefab")]
+        [UnityEngine.Serialization.FormerlySerializedAs("m_ItemBoxPrefab")]
         [Tooltip("The Item View prefab.")]
         [SerializeField] internal GameObject m_ItemViewPrefab;
         [Tooltip("The maximum number of Item Viewes displayed at once.")]

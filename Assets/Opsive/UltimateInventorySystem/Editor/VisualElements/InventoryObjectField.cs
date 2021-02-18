@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.VisualElements
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using Opsive.UltimateInventorySystem.Editor.VisualElements.ViewNames;
     using Opsive.UltimateInventorySystem.Storage;
@@ -126,7 +125,7 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
             m_PopupWindow = PopupWindow.OpenWindow(
                 new Rect(position, size),
                 size, m_PopupWindowContent);
-            m_PopupWindow.rootVisualElement.styleSheets.Add(InspectorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0"));
+            m_PopupWindow.rootVisualElement.styleSheets.Add(Shared.Editor.Utility.EditorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0"));
             m_PopupWindow.rootVisualElement.styleSheets.Add(CommonStyles.StyleSheet);
             m_PopupWindow.rootVisualElement.styleSheets.Add(ManagerStyles.StyleSheet);
             m_PopupWindow.rootVisualElement.styleSheets.Add(ControlTypeStyles.StyleSheet);

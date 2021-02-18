@@ -112,7 +112,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_FullSize.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.FullSizeLimit = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
 
             //The Category size limit.
@@ -123,7 +123,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_CategorySize.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.DefaultCategorySizeLimit = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_CategorySizeContainer.Add(m_CategorySize);
 
@@ -132,7 +132,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_CategorySizeAttributeName.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.LimitPerCategoryAttributeName = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_CategorySizeContainer.Add(m_CategorySizeAttributeName);
 
@@ -144,7 +144,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_DefinitionSize.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.DefaultDefinitionSizeLimit = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_DefinitionSizeContainer.Add(m_DefinitionSize);
 
@@ -153,7 +153,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_DefinitionSizeAttributeName.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.LimitPerDefinitionAttributeName = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_DefinitionSizeContainer.Add(m_DefinitionSizeAttributeName);
 
@@ -165,7 +165,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_ItemSize.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.DefaultItemSizeLimit = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_ItemSizeContainer.Add(m_ItemSize);
 
@@ -174,7 +174,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_ItemSizeAttributeName.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.ItemSizeLimitAttributeName = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_ItemSizeContainer.Add(m_ItemSizeAttributeName);
 
@@ -186,7 +186,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_RejectCategories.RegisterValueChangedCallback(evt =>
             {
                 m_GroupItemRestriction.RejectCategories = evt.newValue;
-                Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             });
             m_RejectCategoriesContainer.Add(m_RejectCategories);
 
@@ -199,7 +199,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         /// </summary>
         protected virtual void FieldChanged()
         {
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
 
             var newRestrictions = m_GroupItemRestriction.ItemCollectionRestrictions;
             if (m_Restrictions == newRestrictions) { return; }
@@ -262,7 +262,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_GroupItemRestriction.ItemCategories = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
                 }, (index) =>
                 {
                     if (index < 0 || index >= m_List.Count) { return; }
@@ -271,7 +271,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_GroupItemRestriction.ItemCategories = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
                 }, (i1, i2) =>
                 {
                     var element1 = m_ReorderableList.ListItems[i1].ItemContents.ElementAt(0) as ListElement;
@@ -279,7 +279,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     var element2 = m_ReorderableList.ListItems[i2].ItemContents.ElementAt(0) as ListElement;
                     element2.Index = i2;
                     m_GroupItemRestriction.ItemCategories = m_List.ToArray();
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
                 });
 
             m_RejectCategoriesContainer.Add(m_ReorderableList);
@@ -295,7 +295,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_List[index] = value;
             m_GroupItemRestriction.ItemCategories = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
         }
 
         // <summary>

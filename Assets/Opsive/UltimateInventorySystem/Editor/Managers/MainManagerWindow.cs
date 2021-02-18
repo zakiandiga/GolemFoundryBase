@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner;
@@ -36,7 +35,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 if (s_Instance != null) { return s_Instance.Database; }
 
                 if (!string.IsNullOrEmpty(DatabaseGUID)) {
-                    return InspectorUtility.LoadAsset<InventorySystemDatabase>(DatabaseGUID);
+                    return Shared.Editor.Utility.EditorUtility.LoadAsset<InventorySystemDatabase>(DatabaseGUID);
                 }
 
                 return null;
@@ -115,7 +114,15 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 RemoveFromClassList(ussClassName);
             }
         }
-
+        
+        /// <summary>
+        /// Perform editor checks as soon as the scripts are done compiling.
+        /// </summary>
+        static MainManagerWindow()
+        {
+            EditorApplication.update += EditorStartup;
+        }
+        
         /// <summary>
         /// Initializes the Main Manager.
         /// </summary> 
@@ -196,6 +203,45 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             var window = ShowWindow();
             window.Open(typeof(IntegrationsManager));
         }
+        
+        /// <summary>
+        /// Show the editor window if it hasn't been shown before and also setup.
+        /// </summary>
+        private static void EditorStartup()
+        {
+            if (EditorApplication.isCompiling) {
+                return;
+            }
+            
+            var dataPathSplit = Application.dataPath.Split('/');
+            var projectName = dataPathSplit[dataPathSplit.Length - 2];
+
+            if (!EditorPrefs.GetBool(projectName+"Opsive.UltimateInventorySystem.Editor.MainManagerShown", false)) {
+                EditorPrefs.SetBool(projectName+"Opsive.UltimateInventorySystem.Editor.MainManagerShown", true);
+                ShowWindow();
+            }
+
+            if (!EditorPrefs.HasKey(projectName+"Opsive.UltimateInventorySystem.Editor.UpdateProject") 
+                || EditorPrefs.GetBool(projectName+"Opsive.UltimateInventorySystem.Editor.UpdateProject", true)) {
+                EditorUtility.DisplayDialog("Project Settings Setup", "Thank you for purchasing the " + AssetInfo.Name +".\n\n" +
+                                                                      "This wizard will ask questions related to updating your project.", "OK");
+                UpdateProjectSettings();
+            }
+            EditorPrefs.SetBool(projectName+"Opsive.UltimateInventorySystem.Editor.UpdateProject", false);
+
+            EditorApplication.update -= EditorStartup;
+        }
+        
+        /// <summary>
+        /// Show the project settings dialogues.
+        /// </summary>
+        private static void UpdateProjectSettings()
+        {
+            if (EditorUtility.DisplayDialog("Update Input Manager?", "Do you want to update the Input Manager?\n\n" +
+                                                                     "If you have already updated the Input Manager or are using custom inputs you can select No.", "Yes", "No")) {
+                InventoryInputBuilder.UpdateInputManager();
+            }
+        }
 
         /// <summary>
         /// Updates the inspector.
@@ -236,7 +282,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         private void OnEnable()
         {
             s_Instance = this;
-            rootVisualElement.styleSheets.Add(InspectorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0"));//shared uss
+            rootVisualElement.styleSheets.Add(Shared.Editor.Utility.EditorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0"));//shared uss
             rootVisualElement.styleSheets.Add(CommonStyles.StyleSheet);
             rootVisualElement.styleSheets.Add(ManagerStyles.StyleSheet);
             rootVisualElement.styleSheets.Add(ControlTypeStyles.StyleSheet);
@@ -246,7 +292,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 m_Database = FindObjectOfType<InventorySystemManager>().Database;
             } else {
                 if (!string.IsNullOrEmpty(DatabaseGUID)) {
-                    m_Database = InspectorUtility.LoadAsset<InventorySystemDatabase>(DatabaseGUID);
+                    m_Database = Shared.Editor.Utility.EditorUtility.LoadAsset<InventorySystemDatabase>(DatabaseGUID);
                 }
             }
 
@@ -391,7 +437,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 m_Managers[i] = Activator.CreateInstance(managerTypes[i]) as Manager;
                 m_Managers[i].Initialize(this);
 
-                var name = InspectorUtility.SplitCamelCase(managerTypes[i].Name);
+                var name = Shared.Editor.Utility.EditorUtility.SplitCamelCase(managerTypes[i].Name);
                 if (managers[i].GetCustomAttributes(typeof(OrderedEditorItem), true).Length > 0) {
                     var item = managerTypes[i].GetCustomAttributes(typeof(OrderedEditorItem), true)[0] as OrderedEditorItem;
                     name = item.Name;

@@ -86,7 +86,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
 
             if (m_DrawEmptyViewsOnInitialize) {
                 for (int i = 0; i < m_ViewSlots.Length; i++) {
-                    DrawEmptyView(i, i, true);
+                    DrawEmptyView(i, i);
                 }
             }
 
@@ -145,13 +145,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="index">The index of the view to remove.</param>
         public void RemoveView(int index)
         {
-            GameObject objectToRemove = null;
-            if (m_UseViewSlot) {
-                objectToRemove = m_ViewSlots[index]?.View?.gameObject;
-
-            } else {
-                objectToRemove = m_Content.GetChild(index)?.gameObject;
-            }
+            var objectToRemove = GetViewGameObject(index);
 
             if (objectToRemove == null) { return; }
 
@@ -160,7 +154,23 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             } else {
                 DestroyImmediate(objectToRemove);
             }
+        }
 
+        /// <summary>
+        /// Get the View gameobject of the index.
+        /// </summary>
+        /// <param name="index">The index of the view.</param>
+        /// <returns>The view gameobject.</returns>
+        protected virtual GameObject GetViewGameObject(int index)
+        {
+            GameObject objectToRemove = null;
+            if (m_UseViewSlot) {
+                objectToRemove = m_ViewSlots[index]?.View?.gameObject;
+            } else {
+                objectToRemove = m_Content.GetChild(index)?.gameObject;
+            }
+
+            return objectToRemove;
         }
 
         /// <summary>
@@ -170,7 +180,7 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="elementIndex">The element Index.</param>
         /// <param name="removePreviousView">Remove from the previous view?</param>
         /// <returns>The view.</returns>
-        protected abstract View DrawEmptyView(int viewIndex, int elementIndex, bool removePreviousView);
+        protected abstract View DrawEmptyView(int viewIndex, int elementIndex);
     }
 
     /// <summary>
@@ -220,8 +230,6 @@ namespace Opsive.UltimateInventorySystem.UI.Views
                 startIndex = 0;
             }
 
-            RemoveBoxes();
-
             if (startIndex > endIndex) { return; }
 
             var elementsEnd = Mathf.Min(endIndex, elements.Count);
@@ -229,9 +237,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
             for (int i = startIndex; i < endIndex; i++) {
 
                 if (i < elementsEnd) {
-                    DrawView(i - startIndex, i, elements[i], false);
+                    DrawView(i - startIndex, i, elements[i]);
                 } else {
-                    DrawView(i - startIndex, i, default, false);
+                    DrawView(i - startIndex, i, default);
                 }
             }
         }
@@ -239,19 +247,31 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <summary>
         /// Draw the box for an element.
         /// </summary>
-        /// <param name="boxIndex">The box index.</param>
+        /// <param name="viewIndex">The box index.</param>
         /// <param name="elementIndex">The element index.</param>
         /// <param name="element">The element.</param>
         /// <returns>The box.</returns>
-        public virtual View<T> DrawView(int boxIndex, int elementIndex, T element, bool removePreviousView)
+        public virtual View<T> DrawView(int viewIndex, int elementIndex, T element)
         {
-            if (removePreviousView) { RemoveView(boxIndex); }
-
-            var view = InstantiateView(boxIndex, elementIndex, element);
+            View<T> view = null;
+            
+            if (viewIndex >= 0 && viewIndex < m_Views.Count && m_Views[viewIndex] != null) {
+                // A view already exists.
+                var currentView = m_Views[viewIndex];
+                var viewPrefab = GetViewPrefabFor(element);
+                if (viewPrefab == ObjectPool.GetOriginalObject(currentView.gameObject)) {
+                    view = currentView;
+                }
+            }
 
             if (view == null) {
-                Debug.LogWarning("The Box Drawer BoxUI Prefab does not have a BoxUI component or it is not of the correct Type");
-                return null;
+                RemoveView(viewIndex);
+                view = InstantiateView(viewIndex, elementIndex, element);
+
+                if (view == null) {
+                    Debug.LogWarning("The Box Drawer BoxUI Prefab does not have a BoxUI component or it is not of the correct Type");
+                    return null;
+                }
             }
 
             //Clear to remove any previous state of the pooled object.
@@ -263,9 +283,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
 
             AfterDrawingBox(elementIndex, view, element);
 
-            m_Views.EnsureSize(boxIndex + 1);
+            m_Views.EnsureSize(viewIndex + 1);
 
-            m_Views[boxIndex] = view;
+            m_Views[viewIndex] = view;
 
             return view;
         }
@@ -277,9 +297,9 @@ namespace Opsive.UltimateInventorySystem.UI.Views
         /// <param name="elementIndex">The element index.</param>
         /// <param name="removePreviousView">Should the previous view be removed?</param>
         /// <returns>The view that was drawn.</returns>
-        protected override View DrawEmptyView(int viewIndex, int elementIndex, bool removePreviousView)
+        protected override View DrawEmptyView(int viewIndex, int elementIndex)
         {
-            return DrawView(viewIndex, elementIndex, default, removePreviousView);
+            return DrawView(viewIndex, elementIndex, default);
         }
 
         /// <summary>

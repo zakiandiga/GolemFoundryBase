@@ -11364,7 +11364,6 @@ GameObject:
   - component: {fileID: 7552121064230369847}
   - component: {fileID: 7552121064230369844}
   - component: {fileID: 7552121064230369845}
-  - component: {fileID: 7552121064230369842}
   - component: {fileID: 7552121064230369843}
   - component: {fileID: 7552121064230369840}
   - component: {fileID: 7552121064230369841}
@@ -11549,111 +11548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f05d9b00a10345299e7d28cf4896ce37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_InventoryInput: {fileID: 7552121064230369842}
---- !u!114 &7552121064230369842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7552121064230369804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7793222fda5749f1a475121d5c19a0cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EnableCharacterInputOnGameplayPanelSelected: 0
-  m_InteractInput:
-    m_ButtonName: Fire3
-    m_KeyCode: 101
-    m_InputType: 4
-  m_TriggerPreviousInput:
-    m_ButtonName: 
-    m_KeyCode: 114
-    m_InputType: 4
-  m_TriggerNextInput:
-    m_ButtonName: 
-    m_KeyCode: 116
-    m_InputType: 4
-  m_ClosePanelInput:
-    m_ButtonName: Cancel
-    m_KeyCode: 27
-    m_InputType: 4
-  m_OpenTogglePanelInput:
-  - Toggle: 1
-    PanelName: Main Menu
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 105
-      m_InputType: 4
-  m_ItemActionInput: []
-  m_HotbarInput:
-  - Index: 0
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 331
-      m_InputType: 4
-  - Index: 1
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 334
-      m_InputType: 4
-  - Index: 2
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 335
-      m_InputType: 4
-  - Index: 3
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 336
-      m_InputType: 4
-  - Index: 0
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 49
-      m_InputType: 4
-  - Index: 1
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 50
-      m_InputType: 4
-  - Index: 2
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 51
-      m_InputType: 4
-  - Index: 3
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 52
-      m_InputType: 4
-  - Index: 4
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 53
-      m_InputType: 4
-  - Index: 5
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 54
-      m_InputType: 4
-  - Index: 6
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 55
-      m_InputType: 4
-  - Index: 7
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 56
-      m_InputType: 4
-  - Index: 8
-    Input:
-      m_ButtonName: 
-      m_KeyCode: 57
-      m_InputType: 4
-  m_UsableItemObjectInput: []
+  m_InventoryInput: {fileID: 0}
 --- !u!114 &7552121064230369843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11691,6 +11586,11 @@ MonoBehaviour:
   m_Inventory: {fileID: 0}
   m_InteractableIndicator: {fileID: 0}
   m_AutoInteract: 0
+  m_Input:
+    m_InputType: 2
+    m_InputName: Action
+    m_LongPressDuration: 0.5
+    m_WaitForLongPressRelease: 0
 --- !u!114 &7552121064230369841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11703,7 +11603,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b66069e544d5f134b8a6abc1d56b50ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EnableCharacterInputOnGameplayPanelSelected: 0
   menu: {fileID: 8084256080064358724, guid: 7891518f699f7c849b679dc2de1b0ec1, type: 3}
   previous: {fileID: -7703277980042741381, guid: 7891518f699f7c849b679dc2de1b0ec1, type: 3}
   next: {fileID: 1151599074714912777, guid: 7891518f699f7c849b679dc2de1b0ec1, type: 3}

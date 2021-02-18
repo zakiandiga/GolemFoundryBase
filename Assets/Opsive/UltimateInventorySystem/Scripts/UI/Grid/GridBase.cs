@@ -6,6 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.UI.Grid
 {
+    using Opsive.Shared.Game;
+    using Opsive.Shared.Input;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.UI.CompoundElements;
     using Opsive.UltimateInventorySystem.UI.Panels;
@@ -44,8 +46,13 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         [SerializeField] internal TabControl m_TabControl;
         [Tooltip("Refresh the grid on enable.")]
         [SerializeField] protected bool m_RefreshOnEnable;
+        [Tooltip("Input name for Next tab.")]
+        [SerializeField] protected string m_NextTabInput = "Next";
+        [Tooltip("Input name for Previous tab.")]
+        [SerializeField] protected string m_PreviousTabInput = "Previous";
 
         protected DisplayPanel m_ParentPanel;
+        protected PlayerInput m_PlayerInput;
         protected bool m_IsInitialized;
 
         protected int m_StartIndex;
@@ -170,16 +177,27 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             if (m_ParentPanel == parentPanel) { return; }
             Initialize(false);
 
-            if (m_ParentPanel != null) {
-                EventHandler.UnregisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerNext, NextTab);
-                EventHandler.UnregisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerPrevious, PreviousTab);
-            }
-
+            m_PlayerInput = null;
             m_ParentPanel = parentPanel;
 
             if (m_ParentPanel != null) {
-                EventHandler.RegisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerNext, NextTab);
-                EventHandler.RegisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerPrevious, PreviousTab);
+                m_PlayerInput = m_ParentPanel.Manager.PanelOwner?.gameObject?.GetCachedComponent<PlayerInput>();
+            }
+        }
+
+        /// <summary>
+        /// Check for the input.
+        /// </summary>
+        protected virtual void Update()
+        {
+            if(m_PlayerInput == null){ return; }
+            
+            if (m_PlayerInput.GetButtonDown(m_NextTabInput)) {
+                NextTab();
+            }
+
+            if (m_PlayerInput.GetButtonDown(m_PreviousTabInput)) {
+                PreviousTab();
             }
         }
 
@@ -326,8 +344,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             if (m_ParentPanel?.Manager?.PanelOwner == null) {
                 return;
             }
-            EventHandler.UnregisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerNext, () => m_TabControl.NextTab());
-            EventHandler.UnregisterEvent(m_ParentPanel.Manager.PanelOwner, EventNames.c_GameObject_OnInput_TriggerPrevious, () => m_TabControl.PreviousTab());
+
+            m_PlayerInput = null;
         }
     }
 }

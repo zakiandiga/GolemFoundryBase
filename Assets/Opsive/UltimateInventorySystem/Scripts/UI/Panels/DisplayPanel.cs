@@ -7,6 +7,7 @@
 namespace Opsive.UltimateInventorySystem.UI.Panels
 {
     using Core;
+    using Opsive.UltimateInventorySystem.Input;
     using System;
     using System.Collections.Generic;
     using UnityEngine;
@@ -242,7 +243,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             m_PreviousSelectable = previousSelectable;
             m_PreviousPanel = previousPanel;
             if (selectDefault && m_SelectableOnOpen != null) {
-                m_SelectableOnOpen.Select();
+                EventSystemManager.Select(m_SelectableOnOpen.gameObject);
             }
 
             OpenInternal();
@@ -319,7 +320,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
                 }
 
                 if (m_PreviousSelectable != null) {
-                    m_PreviousSelectable.Select();
+                    EventSystemManager.Select(m_PreviousSelectable.gameObject);
                 }
             }
 

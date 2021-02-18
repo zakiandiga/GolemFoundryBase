@@ -7,6 +7,8 @@
 namespace Opsive.UltimateInventorySystem.UI.Panels
 {
     using Core;
+    using Opsive.UltimateInventorySystem.Input;
+    using System;
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -18,6 +20,8 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
     /// </summary>
     public class DisplayPanelManager : MonoBehaviour, IObjectWithIDReadOnly
     {
+        public event Action OnPanelOwnerAssigned;
+        
         [Tooltip("Use an ID to differentiate the Panel Managers in a multiplayer setting.")]
         [SerializeField] protected uint m_ID = 1;
         [Tooltip("The panel owner will be the target of panel events such as open and close.")]
@@ -33,6 +37,8 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         [SerializeField] protected bool m_SetTimeScaleToZeroWhenMenuIsOpened;
         [Tooltip("Whenever a menu is opened, should the time scale be set to zero?")]
         [SerializeField] protected bool m_CloseMenuWhenOpeningAnother;
+        [Tooltip("Enable/Disable input while the gameplay panel is selected/deselected.")]
+        [SerializeField] protected bool m_EnableInputOnGameplaySelected;
 
         protected Dictionary<string, DisplayPanel> m_PanelsByName;
         protected DisplayPanel m_SelectedDisplayPanel;
@@ -135,21 +141,16 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
 
             if (m_PanelOwner != null) {
                 EventHandler.UnregisterEvent<PanelEventData>(m_PanelOwner, EventNames.c_GameObject_OnPanelOpenClose_PanelEventData, PanelOpenedOrClosed);
-                EventHandler.UnregisterEvent(m_PanelOwner, EventNames.c_GameObject_OnInput_ClosePanel, CloseSelectedPanel);
-                EventHandler.UnregisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_OpenPanel_String, OpenPanel);
-                EventHandler.UnregisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_TogglePanel_String, TogglePanel);
             }
 
             m_PanelOwner = panelOwner;
+            OnPanelOwnerAssigned?.Invoke();
 
             if (m_PanelOwner == null) {
                 return;
             }
 
             EventHandler.RegisterEvent<PanelEventData>(m_PanelOwner, EventNames.c_GameObject_OnPanelOpenClose_PanelEventData, PanelOpenedOrClosed);
-            EventHandler.RegisterEvent(m_PanelOwner, EventNames.c_GameObject_OnInput_ClosePanel, CloseSelectedPanel);
-            EventHandler.RegisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_OpenPanel_String, OpenPanel);
-            EventHandler.RegisterEvent<string>(m_PanelOwner, EventNames.c_GameObject_OnInput_TogglePanel_String, TogglePanel);
 
             SetupDisplayPanels(true);
             if (gameObject.activeInHierarchy == false) {
@@ -241,7 +242,8 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         {
             if (panel == null) { return; }
 
-            var currentSelectable = EventSystem.current.currentSelectedGameObject?.GetComponent<Selectable>();
+            var eventSystem = EventSystemManager.GetEvenSystemFor(gameObject); 
+            var currentSelectable = eventSystem.currentSelectedGameObject?.GetComponent<Selectable>();
             if (panel.IsMenuPanel == false) {
                 panel.Open(m_SelectedDisplayPanel, currentSelectable);
                 return;
@@ -330,8 +332,14 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
 
             if (eventData.ThisPanel == GameplayPanel) {
                 EventHandler.ExecuteEvent<bool>(m_PanelOwner, EventNames.c_GameObject_OnGameplayPanelSelected_Bool, true);
+                if (m_EnableInputOnGameplaySelected) {
+                    EventHandler.ExecuteEvent<bool>(m_PanelOwner, EventNames.c_CharacterGameObject_OnEnableGameplayInput_Bool, true);
+                }
             } else if (eventData.PreviousPanel == GameplayPanel) {
                 EventHandler.ExecuteEvent<bool>(m_PanelOwner, EventNames.c_GameObject_OnGameplayPanelSelected_Bool, false);
+                if (m_EnableInputOnGameplaySelected) {
+                    EventHandler.ExecuteEvent<bool>(m_PanelOwner, EventNames.c_CharacterGameObject_OnEnableGameplayInput_Bool, false);
+                }
             }
         }
 

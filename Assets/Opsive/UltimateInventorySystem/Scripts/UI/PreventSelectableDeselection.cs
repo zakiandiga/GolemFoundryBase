@@ -7,6 +7,7 @@
 namespace Opsive.UltimateInventorySystem.UI
 {
     using Opsive.UltimateInventorySystem.Core;
+    using Opsive.UltimateInventorySystem.Input;
     using Opsive.UltimateInventorySystem.UI.Panels;
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -41,7 +42,7 @@ namespace Opsive.UltimateInventorySystem.UI
         /// </summary>
         protected virtual void Start()
         {
-            m_EventSystem = EventSystem.current;
+            m_EventSystem = EventSystemManager.GetEvenSystemFor(gameObject);
 
             if (m_AllowDeselectionWhileGameplayPanelSelected && m_DisplayManager.GameplayPanel != null) {
                 EventHandler.RegisterEvent<bool>(m_DisplayManager.PanelOwner, EventNames.c_GameObject_OnGameplayPanelSelected_Bool, HandleGameplayPanelSelected);

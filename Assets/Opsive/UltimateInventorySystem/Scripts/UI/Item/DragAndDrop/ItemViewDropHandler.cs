@@ -94,13 +94,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         public ItemViewSlotCursorManager SlotCursorManager => m_ItemViewSlotCursorManager;
         public ItemViewSlotDropHandlerStreamData StreamData => m_StreamData;
 
-        public ItemViewSlotsContainerBase SourceContainer => m_ItemViewSlotCursorManager.PointerSlotEventData.ItemViewSlotsContainer;
+        public ItemViewSlotsContainerBase SourceContainer => m_ItemViewSlotCursorManager.SlotEventData.ItemViewSlotsContainer;
 
         public ItemViewSlot SourceItemViewSlot => m_ItemViewSlotCursorManager.SourceItemViewSlot;
 
         public ItemInfo SourceItemInfo => m_ItemViewSlotCursorManager.SourceItemViewSlot.ItemInfo;
 
-        public int SourceIndex => m_ItemViewSlotCursorManager.PointerSlotEventData.Index;
+        public int SourceIndex => m_ItemViewSlotCursorManager.SlotEventData.Index;
 
         public ItemViewSlotEventData DropSlotEventData => m_DropSlotEventData;
 
@@ -172,15 +172,22 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
         /// <param name="dropSlotEventData">The drop slot event data.</param>
         public void HandleItemViewSlotDrop(ItemViewSlotEventData dropSlotEventData)
         {
-            m_DropSlotEventData = dropSlotEventData;
-
-            var sourceItemViewSlot = m_ItemViewSlotCursorManager.SourceItemViewSlot;
-            var dragEventData = m_ItemViewSlotCursorManager.PointerSlotEventData;
+            var dragEventData = m_ItemViewSlotCursorManager.SlotEventData;
 
             if (dragEventData == null) {
                 Debug.LogWarning("dragEventData == null");
                 return;
             }
+
+            //Only drop if the drag and drop pointer ID is the same.
+            if (dragEventData.PointerID != dropSlotEventData.PointerID) {
+                return;
+            }
+            
+            m_DropSlotEventData = dropSlotEventData;
+
+            var sourceItemViewSlot = m_ItemViewSlotCursorManager.SourceItemViewSlot;
+            
 
             m_StreamData.Reset(sourceItemViewSlot, dragEventData, dropSlotEventData);
 
@@ -202,7 +209,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
                 SourceContainer.Draw();
             }
 
-            if (DestinationContainer != null) {
+            if (DestinationContainer != null && SourceContainer != DestinationContainer) {
                 DestinationContainer.Draw();
             }
         }
@@ -217,7 +224,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop
 
 
             m_DropSlotEventData = eventdata;
-            m_StreamData.Reset(m_ItemViewSlotCursorManager.SourceItemViewSlot, m_ItemViewSlotCursorManager.PointerSlotEventData, eventdata);
+            m_StreamData.Reset(m_ItemViewSlotCursorManager.SourceItemViewSlot, m_ItemViewSlotCursorManager.SlotEventData, eventdata);
 
             m_DebugPassedConditionIndex = m_ItemViewSlotDropActionSet.GetFirstPassingConditionIndex(this);
 

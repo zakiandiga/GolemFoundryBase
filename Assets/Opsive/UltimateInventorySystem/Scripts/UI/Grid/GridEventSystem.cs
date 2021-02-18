@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.UI.Grid
 {
+    using Opsive.UltimateInventorySystem.Input;
     using Opsive.UltimateInventorySystem.UI.CompoundElements;
     using System;
     using UnityEngine;
@@ -272,7 +273,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         public void SelectButton(int index)
         {
             if (index < 0 || index >= m_Buttons.Length) { return; }
-            m_Buttons[index].Select();
+            
+            EventSystemManager.Select(m_Buttons[index].gameObject);
             //Button.Select does not call the OnSelect event. Therefore we need to make this call.
             SelectedButton(index);
         }
@@ -297,11 +299,11 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             if (selectedButton == -1) { selectedButton = 0; }
             var row = selectedButton / m_GridSize.x;
 
-            if (last) {
-                m_Buttons[(m_GridSize.x - 1) + row * m_GridSize.x].Select();
-            } else {
-                m_Buttons[row * m_GridSize.x].Select();
-            }
+            var buttonToSelect = last ?
+                m_Buttons[(m_GridSize.x - 1) + row * m_GridSize.x]:
+                m_Buttons[row * m_GridSize.x];
+            
+            EventSystemManager.Select(buttonToSelect.gameObject);
         }
 
         /// <summary>
@@ -312,11 +314,11 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         {
             var col = GetSelectedButtonIndex() / m_GridSize.y;
 
-            if (last) {
-                m_Buttons[(m_GridSize.y - 1) + col * m_GridSize.y].Select();
-            } else {
-                m_Buttons[col * m_GridSize.y].Select();
-            }
+            var buttonToSelect = last ?
+                m_Buttons[(m_GridSize.y - 1) + col * m_GridSize.y]:
+                m_Buttons[col * m_GridSize.y];
+            
+            EventSystemManager.Select(buttonToSelect.gameObject);
         }
 
         /// <summary>
@@ -325,8 +327,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <returns>The button index.</returns>
         protected int GetSelectedButtonIndex()
         {
+            var eventSystem = EventSystemManager.GetEvenSystemFor(gameObject); 
             for (int i = 0; i < m_Buttons.Length; i++) {
-                if (EventSystem.current.currentSelectedGameObject == m_Buttons[i].gameObject) { return i; }
+                if (eventSystem.currentSelectedGameObject == m_Buttons[i].gameObject) { return i; }
             }
 
             return -1;

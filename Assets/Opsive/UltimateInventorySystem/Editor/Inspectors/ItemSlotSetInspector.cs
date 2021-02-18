@@ -81,7 +81,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_ItemSlotSet.ItemSlotsArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemSlotSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemSlotSet);
                     Select(m_List.Count - 1);
                 }, (index) =>
                 {
@@ -91,13 +91,13 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_ItemSlotSet.ItemSlotsArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemSlotSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemSlotSet);
                     if (index >= m_List.Count) { index = m_List.Count - 1; }
                     Select(index);
                 }, (i1, i2) =>
                 {
                     m_ItemSlotSet.ItemSlotsArray = m_List.ToArray();
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemSlotSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemSlotSet);
                 });
 
             container.Add(m_ReorderableList);
@@ -209,7 +209,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_List[index] = value;
             m_ItemSlotSet.ItemSlotsArray = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemSlotSet);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemSlotSet);
             Select(index);
         }
 

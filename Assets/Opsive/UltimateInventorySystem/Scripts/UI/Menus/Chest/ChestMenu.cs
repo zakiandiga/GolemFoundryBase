@@ -68,7 +68,10 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
         protected virtual void FindAndBindChests()
         {
             var allChests = FindObjectsOfType<Chest>();
-            for (int i = 0; i < allChests.Length; i++) { allChests[i].ChestMenu = this; }
+            for (int i = 0; i < allChests.Length; i++) {
+                if(allChests[i].ChestMenu != null){ continue; }
+                allChests[i].ChestMenu = this;
+            }
         }
 
         /// <summary>

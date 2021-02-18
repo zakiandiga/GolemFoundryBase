@@ -8,6 +8,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
 {
     using System;
     using UnityEngine;
+    using UnityEngine.EventSystems;
     using UnityEngine.Serialization;
 
     /// <summary>
@@ -67,12 +68,26 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         }
 
         /// <summary>
+        /// Condition to drag and item view.
+        /// </summary>
+        /// <param name="eventData">The event data.</param>
+        /// <returns>True if the drag can start.</returns>
+        public bool DragEventCondition(ItemViewSlotPointerEventData eventData)
+        {
+            if (m_DisableDragOnEmptySlot && eventData.ItemViewSlot?.ItemInfo.Item == null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Handle the Item View slot beginning to drag.
         /// </summary>
         /// <param name="eventData">The event data.</param>
         protected virtual void HandleItemViewSlotBeginDrag(ItemViewSlotPointerEventData eventData)
         {
-            if (m_DisableDragOnEmptySlot && eventData.ItemViewSlot?.ItemInfo.Item == null) { return; }
+            if(DragEventCondition(eventData) == false){return;}
             m_ItemViewSlotCursorManager.StartMove(eventData, eventData.PointerEventData.position);
             OnDragStarted?.Invoke(eventData);
         }
@@ -83,7 +98,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// <param name="eventData">The event data.</param>
         protected virtual void HandleItemViewSlotDrag(ItemViewSlotPointerEventData eventData)
         {
-            if (m_DisableDragOnEmptySlot && eventData.ItemViewSlot?.ItemInfo.Item == null) { return; }
+            if(DragEventCondition(eventData) == false){return;}
             m_ItemViewSlotCursorManager.AddDeltaPosition(eventData.PointerEventData.delta);
         }
 
