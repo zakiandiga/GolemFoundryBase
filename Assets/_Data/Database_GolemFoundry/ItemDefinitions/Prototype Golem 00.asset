@@ -52,10 +52,8 @@ MonoBehaviour:
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-      m_Values: 426c75657072696e74204c61796f757401010000003c1fb77e0000000001000000
-      m_UnityObjects:
-      - {fileID: 7458060509141378492, guid: 653426053dc86524daa7d7f9b02b002e, type: 3}
-      - {fileID: 7458060509141378492, guid: 653426053dc86524daa7d7f9b02b002e, type: 3}
+      m_Values: 426c75657072696e74204c61796f757401010000003c1fb77effffffffffffffff
+      m_UnityObjects: []
       m_Version: 3.1
   m_DefaultItem:
     m_ID: 231839460

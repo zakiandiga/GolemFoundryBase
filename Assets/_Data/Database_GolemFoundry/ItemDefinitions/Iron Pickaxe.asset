@@ -10,64 +10,65 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53ac5fa5da8102b468a92c21620db0d0, type: 3}
-  m_Name: Pick Axe
+  m_Name: Iron Pickaxe
   m_EditorClassIdentifier: 
-  m_ID: 2339731277
+  m_ID: 465265675
   m_Category: {fileID: 11400000, guid: dcccea98afded4b438f4ecd6824024c1, type: 2}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 11400000, guid: f377e7e797733264f899a98778627a0b, type: 2}
   m_ChildrenData:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-    m_ValueHashes: 4c1e4f8ec233006407c1b58994c2b589
-    m_ValuePositions: 0000000004000000080000000c000000
-    m_Values: 02000000020000000000000001000000
-    m_UnityObjects:
-    - {fileID: 11400000, guid: 004c19b2c9fe8054dab70f57dc7a4f34, type: 2}
-    - {fileID: 11400000, guid: 614bb8420af578b43b80d327b4cb7d9a, type: 2}
+    m_ValueHashes: 4c1e4f8ec2330064
+    m_ValuePositions: 0000000004000000
+    m_Values: 0000000000000000
+    m_UnityObjects: []
     m_Version: 3.1
   m_ItemDefinitionAttributeCollection:
     m_AttributeCollectionData:
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
-      m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000034000000
-      m_Values: 4465736372697074696f6e0101000000f9389fbd5069636b20417865206973207573656420666f72206d696e696e67206f7265735069636b20417865206973207573656420666f72206d696e696e67206f726573
+      m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000014000000
+      m_Values: 4465736372697074696f6e0100000000ff2080655069636b20417865206973207573656420666f72206d696e696e67206f726573
       m_UnityObjects: []
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.Sprite,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4aaf0255e0f3d4ee4c
       m_ValuePositions: 0000000004000000050000000500000009000000090000000d00000011000000
-      m_Values: 49636f6e0101000000164395b50000000001000000
+      m_Values: 49636f6e01000000009f70a3baffffffff00000000
       m_UnityObjects:
-      - {fileID: 21300000, guid: 233541f1a6c76b9478c1bae78276470c, type: 3}
       - {fileID: 21300000, guid: 233541f1a6c76b9478c1bae78276470c, type: 3}
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-      m_Values: 557361626c654974656d5072656661620100000000b99fa263ffffffffffffffff
+      m_Values: 557361626c654974656d50726566616201000000009e9da866ffffffffffffffff
       m_UnityObjects: []
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000000f00000010000000100000001400000014000000180000001c000000
-      m_Values: 45717569706d656e745072656661620100000000687d3cbfffffffffffffffff
-      m_UnityObjects: []
+      m_Values: 45717569706d656e74507265666162010100000050fcc40d0000000001000000
+      m_UnityObjects:
+      - {fileID: 3276530012613376290, guid: aa4a88d15ff2c074ba42eea5030a7f88, type: 3}
+      - {fileID: 3276530012613376290, guid: aa4a88d15ff2c074ba42eea5030a7f88, type: 3}
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000000c0000000d0000000d00000011000000110000001500000019000000
-      m_Values: 5069636b7570507265666162010000000061729448ffffffffffffffff
-      m_UnityObjects: []
+      m_Values: 5069636b75705072656661620101000000cfb2a7e90000000001000000
+      m_UnityObjects:
+      - {fileID: 3276530012613376290, guid: aa4a88d15ff2c074ba42eea5030a7f88, type: 3}
+      - {fileID: 3276530012613376290, guid: aa4a88d15ff2c074ba42eea5030a7f88, type: 3}
       m_Version: 3.1
   m_DefaultItem:
-    m_ID: 3832697381
-    m_Name: Pick Axe
-    m_ItemDefinitionID: 2339731277
+    m_ID: 24276288
+    m_Name: Iron Pickaxe
+    m_ItemDefinitionID: 465265675
     m_ItemDefinition: {fileID: 11400000}
     m_ItemAttributeCollection:
       m_AttributeCollectionData:
@@ -82,14 +83,14 @@ MonoBehaviour:
           UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
         m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
         m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000018000000
-        m_Values: 416c6c6f77656453706f74010200000087cb0c1fffffffffffffffff
+        m_Values: 416c6c6f77656453706f74010000000087cb0c1fffffffffffffffff
         m_UnityObjects: []
         m_Version: 3.1
       - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
           Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
-        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
-        m_Values: 50726963650100000000b764eeda00000000010000000000000000000000
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d324459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
+        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e0000000e000000120000001200000016000000
+        m_Values: 50726963650100000000b764eeda010000000000000000000000
         m_UnityObjects:
         - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
         m_Version: 3.1
