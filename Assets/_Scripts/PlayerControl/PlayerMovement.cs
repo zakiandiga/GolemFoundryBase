@@ -13,6 +13,16 @@ public class PlayerMovement : MonoBehaviour
 {
     //Add character visual game object as a children to the prefab
     //Required cinemachine brain on main camera
+    #region CameraComponent
+    private Transform cam;
+    //private GameObject cinemachineLock;
+    [SerializeField] private CinemachineVirtualCamera directObjCam;
+    [SerializeField] private CinemachineVirtualCamera playerLockCam;
+    [SerializeField] private CinemachineFreeLook playerFreeCam;
+    [SerializeField] private CinemachineFreeLook playerIndoorCam;
+    private CinemachineBrain cameraBrain;
+    private CinemachineCollider cinemachineCollider;
+    #endregion
 
     #region InputActionReference
     [SerializeField] private InputActionReference movementControl;
@@ -21,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private InputActionReference interactControl;
     [SerializeField] private InputActionReference openMenu;
     [SerializeField] private InputActionReference indoorSwitch;
+    //private InputActionReference lookAxis;
     #endregion
 
     #region MovementVariables
@@ -40,16 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     #endregion
 
-    #region CameraComponent
-    private Transform cam;
-    //private GameObject cinemachineLock;
-    [SerializeField] private CinemachineVirtualCamera directObjCam;
-    [SerializeField] private CinemachineVirtualCamera playerLockCam;
-    [SerializeField] private CinemachineFreeLook playerFreeCam;
-    [SerializeField] private CinemachineFreeLook playerIndoorCam;
-    private CinemachineBrain cameraBrain;
-    private CinemachineCollider cinemachineCollider;
-    #endregion
+
 
     #region OtherRequiredComponent
     private CharacterController controller;
@@ -59,7 +61,8 @@ public class PlayerMovement : MonoBehaviour
     #endregion
 
     #region ActionAnnouncer
-    public static event Action<string> OnOpenMenu; 
+    public static event Action<string> OnOpenMenu; //Might not needed later
+    public static event Action<string> OnOpenInventoryMenu;
     public static event Action<PlayerMovement> OnInteract;
     #endregion
 
@@ -96,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
+
+
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
         //Cursor.visible = false;
@@ -104,12 +109,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        
+
         movementControl.action.Enable(); //Enable (and disable) these reference action
         jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
         crouchControl.action.Enable();   //Instead of SetActive the component
-        //openMenu.action.Enable();
+        openMenu.action.Enable();
         interactControl.action.Enable();
         indoorSwitch.action.Enable(); //Temporary indoor switch
+
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
+        
 
         InRangeAnnouncer.OnPlayerInRange += ActivateMenu; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
@@ -126,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
         openMenu.action.Disable();
         interactControl.action.Disable();
         indoorSwitch.action.Disable(); //Temporary indoor switch
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
         InRangeAnnouncer.OnPlayerInRange -= ActivateMenu; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
@@ -160,25 +171,17 @@ public class PlayerMovement : MonoBehaviour
         MenuControlSwitch("nonPlayer");
     }
 
-    private void ActivateMenu(string announcer)
+    private void ActivateMenu(string announcer) //this should be binded to the target instead of player
     {
-        openMenu.action.Enable();
-        if(announcer == "MaterialRefill")
-        {
-            interactSign.text = "[I] Refill material";
-        }
-        else if(announcer == "GolemPod")
-        {
-            interactSign.text = "[M] Open Build Menu";
-        }
-        interactSign.enabled = true;
+        //openMenu.action.Enable();
+        //interactSign.enabled = true;
         
     }
 
-    private void DeactivateMenu(InRangeAnnouncer announcer)
+    private void DeactivateMenu(InRangeAnnouncer announcer)  //this should be binded to the target instead of player
     {
-        openMenu.action.Disable();
-        interactSign.enabled = false;
+        //openMenu.action.Disable();
+        //interactSign.enabled = false;
     }
 
     private void DisablingMovement()  //when opening UI
@@ -189,6 +192,7 @@ public class PlayerMovement : MonoBehaviour
         interactControl.action.Disable();
 
         openMenu.action.Disable();
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable(); //Not working
     }
 
     private void EnablingMovement()
@@ -199,6 +203,7 @@ public class PlayerMovement : MonoBehaviour
         interactControl.action.Enable();
 
         openMenu.action.Enable();
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
     }
 
     private void CameraStateSwitch()
@@ -366,6 +371,8 @@ public class PlayerMovement : MonoBehaviour
 
         #endregion
 
+        //BUILD MENU INTERACTION SUPPOSE TO OBSERVE THE TARGET DURING INTERACT, NOT FROM openMenu.action.triggered
+        /*
         if (openMenu.action.triggered)  //Build Menu Interaction
         {            
             OnOpenMenu?.Invoke("player");
@@ -375,7 +382,6 @@ public class PlayerMovement : MonoBehaviour
 
                 //cameraMode = CameraMode.OnObject; //temp
                 cameraMode = CameraMode.OnObject;
-
             }
             else
             {
@@ -387,11 +393,24 @@ public class PlayerMovement : MonoBehaviour
                 movementState = MovementState.Idle;
             }
 
-
-
             CameraStateSwitch();
 
             MenuControlSwitch("player");
+        }
+        */
+
+        if(openMenu.action.triggered)
+        {
+            if(movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+                OnOpenInventoryMenu?.Invoke("player");
+                MenuControlSwitch("Inventory Menu");
+                Debug.Log("Player opening Inventory Menu, who need to know?");
+
+            }
+
+            
         }
 
         if(interactControl.action.triggered)

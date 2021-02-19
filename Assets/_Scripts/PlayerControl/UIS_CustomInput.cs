@@ -15,11 +15,18 @@ namespace Opsive.UltimateInventorySystem.Input
         [SerializeField] private InputActionReference confirm; //ItemActionInput - UI
         //[SerializeField] private InputActionReference hotbar0; //define hotbars
 
+        
         public static event Action<string> OnBuildTrigger;
         //public static event Action<string> OnOpenMenu;
         public static event Action<string> OnClosingBuildMenu;
         public static event Action<string> OnCancelBuild;
- 
+
+        private InventoryMenuState inventoryMenuState = InventoryMenuState.Inactive;
+        public enum InventoryMenuState
+        {
+            Inactive,
+            Active
+        }
         private BuildingMenuState buildingMenuState = BuildingMenuState.Inactive;
         public enum BuildingMenuState
         {
@@ -47,10 +54,12 @@ namespace Opsive.UltimateInventorySystem.Input
             //confirm.action.Enable();
 
             //Observer
-            PlayerMovement.OnOpenMenu += OpenMenu;
+            //PlayerMovement.OnOpenMenu += OpenAssemblyMenu; //NEED UPDATE
+            //PlayerMovement.OnOpenMenu += OpenMainMenu; //Might not needed later
+            PlayerMovement.OnOpenInventoryMenu += OpenInventoryMenu;
             PlayerMovement.OnInteract += PlayerInteract;
             ItemActionUsingBlueprint.OnBlueprintSelected += BlueprintSelected;
-            BuildGolemHandler.OnBuildPressed += OpenMenu;  
+            BuildGolemHandler.OnBuildPressed += OpenAssemblyMenu;  
         }
 
         private void OnDisable()
@@ -62,10 +71,13 @@ namespace Opsive.UltimateInventorySystem.Input
             back.action.Disable();
             confirm.action.Disable();
 
-            PlayerMovement.OnOpenMenu -= OpenMenu;
+            //PlayerMovement.OnOpenMenu -= OpenAssemblyMenu; //NEED UPDATE
+            
+            //PlayerMovement.OnOpenMenu -= OpenMainMenu; //Might not needed
+            PlayerMovement.OnOpenInventoryMenu -= OpenInventoryMenu;
             PlayerMovement.OnInteract -= PlayerInteract;
             ItemActionUsingBlueprint.OnBlueprintSelected -= BlueprintSelected;
-            BuildGolemHandler.OnBuildPressed -= OpenMenu;
+            BuildGolemHandler.OnBuildPressed -= OpenAssemblyMenu; //Should be fine
         }
 
         private void DisablingMenuInteraction()
@@ -99,7 +111,20 @@ namespace Opsive.UltimateInventorySystem.Input
             Debug.Log(buildingMenuState);
         }
 
-        private void OpenMenu(string announcer)
+        private void OpenInventoryMenu(string announcer)
+        {
+
+            if(inventoryMenuState != InventoryMenuState.Active)
+            {
+                inventoryMenuState = InventoryMenuState.Active;
+                Debug.Log("Observed player on open menu, Opening Inventory Menu");
+                OpenTogglePanel("InventoryMenu", true);
+                EnablingMenuInteraction();
+            }
+
+        }
+
+        public void OpenAssemblyMenu(string announcer) //should be called from interactable
         {
             switch (buildingMenuState)
             {
@@ -166,7 +191,7 @@ namespace Opsive.UltimateInventorySystem.Input
 
         public void CancelButton()
         {
-            OpenMenu("button");
+            OpenAssemblyMenu("button");
         }
 
         private void Update()
