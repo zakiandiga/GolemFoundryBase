@@ -1,15 +1,14 @@
-﻿using System;
+﻿using Cinemachine;
+using Opsive.UltimateInventorySystem.Input;
+using System;
 using System.Collections;
-using UnityEngine.EventSystems;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
-using TMPro;
-using Opsive.UltimateInventorySystem.Input;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : InventoryInput //only use Interact() from InventoryInput
 {
     //Add character visual game object as a children to the prefab
     //Required cinemachine brain on main camera
@@ -57,13 +56,14 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private Animator anim;
     [SerializeField] private TextMeshProUGUI interactSign; //TEMP
+    private GameObject currentInteractable;
 
     #endregion
 
     #region ActionAnnouncer
-    public static event Action<string> OnOpenMenu; //Might not needed later
+    public static event Action<string> OnOpenMenuFromInteract; //Might not needed later
     public static event Action<string> OnOpenInventoryMenu;
-    public static event Action<PlayerMovement> OnInteract;
+    public static event Action<GameObject> OnInteract;
     #endregion
 
     #region PlayerState
@@ -109,8 +109,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        
-
         movementControl.action.Enable(); //Enable (and disable) these reference action
         jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
         crouchControl.action.Enable();   //Instead of SetActive the component
@@ -121,9 +119,12 @@ public class PlayerMovement : MonoBehaviour
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
         
 
-        InRangeAnnouncer.OnPlayerInRange += ActivateMenu; //TEMP
+        InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
-        UIS_CustomInput.OnClosingBuildMenu += EnableControl;
+
+        OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
+
+        UIS_CustomInput.OnClosingMenu += EnableControl;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
         //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
@@ -138,9 +139,10 @@ public class PlayerMovement : MonoBehaviour
         indoorSwitch.action.Disable(); //Temporary indoor switch
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
-        InRangeAnnouncer.OnPlayerInRange -= ActivateMenu; //TEMP
+        InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
-        UIS_CustomInput.OnClosingBuildMenu -= EnableControl;
+
+        UIS_CustomInput.OnClosingMenu -= EnableControl;
         //UIS_CustomInput.OnBuildTrigger -= EnableControl;
     }
 
@@ -152,6 +154,12 @@ public class PlayerMovement : MonoBehaviour
             cameraMode = CameraMode.Free;
             CameraStateSwitch();
             MenuControlSwitch("BlueprintMenu");
+        }
+
+        if(announcer == "InventoryMenu")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("InventoryMenu");
         }
 
         else
@@ -171,17 +179,21 @@ public class PlayerMovement : MonoBehaviour
         MenuControlSwitch("nonPlayer");
     }
 
-    private void ActivateMenu(string announcer) //this should be binded to the target instead of player
+    private void RegisterInteractable(GameObject announcer) //this should be binded to the target instead of player
     {
-        //openMenu.action.Enable();
-        //interactSign.enabled = true;
         
+        currentInteractable = announcer;
+        Debug.Log("Can interact with " + currentInteractable.name);
+
     }
 
-    private void DeactivateMenu(InRangeAnnouncer announcer)  //this should be binded to the target instead of player
+    private void DeactivateMenu(GameObject announcer)  //this should be binded to the target instead of player
     {
-        //openMenu.action.Disable();
-        //interactSign.enabled = false;
+        if(currentInteractable == announcer)
+        {
+            currentInteractable = null;
+        }
+        //Debug.Log("current interactable object is " + currentInteractable.name);
     }
 
     private void DisablingMovement()  //when opening UI
@@ -271,6 +283,34 @@ public class PlayerMovement : MonoBehaviour
         CameraStateSwitch();       
     }
     */
+
+    private void OpenMenuFromInteract(string menu)
+    {
+        if(menu == "Assembling Menu")
+        {
+            OnOpenMenuFromInteract?.Invoke("player");
+            if (movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+
+                //cameraMode = CameraMode.OnObject; //temp
+                cameraMode = CameraMode.OnObject;
+            }
+            else
+            {
+
+                if (cameraMode == CameraMode.OnObject)
+                {
+                    cameraMode = CameraMode.Free;
+                }
+                movementState = MovementState.Idle;
+            }
+
+            CameraStateSwitch();
+
+            MenuControlSwitch("player");
+        }
+    }
 
     void Update()
     {
@@ -375,27 +415,7 @@ public class PlayerMovement : MonoBehaviour
         /*
         if (openMenu.action.triggered)  //Build Menu Interaction
         {            
-            OnOpenMenu?.Invoke("player");
-            if(movementState != MovementState.OnMenu)
-            {
-                movementState = MovementState.OnMenu;
 
-                //cameraMode = CameraMode.OnObject; //temp
-                cameraMode = CameraMode.OnObject;
-            }
-            else
-            {
-                
-                if (cameraMode == CameraMode.OnObject)
-                {
-                    cameraMode = CameraMode.Free;
-                }
-                movementState = MovementState.Idle;
-            }
-
-            CameraStateSwitch();
-
-            MenuControlSwitch("player");
         }
         */
 
@@ -406,16 +426,13 @@ public class PlayerMovement : MonoBehaviour
                 movementState = MovementState.OnMenu;
                 OnOpenInventoryMenu?.Invoke("player");
                 MenuControlSwitch("Inventory Menu");
-                Debug.Log("Player opening Inventory Menu, who need to know?");
-
-            }
-
-            
+            }            
         }
 
         if(interactControl.action.triggered)
         {
-            OnInteract?.Invoke(this);
+            //OnInteract?.Invoke(currentInteractable);
+            Interact();
         }
 
         //Temporary camera switch

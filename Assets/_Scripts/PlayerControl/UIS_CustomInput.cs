@@ -18,7 +18,8 @@ namespace Opsive.UltimateInventorySystem.Input
         
         public static event Action<string> OnBuildTrigger;
         //public static event Action<string> OnOpenMenu;
-        public static event Action<string> OnClosingBuildMenu;
+
+        public static event Action<string> OnClosingMenu;
         public static event Action<string> OnCancelBuild;
 
         private InventoryMenuState inventoryMenuState = InventoryMenuState.Inactive;
@@ -38,8 +39,10 @@ namespace Opsive.UltimateInventorySystem.Input
 
         //Open specific menu (like Golem Assembly) triggered from interact event
         //action from interact with interactable triggered from PlayerMovement
+
         private void Start()
         {
+            inventoryMenuState = InventoryMenuState.Inactive;
             buildingMenuState = BuildingMenuState.Inactive;
         }
 
@@ -54,10 +57,10 @@ namespace Opsive.UltimateInventorySystem.Input
             //confirm.action.Enable();
 
             //Observer
-            //PlayerMovement.OnOpenMenu += OpenAssemblyMenu; //NEED UPDATE
+            PlayerMovement.OnOpenMenuFromInteract += OpenAssemblyMenu; //NEED UPDATE
             //PlayerMovement.OnOpenMenu += OpenMainMenu; //Might not needed later
             PlayerMovement.OnOpenInventoryMenu += OpenInventoryMenu;
-            PlayerMovement.OnInteract += PlayerInteract;
+            //PlayerMovement.OnInteract += PlayerInteract;
             ItemActionUsingBlueprint.OnBlueprintSelected += BlueprintSelected;
             BuildGolemHandler.OnBuildPressed += OpenAssemblyMenu;  
         }
@@ -75,7 +78,7 @@ namespace Opsive.UltimateInventorySystem.Input
             
             //PlayerMovement.OnOpenMenu -= OpenMainMenu; //Might not needed
             PlayerMovement.OnOpenInventoryMenu -= OpenInventoryMenu;
-            PlayerMovement.OnInteract -= PlayerInteract;
+            //PlayerMovement.OnInteract -= PlayerInteract;
             ItemActionUsingBlueprint.OnBlueprintSelected -= BlueprintSelected;
             BuildGolemHandler.OnBuildPressed -= OpenAssemblyMenu; //Should be fine
         }
@@ -100,10 +103,24 @@ namespace Opsive.UltimateInventorySystem.Input
             //Debug.Log("Menu control enabled");
         }
 
-        private void PlayerInteract(PlayerMovement player)
+        private void OpenInventoryMenu(string announcer)
+        {
+
+            if (inventoryMenuState != InventoryMenuState.Active)
+            {
+                inventoryMenuState = InventoryMenuState.Active;
+                OpenTogglePanel("InventoryMenu", true);
+                EnablingMenuInteraction();
+            }
+
+        }
+
+        /*
+        private void PlayerInteract(GameObject playerCurrentInteractable)
         {
             Interact();
         }
+        */
 
         private void BlueprintSelected(int value)
         {
@@ -111,26 +128,16 @@ namespace Opsive.UltimateInventorySystem.Input
             Debug.Log(buildingMenuState);
         }
 
-        private void OpenInventoryMenu(string announcer)
-        {
 
-            if(inventoryMenuState != InventoryMenuState.Active)
-            {
-                inventoryMenuState = InventoryMenuState.Active;
-                Debug.Log("Observed player on open menu, Opening Inventory Menu");
-                OpenTogglePanel("InventoryMenu", true);
-                EnablingMenuInteraction();
-            }
 
-        }
-
-        public void OpenAssemblyMenu(string announcer) //should be called from interactable
+        private void OpenAssemblyMenu(string announcer) //should be called from interactable
         {
             switch (buildingMenuState)
             {
                 case BuildingMenuState.Inactive: //Open menu from PlayerMovement
                     if(announcer == "player")
                     {
+                        //OnOpenMenuFromInteract?.Invoke("Assembling Menu");
                         OpenTogglePanel("Assembling Menu", true);
                         EnablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.BlueprintOption;
@@ -138,7 +145,7 @@ namespace Opsive.UltimateInventorySystem.Input
                     }
                     break;
                 case BuildingMenuState.BlueprintOption: //Close menu on blueprint option opened
-                    OnClosingBuildMenu?.Invoke("BlueprintOption");
+                    OnClosingMenu?.Invoke("BlueprintOption");
                     DisablingMenuInteraction();
                     OpenTogglePanel("Assembling Menu", true);
                     buildingMenuState = BuildingMenuState.Inactive;
@@ -153,7 +160,7 @@ namespace Opsive.UltimateInventorySystem.Input
                     else if (announcer == "buildHandler")
                     {
                         OpenTogglePanel("Assembling Menu", true);
-                        OnClosingBuildMenu?.Invoke("BlueprintOption");
+                        OnClosingMenu?.Invoke("BlueprintOption");
                         DisablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.Inactive;
                     }
@@ -220,13 +227,25 @@ namespace Opsive.UltimateInventorySystem.Input
             if (back.action.triggered)
             {
                 CancelButton(); //Temporary, this should be on BUILDING MENU
-                Debug.Log("Open Menu pressed");
+
             }
 
             if(menu.action.triggered) //temp
             {
-                CancelButton(); //Temporary, this should be on BUILDING MENU
-                Debug.Log("Open Menu pressed");
+                //CancelButton(); //Temporary, this should be on BUILDING MENU
+                if(inventoryMenuState == InventoryMenuState.Active)
+                {
+                    inventoryMenuState = InventoryMenuState.Inactive;
+                    OpenTogglePanel("InventoryMenu", true);
+                    DisablingMenuInteraction();
+                    OnClosingMenu?.Invoke("InventoryMenu");
+                }
+
+                if(buildingMenuState == BuildingMenuState.BlueprintGrid || buildingMenuState == BuildingMenuState.BlueprintOption)
+                {
+                    CancelButton();
+                }
+
             }
             
 
