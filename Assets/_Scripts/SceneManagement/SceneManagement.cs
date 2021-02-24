@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
-    private AsyncOperation destinationScene;
+    public AsyncOperation destinationScene;
 
+    
 
     private void Start()
     {
@@ -22,4 +23,6 @@ public class SceneManagement : MonoBehaviour
     {
         Application.Quit();
     }
+
 }
+

@@ -49,9 +49,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     private Vector2 movement;
 
     #endregion
-
-
-
+    
     #region OtherRequiredComponent
     private CharacterController controller;
     private Animator anim;
@@ -125,6 +123,8 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
 
         UIS_CustomInput.OnClosingMenu += EnableControl;
+
+        PlayerSpawner.OnSceneLoaded += SetPlayerPosition;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
         //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
@@ -142,8 +142,18 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
 
+        OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
+
         UIS_CustomInput.OnClosingMenu -= EnableControl;
+
+        PlayerSpawner.OnSceneLoaded -= SetPlayerPosition;
         //UIS_CustomInput.OnBuildTrigger -= EnableControl;
+    }
+
+    private void SetPlayerPosition(Transform targetTransform)
+    {
+        this.transform.position = targetTransform.position;
+        this.transform.rotation = targetTransform.rotation;
     }
 
     private void EnableControl(string announcer)
