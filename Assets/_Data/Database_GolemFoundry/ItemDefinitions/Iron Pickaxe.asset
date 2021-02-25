@@ -44,8 +44,10 @@ MonoBehaviour:
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
       m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
-      m_Values: 557361626c654974656d50726566616201000000009e9da866ffffffffffffffff
-      m_UnityObjects: []
+      m_Values: 557361626c654974656d50726566616201010000009e9da8660000000001000000
+      m_UnityObjects:
+      - {fileID: 0}
+      - {fileID: 0}
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
@@ -79,18 +81,11 @@ MonoBehaviour:
         m_Values: 4865616c7468506f696e740100000000b0f025070000000064000000
         m_UnityObjects: []
         m_Version: 3.1
-      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
-          UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
-        m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000018000000
-        m_Values: 416c6c6f77656453706f74010000000087cb0c1fffffffffffffffff
-        m_UnityObjects: []
-        m_Version: 3.1
       - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
           Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d324459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
-        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e0000000e000000120000001200000016000000
-        m_Values: 50726963650100000000b764eeda010000000000000000000000
+        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
+        m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
+        m_Values: 50726963650100000000b764eeda00000000010000000000000000000000
         m_UnityObjects:
         - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
         m_Version: 3.1

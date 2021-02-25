@@ -31,3 +31,9 @@ MonoBehaviour:
       m_Values: 4465627567
       m_UnityObjects: []
       m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.ItemActions.MoveToCollectionItemAction
+      m_ValueHashes: 0d00eb25f7c4e5320673b9cbbc1a83f317b53ca16dfde8ca0402ba8ebe6b80b63dd54b0615747382d79d7a1c
+      m_ValuePositions: 0000000005000000050000000d0000000d00000011000000110000001a0000001a0000001e00000023000000
+      m_Values: 45717569704261636b7061636b0100000045717569706d656e74030000004571756970556e6571756970
+      m_UnityObjects: []
+      m_Version: 3.1

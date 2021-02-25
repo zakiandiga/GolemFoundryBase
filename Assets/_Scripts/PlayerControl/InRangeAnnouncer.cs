@@ -44,4 +44,9 @@ public class InRangeAnnouncer : MonoBehaviour
         InteractSign.SetActive(false);
 
     }
+
+    public void PlayerEquip()
+    {
+        InteractSign.SetActive(false);
+    }
 }
