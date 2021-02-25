@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Opsive.UltimateInventorySystem.Core.InventoryCollections;
 using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers;
 using Opsive.UltimateInventorySystem.UI.Panels;
+using Opsive.UltimateInventorySystem.Input;
 
 //Main function: toggle between Blueprint Learned and Blueprint Grid
 public class BlueprintViewManager : MonoBehaviour
@@ -27,6 +28,7 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;        
         ItemTransferHandler.OnRefreshTransfer += ClosePanel;
+        UIS_CustomInput.OnBuildCleanup += ClosePanel;
         BuildGolemHandler.OnBuildPressed += ClosingPanelOnBuild;
         
     }
@@ -35,6 +37,8 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected -= OpenPanel;
         ItemTransferHandler.OnRefreshTransfer -= ClosePanel;
+        UIS_CustomInput.OnBuildCleanup -= ClosePanel;
+        BuildGolemHandler.OnBuildPressed -= ClosingPanelOnBuild;
     }
 
     private void OpenPanel(int value)

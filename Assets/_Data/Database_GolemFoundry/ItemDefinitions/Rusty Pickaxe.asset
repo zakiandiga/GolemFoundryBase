@@ -58,15 +58,6 @@ MonoBehaviour:
       - {fileID: 4146915755813877656, guid: f9af6473f7cb13343b3e55cf37a3e53f, type: 3}
       - {fileID: 4146915755813877656, guid: f9af6473f7cb13343b3e55cf37a3e53f, type: 3}
       m_Version: 3.1
-    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
-        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
-      m_ValuePositions: 000000000c0000000d0000000d00000011000000110000001500000019000000
-      m_Values: 5069636b757050726566616201010000001d11d1250000000001000000
-      m_UnityObjects:
-      - {fileID: 2574036834664842418, guid: cb081115050ca064194c56dc819e6b16, type: 3}
-      - {fileID: 2574036834664842418, guid: cb081115050ca064194c56dc819e6b16, type: 3}
-      m_Version: 3.1
   m_DefaultItem:
     m_ID: 1974129177
     m_Name: Rusty Pickaxe

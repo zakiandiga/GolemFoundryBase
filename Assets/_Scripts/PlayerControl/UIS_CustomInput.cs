@@ -15,12 +15,15 @@ namespace Opsive.UltimateInventorySystem.Input
         [SerializeField] private InputActionReference confirm; //ItemActionInput - UI
         //[SerializeField] private InputActionReference hotbar0; //define hotbars
 
-        
+        private int openedBlueprintIndex = 0;
+
+
         public static event Action<string> OnBuildTrigger;
         //public static event Action<string> OnOpenMenu;
 
         public static event Action<string> OnClosingMenu;
         public static event Action<string> OnCancelBuild;
+        public static event Action<int> OnBuildCleanup;
 
         private InventoryMenuState inventoryMenuState = InventoryMenuState.Inactive;
         public enum InventoryMenuState
@@ -125,10 +128,11 @@ namespace Opsive.UltimateInventorySystem.Input
         private void BlueprintSelected(int value)
         {
             buildingMenuState = BuildingMenuState.BlueprintGrid;
+            openedBlueprintIndex = value;
+            OpenTogglePanel("Available Parts", true);
             Debug.Log(buildingMenuState);
         }
-
-
+        
 
         private void OpenAssemblyMenu(string announcer) //should be called from interactable
         {
@@ -145,10 +149,17 @@ namespace Opsive.UltimateInventorySystem.Input
                     }
                     break;
                 case BuildingMenuState.BlueprintOption: //Close menu on blueprint option opened
+                    /*
                     OnClosingMenu?.Invoke("BlueprintOption");
                     DisablingMenuInteraction();
                     OpenTogglePanel("Assembling Menu", true);
                     buildingMenuState = BuildingMenuState.Inactive;
+                    */
+                    OnClosingMenu?.Invoke("BlueprintOption");
+                    OpenTogglePanel("Assembling Menu", true);
+                    DisablingMenuInteraction();                    
+                    buildingMenuState = BuildingMenuState.Inactive;
+                    Debug.Log("Closing Assembling Menu, buildingMenuState = " + buildingMenuState);
                     break;
                 case BuildingMenuState.BlueprintGrid:
                     //Enter to this state controlled by BlueprintSelecter()
@@ -156,11 +167,18 @@ namespace Opsive.UltimateInventorySystem.Input
                     {
                         OnCancelBuild("blueprintGrid");
                         buildingMenuState = BuildingMenuState.BlueprintOption;
+                        OpenTogglePanel("Available Parts", true);
                     }
                     else if (announcer == "buildHandler")
                     {
-                        OpenTogglePanel("Assembling Menu", true);
                         OnClosingMenu?.Invoke("BlueprintOption");
+                        OnBuildCleanup.Invoke(openedBlueprintIndex);
+
+                        OpenTogglePanel("Available Parts", true);
+                    
+                        OpenTogglePanel("Assembling Menu", true);
+
+                        openedBlueprintIndex = 0;
                         DisablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.Inactive;
                     }
