@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Cliff_A_Mat
-  m_Shader: {fileID: 0}
-  m_ShaderKeywords: _DETAIL_MULX2 _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-  m_LightmapFlags: 5
+  m_Shader: {fileID: -6465566751694194690, guid: 5666065488ed57a4d9f76658a82b25c7, type: 3}
+  m_ShaderKeywords: _NORMALMAP
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -19,20 +19,24 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 184d6a203cd3af44397cedb44de6cfed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoverageAlbedo:
-        m_Texture: {fileID: 2800000, guid: 6dc430d5c113ab14c91065b0117acafb, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2021285e492a4774bb1a0e59b3756ade, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoverageMap:
-        m_Texture: {fileID: 2800000, guid: f372ecf27e5c4954c8bf0015e21ca538, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _CoverageNormals:
-        m_Texture: {fileID: 2800000, guid: 51954d6e0de971a43ac1ba884c6836f5, type: 3}
+        m_Texture: {fileID: 2800000, guid: d44c1ab04a4056f4d9ab54a6f172cf8f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -64,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c469316b0e200614daa4511fd0e1d512, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -127,6 +131,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _TextureSample3:
         m_Texture: {fileID: 2800000, guid: 19b818e26c2922a488c06b1fbdae5df3, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -135,31 +143,54 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AlphaClip: 0
+    - _Blend: 0
     - _BumpScale: 1
-    - _CoverageAmount: 1
-    - _CoverageTiling: 8
+    - _CoverageAmount: 0.01
+    - _CoverageTiling: 1
+    - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 0
     - _Detailstrength: 0.28
     - _DstBlend: 0
     - _Float0: 4.78
-    - _Globaltiling: 0.125
+    - _Globaltiling: 0.13
     - _GlossMapScale: 0.727
     - _Glossiness: 0.5
+    - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _MaskClipValue: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
     - _Roughness: 0.276
+    - _Shininess: 0
+    - _Smoothness: 0.5
+    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 1
     - _SnowAmount: 2
     - _SnowCover: 1
     - _SnowTiling: 7
+    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Surface: 0
     - _TessMax: 25
     - _TessMin: 10
     - _TessValue: 4
@@ -168,8 +199,10 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.4852941, g: 0.4852941, b: 0.4852941, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlobalColor: {r: 1, g: 0.9520652, b: 0.853, a: 1}
+    - _GlobalColor: {r: 0.5882353, g: 0.5294118, b: 0.40784317, a: 1}
     - _ObjectColor: {r: 0.86764705, g: 0.86764705, b: 0.86764705, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []

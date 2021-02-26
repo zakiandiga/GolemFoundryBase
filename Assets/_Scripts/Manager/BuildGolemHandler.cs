@@ -48,6 +48,7 @@ public class BuildGolemHandler : MonoBehaviour
     private void ResetSlotFill(int amount)
     {
         currentSlotFill += amount;
+        Debug.Log("Build canceled! currentSlotFill = " + currentSlotFill);
 
         if(currentSlotFill < 0) //negative handler
         {
@@ -61,7 +62,7 @@ public class BuildGolemHandler : MonoBehaviour
     private void ItemDropListener(int amount)
     {
         currentSlotFill += amount;
-        
+        Debug.Log("Part dropped! currentSlotFill = " + currentSlotFill);
 
         if(currentSlotFill >= maxSlotFill)
         {

@@ -7,14 +7,7 @@
             "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"c7d6f870-3b11-45a3-b3ae-7133eca8c7bb\"\n    },\n    \"m_Name\": \"Alpha\",\n    \"m_DefaultReferenceName\": \"Vector1_2B6265AD\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": 0.0,\n    \"m_FloatType\": 0,\n    \"m_RangeValues\": {\n        \"x\": 0.0,\n        \"y\": 1.0\n    }\n}"
         }
     ],
-    "m_SerializedKeywords": [
-        {
-            "typeInfo": {
-                "fullName": "UnityEditor.ShaderGraph.ShaderKeyword"
-            },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"67897b23-99eb-4f41-8712-5b21a8bb7a5b\"\n    },\n    \"m_Name\": \"Boolean\",\n    \"m_DefaultReferenceName\": \"BOOLEAN_7C880349_ON\",\n    \"m_OverrideReferenceName\": \"LOD_FADE_CROSSFADE\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_KeywordType\": 0,\n    \"m_KeywordDefinition\": 0,\n    \"m_KeywordScope\": 1,\n    \"m_Entries\": [],\n    \"m_Value\": 0,\n    \"m_IsEditable\": true,\n    \"m_IsExposable\": true\n}"
-        }
-    ],
+    "m_SerializedKeywords": [],
     "m_SerializableNodes": [
         {
             "typeInfo": {

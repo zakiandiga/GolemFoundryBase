@@ -30,6 +30,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "60f089fd-18b3-4620-928a-abcb0918918a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Crouch",
                     "type": "Button",
                     "id": "8df33cfc-e1ae-4794-ba68-839b429a0864",
@@ -269,6 +277,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "IndoorSwitch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "17bd0239-ff54-4519-b6aa-d3b6fa7ce27c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a88615e3-4a58-431d-b608-5e1f7f3fefcd",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

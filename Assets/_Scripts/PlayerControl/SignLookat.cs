@@ -10,12 +10,12 @@ public class SignLookat : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        collider = GetComponent<SphereCollider>();
+        TryGetComponent<SphereCollider>(out collider);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Player" && this.gameObject.tag == "Tutorial")
         {
             this.gameObject.SetActive(false);
         }

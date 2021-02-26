@@ -4,9 +4,16 @@ using UnityEngine;
 //Put this script on interactable object, like guilding pod
 public class InRangeAnnouncer : MonoBehaviour
 {
-    public static event Action<string> OnPlayerInRange;
-    public static event Action<InRangeAnnouncer> OnPlayerOutRange;
+    public static event Action<GameObject> OnPlayerInRange;
+    public static event Action<GameObject> OnPlayerOutRange;
+    public GameObject InteractSign;
 
+    private void Start()
+    {
+        
+    }
+
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
@@ -22,16 +29,24 @@ public class InRangeAnnouncer : MonoBehaviour
             PlayerOutRange();
         }
     }
+    */
 
-    private void PlayerInRange()
+    public void PlayerInRange()
     {
-        OnPlayerInRange?.Invoke(this.gameObject.name);
+        OnPlayerInRange?.Invoke(this.gameObject);
+        InteractSign.SetActive(true);
 
     }
 
-    private void PlayerOutRange()
+    public void PlayerOutRange()
     {
-        OnPlayerOutRange?.Invoke(this);
+        OnPlayerOutRange?.Invoke(this.gameObject);
+        InteractSign.SetActive(false);
 
+    }
+
+    public void PlayerEquip()
+    {
+        InteractSign.SetActive(false);
     }
 }

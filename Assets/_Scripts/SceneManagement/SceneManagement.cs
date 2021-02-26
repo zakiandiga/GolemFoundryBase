@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
-    private AsyncOperation destinationScene;
+    public AsyncOperation destinationScene;
 
+    
 
     private void Start()
     {
-        EnterFactory();
+        //EnterFactory();
     }
 
     public void EnterFactory()
@@ -22,4 +23,6 @@ public class SceneManagement : MonoBehaviour
     {
         Application.Quit();
     }
+
 }
+

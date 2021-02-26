@@ -16,7 +16,9 @@ MonoBehaviour:
     m_Name: All
     m_ItemCategory: {fileID: 11400000, guid: 1c405225e74320344ab17dd97f139230, type: 2}
   m_ExceptionCategories:
-    m_ItemCategories: []
+    m_ItemCategories:
+    - m_Name: Tools
+      m_ItemCategory: {fileID: 11400000, guid: dcccea98afded4b438f4ecd6824024c1, type: 2}
   m_ItemActionCollection:
     m_ItemActionsData:
     - m_ObjectType: Opsive.UltimateInventorySystem.ItemActions.DebugItemAction

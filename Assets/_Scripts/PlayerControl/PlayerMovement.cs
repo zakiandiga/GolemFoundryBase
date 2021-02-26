@@ -1,26 +1,37 @@
-﻿using System;
+﻿using Cinemachine;
+using Opsive.UltimateInventorySystem.Input;
+using System;
 using System.Collections;
-using UnityEngine.EventSystems;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Cinemachine;
-using TMPro;
-using Opsive.UltimateInventorySystem.Input;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : InventoryInput //only use Interact() from InventoryInput
 {
     //Add character visual game object as a children to the prefab
     //Required cinemachine brain on main camera
+    #region CameraComponent
+    private Transform cam;
+    //private GameObject cinemachineLock;
+    [SerializeField] private CinemachineVirtualCamera directObjCam;
+    [SerializeField] private CinemachineVirtualCamera playerLockCam;
+    [SerializeField] private CinemachineFreeLook playerFreeCam;
+    [SerializeField] private CinemachineFreeLook playerIndoorCam;
+    private CinemachineBrain cameraBrain;
+    private CinemachineCollider cinemachineCollider;
+    #endregion
 
     #region InputActionReference
     [SerializeField] private InputActionReference movementControl;
     [SerializeField] private InputActionReference jumpControl;
+    [SerializeField] private InputActionReference attackControl;
     [SerializeField] private InputActionReference crouchControl;
     [SerializeField] private InputActionReference interactControl;
     [SerializeField] private InputActionReference openMenu;
     [SerializeField] private InputActionReference indoorSwitch;
+    //private InputActionReference lookAxis;
     #endregion
 
     #region MovementVariables
@@ -35,32 +46,29 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 4f;
     private float jumpConst = -3.0f;
     private Vector3 playerVelocity;
-
     private Vector2 movement;
 
     #endregion
+    private bool canAttack = true;
+    private float attackDelay = 1.2f; //modified from PlayerStat component
+    #region ActionProperties
 
-    #region CameraComponent
-    private Transform cam;
-    //private GameObject cinemachineLock;
-    [SerializeField] private CinemachineVirtualCamera directObjCam;
-    [SerializeField] private CinemachineVirtualCamera playerLockCam;
-    [SerializeField] private CinemachineFreeLook playerFreeCam;
-    [SerializeField] private CinemachineFreeLook playerIndoorCam;
-    private CinemachineBrain cameraBrain;
-    private CinemachineCollider cinemachineCollider;
+
     #endregion
 
     #region OtherRequiredComponent
     private CharacterController controller;
     private Animator anim;
     [SerializeField] private TextMeshProUGUI interactSign; //TEMP
+    private GameObject currentInteractable;
 
     #endregion
 
     #region ActionAnnouncer
-    public static event Action<string> OnOpenMenu; 
-    public static event Action<PlayerMovement> OnInteract;
+    public static event Action<string> OnOpenMenuFromInteract; //Might not needed later
+    public static event Action<string> OnOpenInventoryMenu;
+    public static event Action<GameObject> OnInteract;
+    public static event Action<PlayerMovement> OnAttack;
     #endregion
 
     #region PlayerState
@@ -96,6 +104,8 @@ public class PlayerMovement : MonoBehaviour
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
+
+
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
         //Cursor.visible = false;
@@ -106,14 +116,23 @@ public class PlayerMovement : MonoBehaviour
     {
         movementControl.action.Enable(); //Enable (and disable) these reference action
         jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
+        attackControl.action.Enable();
         crouchControl.action.Enable();   //Instead of SetActive the component
-        //openMenu.action.Enable();
+        openMenu.action.Enable();
         interactControl.action.Enable();
         indoorSwitch.action.Enable(); //Temporary indoor switch
 
-        InRangeAnnouncer.OnPlayerInRange += ActivateMenu; //TEMP
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
+        
+
+        InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
-        UIS_CustomInput.OnClosingBuildMenu += EnableControl;
+
+        OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
+
+        UIS_CustomInput.OnClosingMenu += EnableControl;
+
+        PlayerSpawner.OnSceneLoaded += SetPlayerPosition;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
         //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
@@ -122,15 +141,28 @@ public class PlayerMovement : MonoBehaviour
     {
         movementControl.action.Disable();
         jumpControl.action.Disable();
+        attackControl.action.Disable();
         crouchControl.action.Disable();
         openMenu.action.Disable();
         interactControl.action.Disable();
         indoorSwitch.action.Disable(); //Temporary indoor switch
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
-        InRangeAnnouncer.OnPlayerInRange -= ActivateMenu; //TEMP
+        InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
-        UIS_CustomInput.OnClosingBuildMenu -= EnableControl;
+
+        OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
+
+        UIS_CustomInput.OnClosingMenu -= EnableControl;
+
+        PlayerSpawner.OnSceneLoaded -= SetPlayerPosition;
         //UIS_CustomInput.OnBuildTrigger -= EnableControl;
+    }
+
+    private void SetPlayerPosition(Transform targetTransform)
+    {
+        this.transform.position = targetTransform.position;
+        this.transform.rotation = targetTransform.rotation;
     }
 
     private void EnableControl(string announcer)
@@ -141,6 +173,12 @@ public class PlayerMovement : MonoBehaviour
             cameraMode = CameraMode.Free;
             CameraStateSwitch();
             MenuControlSwitch("BlueprintMenu");
+        }
+
+        if(announcer == "InventoryMenu")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("InventoryMenu");
         }
 
         else
@@ -160,45 +198,45 @@ public class PlayerMovement : MonoBehaviour
         MenuControlSwitch("nonPlayer");
     }
 
-    private void ActivateMenu(string announcer)
+    private void RegisterInteractable(GameObject announcer) //this should be binded to the target instead of player
     {
-        openMenu.action.Enable();
-        if(announcer == "MaterialRefill")
-        {
-            interactSign.text = "[I] Refill material";
-        }
-        else if(announcer == "GolemPod")
-        {
-            interactSign.text = "[M] Open Build Menu";
-        }
-        interactSign.enabled = true;
         
+        currentInteractable = announcer;
+        Debug.Log("Can interact with " + currentInteractable.name);
+
     }
 
-    private void DeactivateMenu(InRangeAnnouncer announcer)
+    private void DeactivateMenu(GameObject announcer)  //this should be binded to the target instead of player
     {
-        openMenu.action.Disable();
-        interactSign.enabled = false;
+        if(currentInteractable == announcer)
+        {
+            currentInteractable = null;
+        }
+        //Debug.Log("current interactable object is " + currentInteractable.name);
     }
 
     private void DisablingMovement()  //when opening UI
     {
         movementControl.action.Disable();
         jumpControl.action.Disable();
+        attackControl.action.Disable();
         crouchControl.action.Disable();
         interactControl.action.Disable();
 
         openMenu.action.Disable();
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable(); //Not working
     }
 
     private void EnablingMovement()
     {
         movementControl.action.Enable();
         jumpControl.action.Enable();
+        attackControl.action.Enable();
         crouchControl.action.Enable();
         interactControl.action.Enable();
 
         openMenu.action.Enable();
+        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
     }
 
     private void CameraStateSwitch()
@@ -267,6 +305,50 @@ public class PlayerMovement : MonoBehaviour
     }
     */
 
+    private void OpenMenuFromInteract(string menu)
+    {
+        if(menu == "Assembling Menu")
+        {
+            OnOpenMenuFromInteract?.Invoke("player");
+            if (movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+
+                //cameraMode = CameraMode.OnObject; //temp
+                cameraMode = CameraMode.OnObject;
+            }
+            else
+            {
+
+                if (cameraMode == CameraMode.OnObject)
+                {
+                    cameraMode = CameraMode.Free;
+                }
+                movementState = MovementState.Idle;
+            }
+
+            CameraStateSwitch();
+
+            MenuControlSwitch("player");
+        }
+    }
+
+    private IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(attackDelay);
+        canAttack = true;
+    }
+
+    private void AttackAction()
+    {
+        //Set attack animation based on equipment state
+        StartCoroutine(AttackDelay());
+        anim.SetTrigger("attack");
+        OnAttack?.Invoke(this);
+        Debug.Log("Attacking!");
+
+    }
+
     void Update()
     {
         #region Movement
@@ -323,7 +405,17 @@ public class PlayerMovement : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         //anim.SetFloat("vSpeed", playerVelocity.y);
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
+        #region Attack
+        if(attackControl.action.ReadValue<float>() !=0)
+        {
+            if(canAttack)
+            {                
+                AttackAction();
+                canAttack = false;
+            }
+        }
+        #endregion
 
         #region FaceDirection        
         if (movementState == MovementState.Move) 
@@ -366,37 +458,22 @@ public class PlayerMovement : MonoBehaviour
 
         #endregion
 
-        if (openMenu.action.triggered)  //Build Menu Interaction
-        {            
-            OnOpenMenu?.Invoke("player");
+
+
+        if(openMenu.action.triggered)
+        {
             if(movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
-
-                //cameraMode = CameraMode.OnObject; //temp
-                cameraMode = CameraMode.OnObject;
-
-            }
-            else
-            {
-                
-                if (cameraMode == CameraMode.OnObject)
-                {
-                    cameraMode = CameraMode.Free;
-                }
-                movementState = MovementState.Idle;
-            }
-
-
-
-            CameraStateSwitch();
-
-            MenuControlSwitch("player");
+                OnOpenInventoryMenu?.Invoke("player");
+                MenuControlSwitch("Inventory Menu");
+            }            
         }
 
         if(interactControl.action.triggered)
         {
-            OnInteract?.Invoke(this);
+            //OnInteract?.Invoke(currentInteractable);
+            Interact();
         }
 
         //Temporary camera switch

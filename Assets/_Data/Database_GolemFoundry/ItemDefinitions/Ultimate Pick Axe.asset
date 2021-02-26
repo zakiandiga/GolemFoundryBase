@@ -40,6 +40,20 @@ MonoBehaviour:
       m_UnityObjects:
       - {fileID: 21300000, guid: 233541f1a6c76b9478c1bae78276470c, type: 3}
       m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
+      m_ValuePositions: 000000001000000011000000110000001500000015000000190000001d000000
+      m_Values: 557361626c654974656d5072656661620100000000b99fa263ffffffffffffffff
+      m_UnityObjects: []
+      m_Version: 3.1
+    - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
+      m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
+      m_ValuePositions: 000000000f00000010000000100000001400000014000000180000001c000000
+      m_Values: 45717569706d656e745072656661620100000000687d3cbfffffffffffffffff
+      m_UnityObjects: []
+      m_Version: 3.1
   m_DefaultItem:
     m_ID: 2688823803
     m_Name: Ultimate Pick Axe
@@ -52,13 +66,6 @@ MonoBehaviour:
         m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
         m_ValuePositions: 000000000b0000000c0000000c00000010000000200000002400000028000000
         m_Values: 4865616c7468506f696e7401020000003c496e686572697465643e202b313030b0f0250700000000c8000000
-        m_UnityObjects: []
-        m_Version: 3.1
-      - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.GameObject,
-          UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-        m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4abbc6d22cff986c99
-        m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000018000000
-        m_Values: 416c6c6f77656453706f74010000000087cb0c1fffffffffffffffff
         m_UnityObjects: []
         m_Version: 3.1
       - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
