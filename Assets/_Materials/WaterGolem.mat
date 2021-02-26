@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WaterGolem
+  m_Shader: {fileID: -6465566751694194690, guid: bef28f2f02f9a89408e6b2bee6a1c9d1, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_0622d691d6264f6eac2d4821950667e0: 17.06
+    - Vector1_0bf0f6f0105242dcadaaf90193cf3339: 1
+    - Vector1_1fe55254404c410a867b169e8eec3319: 5
+    - Vector1_58e7c8e70b544b7d854763b6999f7763: 4
+    - Vector1_c7c5530fd82e4523bb0dc1bc439141b5: 0.8
+    - Vector1_fec584203e3b4825813060f426de5262: 2.43
+    m_Colors:
+    - Color_8a94a4b9b4cf4cdda8e64aca89f1158a: {r: 0.3019608, g: 0.56078434, b: 0.7490196, a: 0}
+    - Color_c0c85403a20a4f318b35c8a542df4e8c: {r: 0.7286135, g: 1.356179, b: 1.817248, a: 0}
+    - Color_eedf59dfb8ac4d86804aae3fe36f1c18: {r: 0.73910904, g: 1.3235248, b: 1.8010472, a: 0}
+    - Color_f459652b5b244357bc8bdac4ab5ff18c: {r: 0.18431373, g: 0.57613814, b: 0.77254903, a: 0}
+  m_BuildTextureStacks: []
