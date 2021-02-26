@@ -26,6 +26,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     #region InputActionReference
     [SerializeField] private InputActionReference movementControl;
     [SerializeField] private InputActionReference jumpControl;
+    [SerializeField] private InputActionReference attackControl;
     [SerializeField] private InputActionReference crouchControl;
     [SerializeField] private InputActionReference interactControl;
     [SerializeField] private InputActionReference openMenu;
@@ -45,11 +46,16 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     [SerializeField] private float rotationSpeed = 4f;
     private float jumpConst = -3.0f;
     private Vector3 playerVelocity;
-
     private Vector2 movement;
 
     #endregion
-    
+    private bool canAttack = true;
+    private float attackDelay = 1.2f; //modified from PlayerStat component
+    #region ActionProperties
+
+
+    #endregion
+
     #region OtherRequiredComponent
     private CharacterController controller;
     private Animator anim;
@@ -62,6 +68,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     public static event Action<string> OnOpenMenuFromInteract; //Might not needed later
     public static event Action<string> OnOpenInventoryMenu;
     public static event Action<GameObject> OnInteract;
+    public static event Action<PlayerMovement> OnAttack;
     #endregion
 
     #region PlayerState
@@ -109,6 +116,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     {
         movementControl.action.Enable(); //Enable (and disable) these reference action
         jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
+        attackControl.action.Enable();
         crouchControl.action.Enable();   //Instead of SetActive the component
         openMenu.action.Enable();
         interactControl.action.Enable();
@@ -133,6 +141,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     {
         movementControl.action.Disable();
         jumpControl.action.Disable();
+        attackControl.action.Disable();
         crouchControl.action.Disable();
         openMenu.action.Disable();
         interactControl.action.Disable();
@@ -210,6 +219,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     {
         movementControl.action.Disable();
         jumpControl.action.Disable();
+        attackControl.action.Disable();
         crouchControl.action.Disable();
         interactControl.action.Disable();
 
@@ -221,6 +231,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     {
         movementControl.action.Enable();
         jumpControl.action.Enable();
+        attackControl.action.Enable();
         crouchControl.action.Enable();
         interactControl.action.Enable();
 
@@ -322,6 +333,22 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         }
     }
 
+    private IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(attackDelay);
+        canAttack = true;
+    }
+
+    private void AttackAction()
+    {
+        //Set attack animation based on equipment state
+        StartCoroutine(AttackDelay());
+        anim.SetTrigger("attack");
+        OnAttack?.Invoke(this);
+        Debug.Log("Attacking!");
+
+    }
+
     void Update()
     {
         #region Movement
@@ -378,7 +405,17 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         playerVelocity.y += gravityValue * Time.deltaTime;
         //anim.SetFloat("vSpeed", playerVelocity.y);
         controller.Move(playerVelocity * Time.deltaTime);
-        
+
+        #region Attack
+        if(attackControl.action.ReadValue<float>() !=0)
+        {
+            if(canAttack)
+            {                
+                AttackAction();
+                canAttack = false;
+            }
+        }
+        #endregion
 
         #region FaceDirection        
         if (movementState == MovementState.Move) 
@@ -421,13 +458,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         #endregion
 
-        //BUILD MENU INTERACTION SUPPOSE TO OBSERVE THE TARGET DURING INTERACT, NOT FROM openMenu.action.triggered
-        /*
-        if (openMenu.action.triggered)  //Build Menu Interaction
-        {            
 
-        }
-        */
 
         if(openMenu.action.triggered)
         {
