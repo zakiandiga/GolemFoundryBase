@@ -401,13 +401,13 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &582288635
+--- !u!43 &334357954
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PolybrushMesh22430
+  m_Name: PolybrushMesh-17296
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1185,13 +1185,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 269488491}
     - target: {fileID: 1533787597493880352, guid: 2da9e6f5b0bd46c478f0b88e3e651e07, type: 3}
+      propertyPath: m_PolyMesh.name
+      value: PolybrushMesh-17296
+      objectReference: {fileID: 0}
+    - target: {fileID: 1533787597493880352, guid: 2da9e6f5b0bd46c478f0b88e3e651e07, type: 3}
       propertyPath: m_PolyMesh.m_Mesh
       value: 
-      objectReference: {fileID: 582288635}
+      objectReference: {fileID: 334357954}
+    - target: {fileID: 1533787597493880355, guid: 2da9e6f5b0bd46c478f0b88e3e651e07, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1533787597493880357, guid: 2da9e6f5b0bd46c478f0b88e3e651e07, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 582288635}
+      objectReference: {fileID: 334357954}
     - target: {fileID: 1533787598206356995, guid: 2da9e6f5b0bd46c478f0b88e3e651e07, type: 3}
       propertyPath: m_Mesh
       value: 
