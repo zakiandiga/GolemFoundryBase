@@ -12,6 +12,7 @@
 /[Aa]ssets/Procedural Worlds/
 /[Aa]ssets/Samples/
 /[Aa]ssets/Items Mega Pack/
+/[Aa]ssets/Allsky/
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta

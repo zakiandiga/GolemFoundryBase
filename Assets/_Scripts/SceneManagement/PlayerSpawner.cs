@@ -6,7 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    [SerializeField] private int portalNumber;
+    [SerializeField] string thisScene;
+    [SerializeField] private int thisPortalNumber;
 
     public static event Action<Transform> OnSceneLoaded;
     
@@ -18,12 +19,25 @@ public class PlayerSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        OnSceneLoaded?.Invoke(this.transform);
+        SceneManagement.OnSceneLoaded += SpawnPlayer;
+        //OnSceneLoaded?.Invoke(this.transform);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        SceneManagement.OnSceneLoaded -= SpawnPlayer;
     }
+
+
+
+    private void SpawnPlayer(string destinationScene, int destinationPortal)
+    {
+        Debug.Log("CheckSpawner Called!");
+        if(thisPortalNumber == destinationPortal && thisScene == destinationScene)
+        {
+            OnSceneLoaded?.Invoke(this.transform);
+            Debug.Log("Player position updated!");
+        }
+    }
+
 }

@@ -49,11 +49,10 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     private Vector2 movement;
 
     #endregion
+
+    #region ActionProperties
     private bool canAttack = true;
     private float attackDelay = 1.2f; //modified from PlayerStat component
-    #region ActionProperties
-
-
     #endregion
 
     #region OtherRequiredComponent
@@ -333,12 +332,6 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         }
     }
 
-    private IEnumerator AttackDelay()
-    {
-        yield return new WaitForSeconds(attackDelay);
-        canAttack = true;
-    }
-
     private void AttackAction()
     {
         //Set attack animation based on equipment state
@@ -347,6 +340,12 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         OnAttack?.Invoke(this);
         Debug.Log("Attacking!");
 
+    }
+
+    private IEnumerator AttackDelay()
+    {
+        yield return new WaitForSeconds(attackDelay);
+        canAttack = true;
     }
 
     void Update()
