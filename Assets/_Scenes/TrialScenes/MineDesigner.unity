@@ -4124,6 +4124,10 @@ PrefabInstance:
       value: TerrainTransfer
       objectReference: {fileID: 0}
     - target: {fileID: 639931809487407592, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
+      propertyPath: thisSceneDataSlot
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 639931809487407592, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
       propertyPath: destinationSpawner
       value: 1
       objectReference: {fileID: 0}
@@ -5240,6 +5244,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thisScene: MineDesigner
   thisPortalNumber: 0
+  dataSlot: 3
 --- !u!4 &1758830868
 Transform:
   m_ObjectHideFlags: 0

@@ -8,29 +8,6 @@ public class InRangeAnnouncer : MonoBehaviour
     public static event Action<GameObject> OnPlayerOutRange;
     public GameObject InteractSign;
 
-    private void Start()
-    {
-        
-    }
-
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Player")
-        {
-            PlayerInRange();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if(other.tag == "Player")
-        {
-            PlayerOutRange();
-        }
-    }
-    */
-
     public void PlayerInRange()
     {
         OnPlayerInRange?.Invoke(this.gameObject);

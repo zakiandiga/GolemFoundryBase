@@ -47,6 +47,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     private float jumpConst = -3.0f;
     private Vector3 playerVelocity;
     private Vector2 movement;
+    private Transform spawnTransform;
 
     #endregion
 
@@ -103,6 +104,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
+        //DontDestroyOnLoad(this.gameObject);
 
 
         //InventoryUI.OnAssembling += AssemblingControl;
@@ -131,7 +133,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         UIS_CustomInput.OnClosingMenu += EnableControl;
 
-        PlayerSpawner.OnSceneLoaded += SetPlayerPosition;
+        //PlayerSpawner.OnPlayerReadyToMove += SetPlayerSpawn;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
         //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
@@ -154,15 +156,21 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         UIS_CustomInput.OnClosingMenu -= EnableControl;
 
-        PlayerSpawner.OnSceneLoaded -= SetPlayerPosition;
+        //PlayerSpawner.OnPlayerReadyToMove -= SetPlayerSpawn;
         //UIS_CustomInput.OnBuildTrigger -= EnableControl;
     }
 
-    private void SetPlayerPosition(Transform targetTransform)
+    /*
+    private void SetPlayerSpawn(Transform position)
     {
-        this.transform.position = targetTransform.position;
-        this.transform.rotation = targetTransform.rotation;
+        spawnTransform = position;
+        //spawnTransform.eulerAngles = rotation;
+
+        transform.position = spawnTransform.position;
+        transform.rotation = spawnTransform.rotation;
+        Debug.Log("Player Position set to " + transform.position);
     }
+    */
 
     private void EnableControl(string announcer)
     {
@@ -201,7 +209,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     {
         
         currentInteractable = announcer;
-        Debug.Log("Can interact with " + currentInteractable.name);
+        //Debug.Log("Can interact with " + currentInteractable.name);
 
     }
 
@@ -339,6 +347,9 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         anim.SetTrigger("attack");
         OnAttack?.Invoke(this);
         Debug.Log("Attacking!");
+
+        //SetPlayerSpawn(spawnTransform);
+        Debug.Log("Current player position is " + transform.position);
 
     }
 

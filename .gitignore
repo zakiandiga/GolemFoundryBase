@@ -13,6 +13,8 @@
 /[Aa]ssets/Samples/
 /[Aa]ssets/Items Mega Pack/
 /[Aa]ssets/Allsky/
+/[Aa]ssets/Plugins/Pixel Crushers
+/[Aa]ssets/Pixel Crushers
 
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta

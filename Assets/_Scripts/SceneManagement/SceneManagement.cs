@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using PixelCrushers;
 
 public class SceneManagement : MonoBehaviour
 {
@@ -17,9 +18,12 @@ public class SceneManagement : MonoBehaviour
 
     private void Start()
     {
+        
         //EnterFactory();
         //scenesToLoad.Add(SceneManager.LoadSceneAsync("IndoorDesigner", LoadSceneMode.Additive));
         SceneManager.LoadScene("IndoorDesigner", LoadSceneMode.Additive);
+        Debug.Log("IndoorDesigner loaded");
+
     }
 
     private void OnEnable()
@@ -33,17 +37,20 @@ public class SceneManagement : MonoBehaviour
         ScenePortal.OnAreaChange -= ChangeScene;
     }
 
-    private void ChangeScene(string currentScene, string destinationScene, int destinationSpawner)
+    private void ChangeScene(string currentScene, int currentSceneDataSlot, string destinationScene, int destinationSpawner)
     {
         //Open loading screen
+        //SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
+        //SaveSystemMethods.SaveSlot(1);
         StartCoroutine(LoadingNextScene(currentScene, destinationScene, destinationSpawner));
     }
 
     private IEnumerator LoadingNextScene(string previousScene, string destinationScene, int destinationSpawner)
     {
         Debug.Log("Loading scene: " + destinationScene + " on spawner: " + destinationSpawner);
-        AsyncOperation loadingScene = SceneManager.LoadSceneAsync(destinationScene, LoadSceneMode.Additive);
-        while(!loadingScene.isDone)
+        
+        AsyncOperation loadingScene = SceneManager.LoadSceneAsync(destinationScene, LoadSceneMode.Additive);        
+        while (!loadingScene.isDone)
         {
             yield return null;
         }
@@ -51,10 +58,14 @@ public class SceneManagement : MonoBehaviour
         Debug.Log("LoadingNextScene() Done");
         OnSceneLoaded?.Invoke(destinationScene, destinationSpawner);
 
+        
+
         StartCoroutine(UnloadPreviousScene(previousScene));
         //is this LoadingNextScene coroutine stop at this point?
     }
 
+
+    
     private IEnumerator UnloadPreviousScene(string previousScene)
     {
         AsyncOperation unloadingScene = SceneManager.UnloadSceneAsync(previousScene);
@@ -67,6 +78,7 @@ public class SceneManagement : MonoBehaviour
 
         //Close loading screen
     }
+    
 
     public void EnterFactory()
     {

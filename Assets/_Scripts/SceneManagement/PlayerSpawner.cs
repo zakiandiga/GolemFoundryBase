@@ -3,41 +3,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using PixelCrushers;
 
 public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] string thisScene;
     [SerializeField] private int thisPortalNumber;
+    [SerializeField] int dataSlot;
 
-    public static event Action<Transform> OnSceneLoaded;
+    public static event Action<Transform> OnPlayerReadyToMove;
+
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     private void OnEnable()
     {
-        SceneManagement.OnSceneLoaded += SpawnPlayer;
+        //SceneManagement.OnSceneLoaded += SpawnPlayer;
         //OnSceneLoaded?.Invoke(this.transform);
+
+        SceneManagerPC.OnSceneLoaded += SpawnPlayer;
     }
 
     private void OnDisable()
     {
-        SceneManagement.OnSceneLoaded -= SpawnPlayer;
+        //SceneManagement.OnSceneLoaded -= SpawnPlayer;
+
+        SceneManagerPC.OnSceneLoaded -= SpawnPlayer;
     }
 
 
 
     private void SpawnPlayer(string destinationScene, int destinationPortal)
-    {
-        Debug.Log("CheckSpawner Called!");
-        if(thisPortalNumber == destinationPortal && thisScene == destinationScene)
+    {        
+        if (destinationPortal == thisPortalNumber && destinationScene == thisScene)
         {
-            OnSceneLoaded?.Invoke(this.transform);
-            Debug.Log("Player position updated!");
+            Debug.Log("CheckSpawner Called! Destination Scene & portal: " + destinationScene + " & " + destinationPortal);
+            
+            OnPlayerReadyToMove?.Invoke(this.transform);
+
+            
         }
     }
+
 
 }

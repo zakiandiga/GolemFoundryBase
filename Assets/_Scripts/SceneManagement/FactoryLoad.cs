@@ -20,9 +20,4 @@ public class FactoryLoad : MonoBehaviour
         blueprintGolemSpawner.transform.position = golemSpawner.position;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

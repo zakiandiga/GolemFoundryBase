@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/TrialScenes/MineDesigner.unity
     guid: 2fa0a6b77f481dc449a1997d24e697b8
+  - enabled: 1
+    path: Assets/_Prefabs/SceneTransitionDemo/LoadingScreen.unity
+    guid: e566df77f53ff514194008bfae711662
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: c9f13dc049dc2eb42b8af9e1ca0f2bae, type: 2}

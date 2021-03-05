@@ -11,16 +11,4 @@ public class OpenMenuAnnouncer : MonoBehaviour
     {
         OnMenuInteracting?.Invoke(menuName);
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

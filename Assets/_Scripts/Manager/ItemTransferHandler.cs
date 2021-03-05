@@ -64,8 +64,4 @@ public class ItemTransferHandler : MonoBehaviour
         buildingpodInventory.MainItemCollection.RemoveAll();        
     }
 
-    void Update()
-    {
-
-    }
 }
