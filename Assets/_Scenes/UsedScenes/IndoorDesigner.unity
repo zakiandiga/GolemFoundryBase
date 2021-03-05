@@ -167,7 +167,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393862
+  m_Name: pb_Mesh-499314
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -573,7 +573,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393850
+  m_Name: pb_Mesh-499302
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1017,7 +1017,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393842
+  m_Name: pb_Mesh-499294
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1274,7 +1274,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393806
+  m_Name: pb_Mesh-499258
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2087,7 +2087,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393826
+  m_Name: pb_Mesh-499278
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2410,7 +2410,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-393814
+  m_Name: pb_Mesh-499266
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2785,6 +2785,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractSign: {fileID: 1141249471}
+--- !u!1001 &1489372440
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.109543
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.1807456
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574036834664842418, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+      propertyPath: m_Name
+      value: RustyPickaxe-Pickup (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2574036834664842417, guid: cb081115050ca064194c56dc819e6b16, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: cb081115050ca064194c56dc819e6b16, type: 3}
 --- !u!1001 &1493489936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4569,7 +4627,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
       propertyPath: m_RootOrder
-      value: 18
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 2574036834664842412, guid: cb081115050ca064194c56dc819e6b16, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4615,32 +4673,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RustyPickaxe-Pickup
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2574036834664842417, guid: cb081115050ca064194c56dc819e6b16, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cb081115050ca064194c56dc819e6b16, type: 3}
 --- !u!1 &2574036834667141279 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2574036834664842418, guid: cb081115050ca064194c56dc819e6b16, type: 3}
   m_PrefabInstance: {fileID: 2574036834667141278}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2574036834667141280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574036834667141279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03526e258566dc247a4eb8525aeeb667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 
-  m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 1
-  m_mode: 1
-  m_destroyMode: 0
-  m_destroyedVersionPrefab: {fileID: 0}
 --- !u!1001 &2707065554420783615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4884,7 +4924,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3658925400164265250, guid: f9af6473f7cb13343b3e55cf37a3e53f, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 3658925400164265250, guid: f9af6473f7cb13343b3e55cf37a3e53f, type: 3}
       propertyPath: m_LocalPosition.x

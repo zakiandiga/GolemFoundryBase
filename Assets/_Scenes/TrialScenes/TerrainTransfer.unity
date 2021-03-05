@@ -938,7 +938,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 639931809487407592, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
       propertyPath: thisSceneDataSlot
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 639931809487407593, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
       propertyPath: thisScene
@@ -1590,7 +1590,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2707065552538561630, guid: 5ac2aea3755552443889bca8107d991e, type: 3}
       propertyPath: dataSlot
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2707065552538561630, guid: 5ac2aea3755552443889bca8107d991e, type: 3}
       propertyPath: thisScene
@@ -2132,7 +2132,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2707065552538561630, guid: 5ac2aea3755552443889bca8107d991e, type: 3}
       propertyPath: dataSlot
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2707065552538561630, guid: 5ac2aea3755552443889bca8107d991e, type: 3}
       propertyPath: thisScene
@@ -3441,7 +3441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 639931809487407592, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
       propertyPath: thisSceneDataSlot
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 639931809487407593, guid: 362d01238537d5b4a85a0c8d27c214c9, type: 3}
       propertyPath: thisScene
