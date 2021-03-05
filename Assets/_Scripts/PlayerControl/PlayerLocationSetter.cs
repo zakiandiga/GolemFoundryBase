@@ -35,11 +35,6 @@ public class PlayerLocationSetter : MonoBehaviour
         transform.rotation = targetTransform.localRotation;
         Debug.Log("player target transform = " + spawnerTransform.position);
         Debug.Log("Set player position to " + transform.position);
-        
-        //StartCoroutine(ForceSpawnPlayer());
-
-
-
     }
 
     private void TryInitialize()

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using PixelCrushers;
 
-public class SceneManagement : MonoBehaviour
+public class SceneManagementOLD : MonoBehaviour
 {
     //[SerializeField] private string startingScene, originScene, destinationScene;
     /*
@@ -61,7 +61,6 @@ public class SceneManagement : MonoBehaviour
         
 
         StartCoroutine(UnloadPreviousScene(previousScene));
-        //is this LoadingNextScene coroutine stop at this point?
     }
 
 

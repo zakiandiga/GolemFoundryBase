@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.87
   m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 5072c671f5d9f4003a83241b424bb0f0, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 3afd1c7f9b00d254a9880e3445eee85c, type: 2}
   m_HaloStrength: 0.437
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 9b5a5361d81ca9b4a8ae5a166c70e7a5, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 09707ffbb4b3c29498c20d33abd9ed90, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3653,7 +3653,7 @@ Camera:
   m_GameObject: {fileID: 220503938}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -3694,7 +3694,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 220503938}
-  m_LocalRotation: {x: -0.0080627585, y: -0.000000002769065, z: -2.2327026e-11, w: 0.9999675}
+  m_LocalRotation: {x: -0.0080627585, y: -0.000000002738012, z: -2.2076644e-11, w: 0.9999675}
   m_LocalPosition: {x: 0, y: 1.4558132, z: -4.983355}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -32564,11 +32564,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552121063467598813, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00000002427051
+      value: -0.000000022131966
       objectReference: {fileID: 0}
     - target: {fileID: 7552121063467598813, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000026019262
+      value: -0.0000000023726632
       objectReference: {fileID: 0}
     - target: {fileID: 7552121064158371744, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalPosition.x

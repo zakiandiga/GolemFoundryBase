@@ -1,10 +1,9 @@
-using System.Collections;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using PixelCrushers;
 
-public class SceneManagerPC : MonoBehaviour
+public class SceneHandler : MonoBehaviour
 {
     private string currentScene;
     private int currentSpawner;
@@ -28,13 +27,10 @@ public class SceneManagerPC : MonoBehaviour
 
         if(sceneState == SceneState.Start)
         {
-            currentScene = "IndoorDesigner";
+            currentScene = "IndoorDesigner"; //Temporary, to be set from start or load game function
             SaveSystem.LoadAdditiveScene(currentScene);
             sceneState = SceneState.Running;
-        }
-        
-
-        
+        }       
     }
 
     private void OnEnable()
@@ -49,43 +45,29 @@ public class SceneManagerPC : MonoBehaviour
 
     private void ChangeScene(string previousScene, int previousSceneDataSlot, string destinationScene, int destinationSpawner)
     {
-
-
-        //Store all the values
+        //Store all the values needed
         sceneToUnload = previousScene; 
         currentScene = destinationScene;
         currentSpawner = destinationSpawner;
 
-        //Save the to be unloaded scene
+        //Save the current/previous scene state
         SaveSystem.SaveToSlotImmediate(previousSceneDataSlot);
 
         //load next scene while listen to on scene loaded
         SceneManager.sceneLoaded += OnAdditiveSceneLoaded;
-        
-
         SaveSystem.LoadAdditiveScene(destinationScene);
-
-        //Debug.Log("loading additive: " + destinationScene);
-
-        
-
     }
 
     private void OnAdditiveSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //Debug.Log("OnAdditiveSceneLoaded() CALLED!");
-
-        //unsubscribe
+        //unsubscribe to the sceneLoaded event
         SceneManager.sceneLoaded -= OnAdditiveSceneLoaded;
 
         //what to do OnSceneLoaded
-        Debug.Log("Load scene " + scene.name + "completed! " + mode);
-
+        //Debug.Log("Load scene " + scene.name + "completed! " + mode);
         OnSceneLoaded?.Invoke(currentScene, currentSpawner);
         SaveSystem.UnloadAdditiveScene(sceneToUnload);    
     }
-
-
 
     public void ExitGame()
     {

@@ -1,8 +1,7 @@
-using System.Collections;
-using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using PixelCrushers;
+using System;
+using System.Collections;
+using UnityEngine;
 
 
 public class ScenePortal : MonoBehaviour
@@ -18,20 +17,11 @@ public class ScenePortal : MonoBehaviour
 
     private void Start()
     {
-        //GameObject.DontDestroyOnLoad(this.gameObject);
         saveSystem = GetComponent<SaveSystemMethods>();
     }
 
-
-
     public void AreaChange()
     {
-        /*
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(currentScene));
-        saveSystem.SaveSlot(thisSceneDataSlot);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(mainMenu));
-        */
-
         StartCoroutine(AreaChangeDelay());
     }
 
@@ -40,10 +30,5 @@ public class ScenePortal : MonoBehaviour
         float waitDelay = 0.5f;
         yield return new WaitForSeconds(waitDelay);
         OnAreaChange?.Invoke(currentScene, thisSceneDataSlot, destinationScene, destinationSpawner);
-
-
     }
-
-
-
 }
