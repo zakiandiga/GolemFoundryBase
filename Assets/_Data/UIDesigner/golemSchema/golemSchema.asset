@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe2a82639b742d6a8cd9dcb3f1a2065, type: 3}
   m_Name: golemSchema
   m_EditorClassIdentifier: 
-  m_KeepPrefabLink: 0
+  m_KeepPrefabLink: 1
   m_Description: 'A schema created by duplicating the Schema: RPG'
   m_Images:
   - {fileID: 2800000, guid: 5f17c1abc41708f42b44c553472498eb, type: 3}
