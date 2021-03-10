@@ -321,8 +321,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
             {
                 movementState = MovementState.OnMenu;
 
-                //cameraMode = CameraMode.OnObject; //temp
-                cameraMode = CameraMode.OnObject;
+                cameraMode = CameraMode.OnObject; //Temp, camera should define what object to lookAt
             }
             else
             {
