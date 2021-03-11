@@ -158,8 +158,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// </summary>
         public virtual void Initialize(bool force)
         {
-            //Added Hack
-            if(Application.isPlaying == false)
+            if (Application.isPlaying == false)
             {
                 m_IsInitialized = true;
                 return;
