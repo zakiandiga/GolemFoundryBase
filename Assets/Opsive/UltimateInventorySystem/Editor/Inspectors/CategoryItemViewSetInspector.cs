@@ -98,7 +98,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryItemViewSet.CategoriesItemViews = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryItemViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryItemViewSet);
                 }, (index) =>
                 {
                     if (index < 0 || index >= m_List.Count) { return; }
@@ -107,7 +107,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryItemViewSet.CategoriesItemViews = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryItemViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryItemViewSet);
                 }, (i1, i2) =>
                 {
                     var element1 = m_ReorderableList.ListItems[i1].ItemContents.ElementAt(0) as ListElement;
@@ -115,7 +115,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     var element2 = m_ReorderableList.ListItems[i2].ItemContents.ElementAt(0) as ListElement;
                     element2.Index = i2;
                     m_CategoryItemViewSet.CategoriesItemViews = m_List.ToArray();
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryItemViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryItemViewSet);
                 });
 
             m_Container.Add(m_ReorderableList);
@@ -131,7 +131,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_List[index] = value;
             m_CategoryItemViewSet.CategoriesItemViews = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryItemViewSet);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryItemViewSet);
         }
 
         /// <summary>

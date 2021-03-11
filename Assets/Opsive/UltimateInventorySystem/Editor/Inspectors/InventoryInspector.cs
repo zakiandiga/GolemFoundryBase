@@ -156,7 +156,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         protected void Serialize()
         {
             m_Inventory.Serialize();
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_Inventory);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Inventory);
         }
 
         /// <summary>

@@ -174,6 +174,10 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// <returns>The item shape grid data.</returns>
         protected virtual ItemShapeGridData GetGridDataForItemInternal(ItemInfo itemInfo, ItemCollection receivingCollection, bool getPotential)
         {
+            if (itemInfo.Item == null) {
+                return null;
+            }
+            
             var index = -1;
             for (int i = 0; i < m_ItemShapeGridData.Count; i++) {
                 if (getPotential) {

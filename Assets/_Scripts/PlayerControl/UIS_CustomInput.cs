@@ -1,9 +1,15 @@
+/// <summary>
+/// NOTES: search //CHANGED for lines that needs to be fixed on 1.1.5 UIS
+/// </summary>
+
+
 namespace Opsive.UltimateInventorySystem.Input
 {
     using System;
     using System.Collections;
     using UnityEngine;
     using UnityEngine.InputSystem;
+    using Opsive.Shared.Input;
 
     public class UIS_CustomInput : InventoryInput
     {
@@ -112,7 +118,7 @@ namespace Opsive.UltimateInventorySystem.Input
             if (inventoryMenuState != InventoryMenuState.Active)
             {
                 inventoryMenuState = InventoryMenuState.Active;
-                OpenTogglePanel("InventoryMenu", true);
+                //OpenTogglePanel("InventoryMenu", true); //CHANGED
                 EnablingMenuInteraction();
             }
 
@@ -129,7 +135,7 @@ namespace Opsive.UltimateInventorySystem.Input
         {
             buildingMenuState = BuildingMenuState.BlueprintGrid;
             openedBlueprintIndex = value;
-            OpenTogglePanel("Available Parts", true);
+            //OpenTogglePanel("Available Parts", true); //CHANGED
             Debug.Log(buildingMenuState);
         }
         
@@ -142,7 +148,7 @@ namespace Opsive.UltimateInventorySystem.Input
                     if(announcer == "player")
                     {
                         //OnOpenMenuFromInteract?.Invoke("Assembling Menu");
-                        OpenTogglePanel("Assembling Menu", true);
+                        //OpenTogglePanel("Assembling Menu", true); //CHANGED
                         EnablingMenuInteraction();                        
                         buildingMenuState = BuildingMenuState.BlueprintOption;
                         Debug.Log("CustomInput OpenMenu from " + announcer + ", menuState = " + buildingMenuState);
@@ -156,7 +162,7 @@ namespace Opsive.UltimateInventorySystem.Input
                     buildingMenuState = BuildingMenuState.Inactive;
                     */
                     OnClosingMenu?.Invoke("BlueprintOption");
-                    OpenTogglePanel("Assembling Menu", true);
+                    //OpenTogglePanel("Assembling Menu", true); //CHANGED
                     DisablingMenuInteraction();                    
                     buildingMenuState = BuildingMenuState.Inactive;
                     Debug.Log("Closing Assembling Menu, buildingMenuState = " + buildingMenuState);
@@ -167,16 +173,16 @@ namespace Opsive.UltimateInventorySystem.Input
                     {
                         OnCancelBuild("blueprintGrid");
                         buildingMenuState = BuildingMenuState.BlueprintOption;
-                        OpenTogglePanel("Available Parts", true);
+                        //OpenTogglePanel("Available Parts", true); //CHANGED
                     }
                     else if (announcer == "buildHandler")
                     {
                         OnClosingMenu?.Invoke("BlueprintOption");
                         OnBuildCleanup.Invoke(openedBlueprintIndex);
 
-                        OpenTogglePanel("Available Parts", true);
+                        //OpenTogglePanel("Available Parts", true); //CHANGED
                     
-                        OpenTogglePanel("Assembling Menu", true);
+                        //OpenTogglePanel("Assembling Menu", true); //CHANGED
 
                         openedBlueprintIndex = 0;
                         DisablingMenuInteraction();                        
@@ -210,7 +216,7 @@ namespace Opsive.UltimateInventorySystem.Input
             float waitTime = 1f;
 
             yield return new WaitForSeconds(waitTime);
-            OpenTogglePanel("Assembling Menu", true);
+            //OpenTogglePanel("Assembling Menu", true); //CHANGED
 
         }
 
@@ -221,11 +227,12 @@ namespace Opsive.UltimateInventorySystem.Input
 
         private void Update()
         {            
-            
+            /* CHAGED
             if (IsInputActive == false)
             {
                 return;
             }
+            */
 
             //if (interact.action.triggered) //Triggered from player
             //{
@@ -234,12 +241,13 @@ namespace Opsive.UltimateInventorySystem.Input
 
             if (previous.action.triggered)
             {
-                TriggerPrevious();
+                //TriggerPrevious(); //CHANGED
+                
             }
 
             if (next.action.triggered)
             {
-                TriggerNext();
+                //TriggerNext(); //CHANGED
             }
 
             if (back.action.triggered)
@@ -254,7 +262,7 @@ namespace Opsive.UltimateInventorySystem.Input
                 if(inventoryMenuState == InventoryMenuState.Active)
                 {
                     inventoryMenuState = InventoryMenuState.Inactive;
-                    OpenTogglePanel("InventoryMenu", true);
+                    //OpenTogglePanel("InventoryMenu", true); //DONE
                     DisablingMenuInteraction();
                     OnClosingMenu?.Invoke("InventoryMenu");
                 }

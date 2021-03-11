@@ -36,6 +36,5 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Crafting
         {
             return m_CategoryRecipeViewSet.FindRecipeBoxPrefabForItem(craftingRecipe);
         }
-
     }
 }

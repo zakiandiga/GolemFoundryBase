@@ -68,7 +68,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_ItemCategoryAttributeBindingView.OnItemCategoryChanged += (x) =>
             {
                 m_ItemCategoryAttributeNameBinding.SetItemCategory(x);
-                Opsive.Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemCategoryAttributeNameBinding);
+                Opsive.Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemCategoryAttributeNameBinding);
             };
 
             m_ItemCategoryAttributeBindingView.OnAttributeBindingsChanged += (bindings) =>

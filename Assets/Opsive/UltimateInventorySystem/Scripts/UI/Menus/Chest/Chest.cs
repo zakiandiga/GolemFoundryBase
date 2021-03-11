@@ -17,6 +17,9 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
     /// </summary>
     public interface IChest
     {
+        event Action OnClose;
+        event Action<Inventory> OnOpen;
+        
         Inventory Inventory { get; }
         bool IsOpen { get; }
 

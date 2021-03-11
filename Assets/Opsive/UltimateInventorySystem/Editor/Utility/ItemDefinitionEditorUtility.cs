@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Editor.Managers;
@@ -53,7 +52,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
                 new string[] { database.name, itemDefinition.Category.name });
 
             ItemCategoryEditorUtility.SetItemCategoryDirty(itemCategory, false);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return itemDefinition;
         }
 
@@ -80,7 +79,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             database.RemoveItemDefinition(itemDefinition);
             AssetDatabaseUtility.DeleteAsset(itemDefinition);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
         }
 
         /// <summary>
@@ -136,7 +135,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             SetItemDefinitionDirty(itemDefinition, true);
             ItemCategoryEditorUtility.SetItemCategoryDirty(original.Category, false);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return itemDefinition;
         }
 
@@ -154,7 +153,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             AttributeEditorUtility.SerializeAttributes(itemDefinition);
 
-            InspectorUtility.SetDirty(itemDefinition);
+            Shared.Editor.Utility.EditorUtility.SetDirty(itemDefinition);
             itemDefinition.Dirty = false;
         }
 

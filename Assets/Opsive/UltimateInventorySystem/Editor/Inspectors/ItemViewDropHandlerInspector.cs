@@ -62,7 +62,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     (newValue) =>
                     {
                         m_ItemViewDropHandler.m_ItemViewSlotDropActionSet = newValue;
-                        Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemViewDropHandler);
+                        Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemViewDropHandler);
                     });
 
             m_InnerContainer.Add(m_CategoryItemActionSet);

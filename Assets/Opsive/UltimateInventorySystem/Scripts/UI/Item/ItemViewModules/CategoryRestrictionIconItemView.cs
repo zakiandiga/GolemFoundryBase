@@ -19,9 +19,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
     {
         [Tooltip("The icon image.")]
         [SerializeField] protected Image m_Icon;
-        [Tooltip("The Category Icon Attribute")]
+        [Tooltip("The Category Icon Attribute.")]
         [SerializeField] protected string m_CategoryIconAttributeName = "CategoryIcon";
-        [Tooltip("The Category Icon Attribute")]
+        [Tooltip("The Category Icon Attribute.")]
         [SerializeField] protected Sprite m_DefaultSprite;
 
         /// <summary>

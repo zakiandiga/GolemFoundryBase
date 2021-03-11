@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Storage;
     using Opsive.UltimateInventorySystem.UI.Item.DragAndDrop;
     using System;
@@ -138,7 +138,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_ItemViewSlotDropActionSet.ActionsWithConditions = m_List.ToArray();
             m_ItemViewSlotDropActionSet.Serialize();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemViewSlotDropActionSet);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemViewSlotDropActionSet);
         }
 
         /// <summary>

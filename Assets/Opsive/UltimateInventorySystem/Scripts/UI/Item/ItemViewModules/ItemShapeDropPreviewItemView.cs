@@ -26,7 +26,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         [SerializeField] protected Color m_NoConditionsPassed;
         [Tooltip("The preview condition when at least one condition has passed.")]
         [SerializeField] protected Color m_ConditionsPassed;
-        [Tooltip("Color")]
+        [Tooltip("Clear Item View of the moving source.")]
         [SerializeField] protected bool m_ClearMovingSource;
 
         public ItemShapeGrid ItemShapeGrid => m_ItemShapeItemView.ItemShapeGrid;

@@ -1,8 +1,17 @@
-﻿namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
+﻿/// ---------------------------------------------
+/// Ultimate Inventory System
+/// Copyright (c) Opsive. All Rights Reserved.
+/// https://www.opsive.com
+/// ---------------------------------------------
+
+namespace Opsive.UltimateInventorySystem.UI.Item.DragAndDrop.DropConditions
 {
     using System;
     using UnityEngine;
 
+    /// <summary>
+    /// Condition to dop an Item depending on its amount.
+    /// </summary>
     [Serializable]
     public class ItemViewDropItemAmountCondition : ItemViewDropCondition
     {

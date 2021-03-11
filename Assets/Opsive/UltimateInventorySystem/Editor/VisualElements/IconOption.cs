@@ -25,18 +25,18 @@ namespace Opsive.UltimateInventorySystem.Editor.VisualElements
         {
             switch (icon) {
                 case IconOption.Cog:
-                    return Shared.Editor.Utility.InspectorUtility.LoadAsset<Texture2D>(
+                    return Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(
                         EditorGUIUtility.isProSkin
                             ? "8b097a15afc724641b5dfbf342ce4940"
                             : "01d35754fb059ea45b7bd731f4ede1cb");
                 case IconOption.QuestionMark:
-                    return /*Shared.Editor.Utility.InspectorUtility.LoadAsset<Texture2D>(
+                    return /*Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(
                         EditorGUIUtility.isProSkin
                             ? "6012202242263741038"
                             : "6012202242263741038");*/
                         EditorGUIUtility.FindTexture("_Help@2x");
                 case IconOption.MagnifyingGlass:
-                    return Shared.Editor.Utility.InspectorUtility.LoadAsset<Texture2D>(
+                    return Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(
                         EditorGUIUtility.isProSkin
                             ? "a2cd301cd71673749b65d1ce06332afa"
                             : "e26581d8c0102fb4e8812ee8c6d1b5fe");

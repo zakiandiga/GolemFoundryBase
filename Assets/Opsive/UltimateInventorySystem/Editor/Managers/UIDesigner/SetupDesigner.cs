@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.UI;
@@ -91,6 +90,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
             canvasGameObject.AddComponent<PreventSelectableDeselection>();
             canvasGameObject.AddComponent<ItemViewSlotCursorManager>();
+            canvasGameObject.AddComponent<DisplayPanelManagerHandler>();
             var panelManager = canvasGameObject.AddComponent<DisplayPanelManager>();
 
             var eventSystem = GameObject.FindObjectOfType<EventSystem>();
@@ -496,14 +496,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                     }
                 }
 
-                InspectorUtility.SetDirty(duplicateGameObject);
+                Shared.Editor.Utility.EditorUtility.SetDirty(duplicateGameObject);
             }
 
             // Save assets.
             m_NewUIDesignerSchema.m_KeepPrefabLink = false;
             m_NewUIDesignerSchema.m_Description = "A schema created by duplicating the Schema: " + sourceSchema.name;
 
-            InspectorUtility.SetDirty(m_NewUIDesignerSchema);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_NewUIDesignerSchema);
             AssetDatabase.SaveAssets();
 
             EditorUtility.ClearProgressBar();

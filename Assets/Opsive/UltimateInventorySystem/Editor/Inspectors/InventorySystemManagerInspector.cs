@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Editor.Managers;
     using Opsive.UltimateInventorySystem.Storage;
@@ -176,7 +175,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     if (obj == null) { continue; }
 
                     EditorUtility.SetDirty(obj);
-                    InspectorUtility.SetDirty(obj);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(obj);
                 }
             }
 
@@ -187,14 +186,14 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             if (mainObj == null) { return; }
 
             EditorUtility.SetDirty(mainObj);
-            InspectorUtility.SetDirty(mainObj);
+            Shared.Editor.Utility.EditorUtility.SetDirty(mainObj);
 
             var component = mainObj as Component;
 
             if (component == null) { return; }
 
             EditorUtility.SetDirty(component.gameObject);
-            InspectorUtility.SetDirty(component.gameObject);
+            Shared.Editor.Utility.EditorUtility.SetDirty(component.gameObject);
 
             if (!PrefabUtility.IsPartOfAnyPrefab(component)) { return; }
 
@@ -246,7 +245,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
             //The correct way to save would be to use SaveAsPrefabAsset. But Unity has a bug that prevents that. It is fixed in 2020.2
             EditorUtility.SetDirty(prefab);
-            InspectorUtility.SetDirty(prefab);
+            Shared.Editor.Utility.EditorUtility.SetDirty(prefab);
             EditorSceneManager.MarkSceneDirty(prefab.scene);
 
             /*Debug.Log(prefabPath);

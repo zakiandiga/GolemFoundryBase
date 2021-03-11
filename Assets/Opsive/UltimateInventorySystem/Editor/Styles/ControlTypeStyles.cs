@@ -15,7 +15,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Styles
     public static class ControlTypeStyles
     {
         public static StyleSheet StyleSheet =>
-            InspectorUtility.LoadAsset<StyleSheet>("c9bc54c2b06fafa4ca0b0b8f3f4d6f66");
+            EditorUtility.LoadAsset<StyleSheet>("c9bc54c2b06fafa4ca0b0b8f3f4d6f66");
 
         public static readonly string s_ObjectControlView = "object-control-view";
         public static readonly string s_ObjectAmountView = "object-amount-view";

@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using System;
     using System.Collections.Generic;
@@ -224,7 +223,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 m_IntegrationInspectors[i] = Activator.CreateInstance(inspectorTypes[i]) as IntegrationInspector;
                 m_IntegrationInspectors[i].MainManagerWindow = m_MainManagerWindow;
 
-                var name = InspectorUtility.SplitCamelCase(inspectorTypes[i].Name);
+                var name = Shared.Editor.Utility.EditorUtility.SplitCamelCase(inspectorTypes[i].Name);
                 if (integrationInspectors[i].GetCustomAttributes(typeof(OrderedEditorItem), true).Length > 0) {
                     var item = inspectorTypes[i].GetCustomAttributes(typeof(OrderedEditorItem), true)[0] as OrderedEditorItem;
                     name = item.Name;

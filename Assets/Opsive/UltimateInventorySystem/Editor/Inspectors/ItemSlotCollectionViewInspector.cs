@@ -115,7 +115,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         {
             m_ItemSlotCollectionView.m_ItemSlotItemViewSlots = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemSlotCollectionView);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemSlotCollectionView);
         }
 
         /// <summary>

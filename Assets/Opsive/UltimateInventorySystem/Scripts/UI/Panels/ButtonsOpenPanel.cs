@@ -1,4 +1,10 @@
-﻿namespace Opsive.UltimateInventorySystem.UI.Panels
+﻿/// ---------------------------------------------
+/// Ultimate Inventory System
+/// Copyright (c) Opsive. All Rights Reserved.
+/// https://www.opsive.com
+/// ---------------------------------------------
+
+namespace Opsive.UltimateInventorySystem.UI.Panels
 {
     using Opsive.UltimateInventorySystem.Core;
     using System;
@@ -40,7 +46,7 @@
     {
         [Tooltip("The panel manager index.")]
         [SerializeField] protected uint m_PanelManagerIndex = 1;
-        [Tooltip("Should the button open or toggle the panel")]
+        [Tooltip("Should the button open or toggle the panel.")]
         [SerializeField] protected bool m_ToggleOpen = true;
         [Tooltip("The panel that will be used a the 'previous' panel when opening the other panels (if null, smart open will be used).")]
         [SerializeField] protected DisplayPanel m_SourcePanel;

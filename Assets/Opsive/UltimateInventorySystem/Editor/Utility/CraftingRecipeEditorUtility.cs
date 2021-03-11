@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Crafting;
     using Opsive.UltimateInventorySystem.Editor.Managers;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
@@ -51,7 +50,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             SetCraftingRecipeDirty(recipe, true);
             CraftingCategoryEditorUtility.SetCraftingCategoryDirty(craftingCategory, true);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return recipe;
         }
 
@@ -68,7 +67,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             database.RemoveRecipe(recipe);
             AssetDatabaseUtility.DeleteAsset(recipe);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
         }
 
         /// <summary>
@@ -102,7 +101,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             CraftingCategoryEditorUtility.SetCraftingCategoryDirty(recipe.Category, true);
             SetCraftingRecipeDirty(recipe, true);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return recipe;
         }
 
@@ -139,7 +138,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             CraftingCategoryEditorUtility.SetCraftingCategoryDirty(newRecipe.Category, true);
             SetCraftingRecipeDirty(recipe, true);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return newRecipe;
         }
 
@@ -153,7 +152,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
             if (element.Dirty == false && !force) { return; }
             element.Serialize();
 
-            InspectorUtility.SetDirty(element);
+            Shared.Editor.Utility.EditorUtility.SetDirty(element);
             element.Dirty = false;
         }
 

@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.ItemActions;
 
@@ -53,7 +52,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
         public static void SerializeItemActionsAndDirty(UnityEngine.Object target, ItemActionCollection itemActionCollection)
         {
             SerializeItemActions(itemActionCollection);
-            InspectorUtility.SetDirty(target);
+            Shared.Editor.Utility.EditorUtility.SetDirty(target);
         }
 
         /// <summary>

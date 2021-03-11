@@ -98,7 +98,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryRecipeViewSet.CategoriesRecipeBoxUIArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryRecipeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryRecipeViewSet);
                 }, (index) =>
                 {
                     if (index < 0 || index >= m_List.Count) { return; }
@@ -107,11 +107,11 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 
                     m_CategoryRecipeViewSet.CategoriesRecipeBoxUIArray = m_List.ToArray();
                     m_ReorderableList.Refresh(m_List);
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryRecipeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryRecipeViewSet);
                 }, (i1, i2) =>
                 {
                     m_CategoryRecipeViewSet.CategoriesRecipeBoxUIArray = m_List.ToArray();
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryRecipeViewSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryRecipeViewSet);
                 });
 
             m_Container.Add(m_ReorderableList);
@@ -127,7 +127,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
             m_List[index] = value;
             m_CategoryRecipeViewSet.CategoriesRecipeBoxUIArray = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_CategoryRecipeViewSet);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_CategoryRecipeViewSet);
         }
 
         /// <summary>

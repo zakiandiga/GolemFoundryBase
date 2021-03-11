@@ -10,6 +10,8 @@ using Opsive.UltimateInventorySystem.Input;
 //Main function: toggle between Blueprint Learned and Blueprint Grid
 public class BlueprintViewManager : MonoBehaviour
 {
+    //[SerializeField] private DisplayPanelManager panelHandler;
+
     [SerializeField] private RectTransform blueprintPanel;
     [SerializeField] private DisplayPanel blueprintLearned;
     [SerializeField] private Inventory buildingPodInventory;
@@ -28,7 +30,8 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;        
         ItemTransferHandler.OnRefreshTransfer += ClosePanel;
-        UIS_CustomInput.OnBuildCleanup += ClosePanel;
+        UIS_CustomInput.OnBuildCleanup += ClosePanel; //OLD
+        MenuControl.OnBuildCleanupNEW += ClosePanel; //NEW
         BuildGolemHandler.OnBuildPressed += ClosingPanelOnBuild;
         
     }
@@ -37,7 +40,8 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected -= OpenPanel;
         ItemTransferHandler.OnRefreshTransfer -= ClosePanel;
-        UIS_CustomInput.OnBuildCleanup -= ClosePanel;
+        UIS_CustomInput.OnBuildCleanup -= ClosePanel; //OLD
+        MenuControl.OnBuildCleanupNEW -= ClosePanel; //NEW
         BuildGolemHandler.OnBuildPressed -= ClosingPanelOnBuild;
     }
 

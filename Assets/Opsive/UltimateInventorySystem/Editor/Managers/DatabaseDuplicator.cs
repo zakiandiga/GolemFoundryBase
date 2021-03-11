@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.AttributeSystem;
@@ -314,22 +313,22 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         /// </summary>
         private void DirtyAndSaveEverything()
         {
-            InspectorUtility.SetDirty(m_NewDatabase);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase);
 
             for (int i = 0; i < m_NewDatabase.ItemCategories.Length; i++) {
-                InspectorUtility.SetDirty(m_NewDatabase.ItemCategories[i]);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase.ItemCategories[i]);
             }
             for (int i = 0; i < m_NewDatabase.ItemDefinitions.Length; i++) {
-                InspectorUtility.SetDirty(m_NewDatabase.ItemDefinitions[i]);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase.ItemDefinitions[i]);
             }
             for (int i = 0; i < m_NewDatabase.Currencies.Length; i++) {
-                InspectorUtility.SetDirty(m_NewDatabase.Currencies[i]);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase.Currencies[i]);
             }
             for (int i = 0; i < m_NewDatabase.CraftingCategories.Length; i++) {
-                InspectorUtility.SetDirty(m_NewDatabase.CraftingCategories[i]);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase.CraftingCategories[i]);
             }
             for (int i = 0; i < m_NewDatabase.CraftingRecipes.Length; i++) {
-                InspectorUtility.SetDirty(m_NewDatabase.CraftingRecipes[i]);
+                Shared.Editor.Utility.EditorUtility.SetDirty(m_NewDatabase.CraftingRecipes[i]);
             }
 
             AssetDatabase.SaveAssets();
@@ -406,7 +405,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 // Don't show the field if:
                 // - The visibility is public but the field is private/protected without the SerializeField attribute.
                 // - The field has the HideInInspector attribute.
-                if ((field.IsPrivate || field.IsFamily) && !TypeUtility.HasAttribute(field, typeof(SerializeField))) {
+                if ((field.IsPrivate || field.IsFamily) && TypeUtility.GetAttribute(field, typeof(SerializeField)) == null) {
                     continue;
                 }
 

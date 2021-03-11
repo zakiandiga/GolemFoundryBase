@@ -51,6 +51,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// </summary>
         public override void Clear()
         {
+            Select(false);
         }
 
         /// <summary>
@@ -58,7 +59,11 @@ namespace Opsive.UltimateInventorySystem.UI.Item.ItemViewModules
         /// </summary>
         /// <param name="info">The item info.</param>
         public override void SetValue(ItemInfo info)
-        { }
+        {
+            if (ItemInfo.Item == null) {
+                Clear();
+            }
+        }
 
         /// <summary>
         /// Select the item info.

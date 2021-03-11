@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Opsive.UltimateInventorySystem.Input;
+using Opsive.UltimateInventorySystem.Interactions; //TEST
 using System;
 using System.Collections;
 using TMPro;
@@ -8,7 +9,8 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : InventoryInput //only use Interact() from InventoryInput
+[RequireComponent(typeof(InventoryInteractor))]
+public class PlayerMovement : MonoBehaviour //only use Interact() from InventoryInput
 {
     //Add character visual game object as a children to the prefab
     //Required cinemachine brain on main camera
@@ -61,6 +63,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     private Animator anim;
     [SerializeField] private TextMeshProUGUI interactSign; //TEMP
     private GameObject currentInteractable;
+    [SerializeField] private InventoryInteractor inventoryInteractor; //Manual InventoryInteractor input
 
     #endregion
 
@@ -131,7 +134,8 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
 
-        UIS_CustomInput.OnClosingMenu += EnableControl;
+        UIS_CustomInput.OnClosingMenu += EnableControl; //REMOVE LATER
+        MenuControl.OnClosingMenuNEW += EnableControl;
 
         //PlayerSpawner.OnPlayerReadyToMove += SetPlayerSpawn;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
@@ -154,7 +158,8 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
 
-        UIS_CustomInput.OnClosingMenu -= EnableControl;
+        UIS_CustomInput.OnClosingMenu -= EnableControl; //REMOVE LATER
+        MenuControl.OnClosingMenuNEW -= EnableControl;
 
         //PlayerSpawner.OnPlayerReadyToMove -= SetPlayerSpawn;
         //UIS_CustomInput.OnBuildTrigger -= EnableControl;
@@ -482,7 +487,8 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         if(interactControl.action.triggered)
         {
             //OnInteract?.Invoke(currentInteractable);
-            Interact();
+            //Interact(); FIND OUT HOW TO DO THIS IN THE NEW SYSTEM
+            inventoryInteractor.Interact();
         }
 
         //Temporary camera switch

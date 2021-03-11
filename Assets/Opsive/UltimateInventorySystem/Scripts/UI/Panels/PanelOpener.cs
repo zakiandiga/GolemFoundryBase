@@ -39,7 +39,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
         {
             if (m_IsInitialized && !force) { return; }
 
-            if (m_PanelManager == null) {
+            if (m_PanelManager == null || force) {
                 m_PanelManager = InventorySystemManager.GetDisplayPanelManager(m_PanelManagerIndex);
             }
 
@@ -57,6 +57,16 @@ namespace Opsive.UltimateInventorySystem.UI.Panels
             if (m_DisplayPanel != null) {
                 m_DisplayPanel.SmartOpen();
             }
+        }
+        
+        /// <summary>
+        /// Change the panel Manager Index.
+        /// </summary>
+        /// <param name="panelManagerIndex">The panel Manager Index.</param>
+        public virtual void ChangePanelManagerIndex(uint panelManagerIndex)
+        {
+            m_PanelManagerIndex = panelManagerIndex;
+            Initialize(true);
         }
     }
 }

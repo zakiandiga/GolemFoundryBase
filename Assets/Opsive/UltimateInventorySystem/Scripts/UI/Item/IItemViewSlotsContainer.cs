@@ -16,11 +16,13 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     /// </summary>
     public class ItemViewSlotEventData
     {
+        protected int m_PointerID;
         protected ItemViewSlotsContainerBase m_ItemViewSlotsContainer;
         protected ItemViewSlot m_ItemViewSlot;
         protected ItemView m_ItemView;
         protected int m_Index;
 
+        public virtual int PointerID => m_PointerID;
         public ItemViewSlotsContainerBase ItemViewSlotsContainer => m_ItemViewSlotsContainer;
         public ItemViewSlot ItemViewSlot => m_ItemViewSlot;//{ get; set; }
         public ItemView ItemView => m_ItemView;
@@ -31,6 +33,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// </summary>
         public virtual void Reset()
         {
+            m_PointerID = int.MinValue; // -1,-2, -3 are used for mouse clicks, positive numbers are used for touch
             m_ItemViewSlotsContainer = null;
             m_ItemView = null;
             m_ItemViewSlot = null;
@@ -45,6 +48,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public void SetValues(ItemViewSlotsContainerBase container, int index)
         {
             Reset();
+            m_PointerID = -4; // -1,-2, -3 are used for mouse clicks, positive numbers are used for touch
             m_ItemViewSlotsContainer = container;
             m_Index = index;
             m_ItemViewSlot = ItemViewSlotsContainer.GetItemViewSlot(index);
@@ -58,6 +62,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public void SetValues(ItemViewSlot itemViewSlot)
         {
             Reset();
+            m_PointerID = -4; // -1,-2, -3 are used for mouse clicks, positive numbers are used for touch
             m_ItemViewSlotsContainer = null;
             m_Index = 0;
             m_ItemViewSlot = itemViewSlot;
@@ -73,6 +78,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     public class ItemViewSlotPointerEventData : ItemViewSlotEventData
     {
         public PointerEventData PointerEventData { get; set; }
+        public override int PointerID => PointerEventData?.pointerId ?? m_PointerID;
 
         /// <summary>
         /// Reset the event data.

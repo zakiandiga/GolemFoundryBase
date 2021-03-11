@@ -6,14 +6,12 @@
 
 namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
 {
-    using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.DataStructures;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.ItemActions;
     using Opsive.UltimateInventorySystem.UI.Item;
     using Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers;
     using UnityEngine;
-    using EventHandler = Opsive.Shared.Events.EventHandler;
 
     /// <summary>
     /// The hot item bar component allows you to use an item action for an item that was added to the hot bar.
@@ -53,30 +51,6 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.Hotbar
             if (m_Inventory == null) { return; }
 
             m_ItemActionsBinding.SetItemUser(m_Inventory.ItemUser);
-        }
-
-        /// <summary>
-        /// Handle a new inventory being bound.
-        /// </summary>
-        protected override void OnInventoryBound()
-        {
-            base.OnInventoryBound();
-
-            if (m_Inventory == null) { return; }
-
-            EventHandler.RegisterEvent<int>(m_Inventory.gameObject, EventNames.c_GameObject_OnInput_HotbarUseItem_Int, UseItem);
-        }
-
-        /// <summary>
-        /// Handle inventor being unbound.
-        /// </summary>
-        protected override void OnInventoryUnbound()
-        {
-            base.OnInventoryUnbound();
-
-            if (m_Inventory == null) { return; }
-
-            EventHandler.UnregisterEvent<int>(m_Inventory.gameObject, EventNames.c_GameObject_OnInput_HotbarUseItem_Int, UseItem);
         }
 
         /// <summary>

@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.Exchange;
     using Opsive.UltimateInventorySystem.Storage;
@@ -103,7 +102,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         private void UpdateOriginalArray()
         {
             m_MultiCurrencyView.m_CurrenciesWithViews = m_List.ToArray();
-            InspectorUtility.SetDirty(m_MultiCurrencyView);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_MultiCurrencyView);
         }
 
         private void OnValueChanged(int index, CurrencyWithView value)

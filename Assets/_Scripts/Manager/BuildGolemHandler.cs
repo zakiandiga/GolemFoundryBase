@@ -85,9 +85,4 @@ public class BuildGolemHandler : MonoBehaviour
         
     }
 
-    public void Cancel()
-    {
-
-    }
-
 }

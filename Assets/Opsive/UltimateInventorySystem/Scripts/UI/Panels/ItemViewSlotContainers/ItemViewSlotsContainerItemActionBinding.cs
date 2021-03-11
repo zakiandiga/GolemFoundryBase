@@ -9,14 +9,13 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.ItemActions;
     using UnityEngine;
-    using UnityEngine.Serialization;
 
     /// <summary>
     /// This object is used to add Item Actions to an Item View slot container.
     /// </summary>
     public class ItemViewSlotsContainerItemActionBinding : ItemViewSlotsContainerItemActionBindingBase
     {
-        [FormerlySerializedAs("m_CategoryItemActions")]
+        [UnityEngine.Serialization.FormerlySerializedAs("m_CategoryItemActions")]
         [Tooltip("The categories item actions. Specifies the actions that can be performed on each item. Can be null.")]
         [SerializeField] public ItemActionSet m_ItemActionSet;
 

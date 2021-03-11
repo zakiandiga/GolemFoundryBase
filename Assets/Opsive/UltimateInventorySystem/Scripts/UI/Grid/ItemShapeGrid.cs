@@ -7,6 +7,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
     using Opsive.UltimateInventorySystem.Core.DataStructures;
     using Opsive.UltimateInventorySystem.UI.Item;
     using Opsive.UltimateInventorySystem.UI.Item.ItemViewModules;
+    using System.Collections.Generic;
     using UnityEngine.UI;
 
     public class ItemShapeGrid : ItemViewSlotsContainerBase
@@ -27,6 +28,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         [SerializeField] protected GridLayoutGroup m_GridLayoutGroup;
 
         protected ItemShapeGridData m_ItemShapeGridData;
+        protected List<ItemView> m_ForegroundItemViews;
 
         public int ItemShapeGridDataID => m_ItemShapeGridDataID;
         public int GridFullSize => m_GridSize.x * m_GridSize.y;
@@ -47,6 +49,8 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         {
             if (m_IsInitialized && !force) { return; }
 
+            m_ForegroundItemViews = new List<ItemView>();
+            
             if (m_ItemViewDrawer == null) {
                 m_ItemViewDrawer = GetComponent<ItemViewDrawer>();
             }
@@ -72,6 +76,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
 
                 m_ItemViewSlots[i] = boxSlot;
             }
+            
+            var dragHandler = GetComponent<ItemViewSlotDragHandler>();
+            if (dragHandler != null) { dragHandler.OnDragStarted += HandleItemViewSlotBeginDrag; }
 
             base.Initialize(force);
         }
@@ -100,9 +107,6 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
                     "The grid size of the Inventory Grid (on the Grid gameobject) and the Inventory Grid Item Shape Data (on the Inventory gameobject) does not match!",
                     gameObject);
             }
-
-            var dragHandler = GetComponent<ItemViewSlotDragHandler>();
-            if (dragHandler != null) { dragHandler.OnDragStarted += HandleItemViewSlotBeginDrag; }
         }
 
         /// <summary>
@@ -238,11 +242,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
         /// </summary>
         public override void Draw()
         {
-            //Remove all the previous item view shapes.
-            while (m_ItemShapeViewContent.childCount > 0) {
-                ObjectPool.Destroy(m_ItemShapeViewContent.GetChild(0));
-            }
-
+            var foregroundViewCount = 0;
             var gridFullSize = m_GridSize.x * m_GridSize.y;
             for (int i = 0; i < gridFullSize; i++) {
                 var gridElementData = m_ItemShapeGridData.GetElementAt(i);
@@ -250,7 +250,7 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
                 //Set/Draw Items in the background. Used to know which items view slot are set.
                 var itemInfo = (ItemInfo)gridElementData.ItemStack;
 
-                m_ItemViewDrawer.DrawView(i, i, itemInfo, true);
+                m_ItemViewDrawer.DrawView(i, i, itemInfo);
                 AssignItemToSlot(itemInfo, i);
 
                 var itemView = GetItemViewAt(i);
@@ -269,22 +269,72 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
                     continue;
                 }
 
-                var gridPos = m_ItemShapeGridData.OneDTo2D(i);
+                DrawInViewForeground(foregroundViewCount, i, itemInfo, backgroundItemShapeView);
+                foregroundViewCount++;
+            }
 
-                var viewPrefab = GetViewPrefabFor(itemInfo);
+            // Remove all the excessive Foreground Item Views.
+            for (int i = foregroundViewCount; i < m_ForegroundItemViews.Count; i++) {
+                if (m_ForegroundItemViews[i] != null) {
+                    ObjectPool.Destroy(m_ForegroundItemViews[i]);
+                    m_ForegroundItemViews[i] = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draw the Item view in the foreground.
+        /// </summary>
+        /// <param name="viewIndex">The foreground view index.</param>
+        /// <param name="gridIndex">The grid index.</param>
+        /// <param name="itemInfo">The item info.</param>
+        /// <param name="backgroundItemShapeView">The background item shape view.</param>
+        protected virtual void DrawInViewForeground(int viewIndex, int gridIndex, ItemInfo itemInfo, ItemShapeItemView backgroundItemShapeView)
+        {
+            var gridPos = m_ItemShapeGridData.OneDTo2D(gridIndex);
+
+            ItemView view = null;
+            var viewPrefab = GetViewPrefabFor(itemInfo);
+            
+            if (viewIndex >= 0 && viewIndex < m_ForegroundItemViews.Count && m_ForegroundItemViews[viewIndex] != null) {
+                // A view already exists.
+                var currentView = m_ForegroundItemViews[viewIndex];
+                if (viewPrefab == ObjectPool.GetOriginalObject(currentView.gameObject)) {
+                    view = currentView;
+                } else {
+                    ObjectPool.Destroy(currentView.gameObject);
+                    m_ForegroundItemViews[viewIndex] = null;
+                }
+            }
+
+            if (view == null) {
                 var viewGO = ObjectPool.Instantiate(viewPrefab, m_ItemShapeViewContent);
-                var foregroundItemView = viewGO.GetComponent<ItemView>();
-                foregroundItemView.RectTransform.anchorMax = new Vector2(0, 1);
-                foregroundItemView.RectTransform.anchorMin = new Vector2(0, 1);
-                foregroundItemView.RectTransform.pivot = new Vector2(0, 1);
-                foregroundItemView.RectTransform.localScale = Vector3.one;
-                foregroundItemView.RectTransform.anchoredPosition = new Vector2(gridPos.x * m_ItemShapeSize.x, -gridPos.y * m_ItemShapeSize.y);
+                view = viewGO.GetComponent<ItemView>();
 
-                foregroundItemView.SetValue(itemInfo);
-                var foregroundItemShapeView = foregroundItemView.GetViewModule<ItemShapeItemView>();
-                foregroundItemShapeView.SetGridInfo(this, i, true);
-                backgroundItemShapeView.ForegroundItemView = foregroundItemShapeView;
+                if (view == null) {
+                    Debug.LogWarning("The Box Drawer BoxUI Prefab does not have a BoxUI component or it is not of the correct Type");
+                    return;
+                }
+                
+                view.RectTransform.anchorMax = new Vector2(0, 1);
+                view.RectTransform.anchorMin = new Vector2(0, 1);
+                view.RectTransform.pivot = new Vector2(0, 1);
+                view.RectTransform.localScale = Vector3.one;
+            }
+            
+            
+            view.RectTransform.anchoredPosition =
+                new Vector2(gridPos.x * m_ItemShapeSize.x, -gridPos.y * m_ItemShapeSize.y);
 
+            view.SetValue(itemInfo);
+            var foregroundItemShapeView = view.GetViewModule<ItemShapeItemView>();
+            foregroundItemShapeView.SetGridInfo(this, gridIndex, true);
+            backgroundItemShapeView.ForegroundItemView = foregroundItemShapeView;
+
+            if (viewIndex >= m_ForegroundItemViews.Count) {
+                m_ForegroundItemViews.Insert(viewIndex, view);
+            } else {
+                m_ForegroundItemViews[viewIndex] = view;
             }
         }
 

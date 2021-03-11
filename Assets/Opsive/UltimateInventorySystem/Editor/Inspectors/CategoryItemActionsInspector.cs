@@ -64,7 +64,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                     {
                         m_ItemActionSet.ItemCategory = x;
                         m_ItemCategoryField.Refresh(m_ItemActionSet.ItemCategory);
-                        Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemActionSet);
+                        Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemActionSet);
                     })
                 },
                 (x) => true);
@@ -79,7 +79,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 (value) =>
                 {
                     m_ItemActionSet.ExceptionCategories = value;
-                    Shared.Editor.Utility.InspectorUtility.SetDirty(m_ItemActionSet);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemActionSet);
                 });
             container.Add(m_ExceptionCategories);
 

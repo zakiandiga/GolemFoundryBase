@@ -7,6 +7,7 @@
 namespace Opsive.UltimateInventorySystem.UI.Grid
 {
     using Opsive.Shared.Utility;
+    using Opsive.UltimateInventorySystem.Input;
     using Opsive.UltimateInventorySystem.UI.Views;
     using System;
     using UnityEngine;
@@ -303,7 +304,9 @@ namespace Opsive.UltimateInventorySystem.UI.Grid
             m_ViewDrawer.DrawViews(startIndex, endIndex, m_Elements);
 
             var selectedButton = m_GridEventSystem.GetSelectedButton();
-            if (selectedButton != null) { selectedButton.Select(); }
+            if (selectedButton != null) {
+                EventSystemManager.Select(selectedButton.gameObject);
+            }
         }
 
         /// <summary>

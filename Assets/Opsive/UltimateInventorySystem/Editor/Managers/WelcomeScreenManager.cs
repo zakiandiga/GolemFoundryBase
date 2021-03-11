@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using UnityEngine;
     using UnityEngine.UIElements;
@@ -43,7 +42,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             var imageElement = new Image();
             imageElement.AddToClassList(ManagerStyles.LinkCursor);
             imageElement.style.marginTop = 10f;
-            imageElement.image = InspectorUtility.LoadAsset<Texture2D>(c_DocumentationTextureGUID);
+            imageElement.image = Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(c_DocumentationTextureGUID);
             imageElement.RegisterCallback<MouseDownEvent>(c =>
             {
                 Application.OpenURL("https://opsive.com/support/documentation/ultimate-inventory-system/");
@@ -84,7 +83,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             horizontalLayout.style.marginTop = 2;
             var imageElement = new Image();
             imageElement.AddToClassList(ManagerStyles.LinkCursor);
-            imageElement.image = InspectorUtility.LoadAsset<Texture2D>(leftTextureGUID);
+            imageElement.image = Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(leftTextureGUID);
             imageElement.RegisterCallback<MouseDownEvent>(c =>
             {
                 Application.OpenURL(leftURL);
@@ -94,7 +93,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             imageElement = new Image();
             imageElement.style.marginLeft = 2;
             imageElement.AddToClassList(ManagerStyles.LinkCursor);
-            imageElement.image = InspectorUtility.LoadAsset<Texture2D>(rightTextureGUID);
+            imageElement.image = Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>(rightTextureGUID);
             imageElement.RegisterCallback<MouseDownEvent>(c =>
             {
                 Application.OpenURL(rightURL);
