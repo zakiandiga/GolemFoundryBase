@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 648feee4a894b3c469a025b1e1cdc5e7, type: 2}
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &16039773
 GameObject:
   m_ObjectHideFlags: 0
@@ -13048,10 +13048,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 689b4b1238e337d4590a91183947bcd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_key: 
+  m_key: SaveSystem_271546
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 0
+  m_restoreStateOnStart: 1
   skipApplyDataAfterFramesIfApplyImmediate: 1
   saveRawData: 0
 --- !u!114 &1223481439
@@ -13068,7 +13068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_saveCurrentScene: 0
   m_framesToWaitBeforeApplyData: 1
-  m_debug: 1
+  m_debug: 0
 --- !u!4 &1223481440
 Transform:
   m_ObjectHideFlags: 0
@@ -13095,7 +13095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0ee63801adc86d47b70c5e1986398a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_key: 
+  m_key: SaveSystem_271552
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 0
   m_restoreStateOnStart: 0
@@ -16660,7 +16660,7 @@ GameObject:
   - component: {fileID: 1586705633}
   - component: {fileID: 1586705631}
   m_Layer: 5
-  m_Name: Assembling Menu
+  m_Name: Building Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23713,15 +23713,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7552121064158371744, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7025246
+      value: 0.70252466
       objectReference: {fileID: 0}
     - target: {fileID: 7552121064158371744, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.080369174
+      value: 0.0803692
       objectReference: {fileID: 0}
     - target: {fileID: 7552121064158371744, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7025246
+      value: -0.70252454
       objectReference: {fileID: 0}
     - target: {fileID: 7552121064158371744, guid: 68e2c143a26699547a7e033f7b43a8f9, type: 3}
       propertyPath: m_LocalRotation.z
@@ -35010,7 +35010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1af33a602e20a3d4ca46c8a6ef942618, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_key: 
+  m_key: PlayerTemplate_272434
   m_appendSaverTypeToKey: 0
   m_saveAcrossSceneChanges: 1
   m_restoreStateOnStart: 1

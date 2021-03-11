@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 53ac5fa5da8102b468a92c21620db0d0, type: 3}
-  m_Name: Copper Ore
+  m_Name: Ore
   m_EditorClassIdentifier: 
-  m_ID: 2850976736
+  m_ID: 3788927026
   m_Category: {fileID: 11400000, guid: 634d153272cdf8143b61057064e01e94, type: 2}
   m_Parent: {fileID: 0}
   m_ChildrenData:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Core.ItemDefinition,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-    m_ValueHashes: 4c1e4f8ec2330064
-    m_ValuePositions: 0000000004000000
-    m_Values: 0000000000000000
-    m_UnityObjects: []
+    m_ValueHashes: 4c1e4f8ec233006407c1b58994c2b589
+    m_ValuePositions: 0000000004000000080000000c000000
+    m_Values: 02000000020000000000000001000000
+    m_UnityObjects:
+    - {fileID: 11400000, guid: 12536d2acd5dd8f42a3c2543c92da832, type: 2}
+    - {fileID: 11400000, guid: 761577fd35f40c14eb3e3953168893ca, type: 2}
     m_Version: 3.1
   m_ItemDefinitionAttributeCollection:
     m_AttributeCollectionData:
@@ -29,14 +31,14 @@ MonoBehaviour:
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
       m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000014000000
-      m_Values: 4465736372697074696f6e010000000091ae5dc04465736372697074696f6e20666f72206d6174657269616c73
+      m_Values: 4465736372697074696f6e01000000009693301c4465736372697074696f6e20666f72206d6174657269616c73
       m_UnityObjects: []
       m_Version: 3.1
     - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[UnityEngine.Sprite,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
       m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4aaf0255e0f3d4ee4c
       m_ValuePositions: 0000000004000000050000000500000009000000090000000d00000011000000
-      m_Values: 49636f6e0100000000196fb16fffffffff00000000
+      m_Values: 49636f6e010000000052f9484effffffff00000000
       m_UnityObjects:
       - {fileID: 21300000, guid: 18ee90ee1d2e42343bcf7b0a4a57711c, type: 3}
       m_Version: 3.1
@@ -48,9 +50,9 @@ MonoBehaviour:
       m_UnityObjects: []
       m_Version: 3.1
   m_DefaultItem:
-    m_ID: 3115029776
-    m_Name: Copper Ore
-    m_ItemDefinitionID: 2850976736
+    m_ID: 2424804892
+    m_Name: Ore
+    m_ItemDefinitionID: 3788927026
     m_ItemDefinition: {fileID: 11400000}
     m_ItemAttributeCollection:
       m_AttributeCollectionData:
