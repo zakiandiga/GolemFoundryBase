@@ -223,8 +223,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_key: PrototypeGolem00_258296
   m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 0
-  m_restoreStateOnStart: 0
+  m_saveAcrossSceneChanges: 1
+  m_restoreStateOnStart: 1
   m_mode: 1
 --- !u!1 &3220418634785393604
 GameObject:

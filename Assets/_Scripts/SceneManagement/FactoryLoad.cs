@@ -16,7 +16,7 @@ public class FactoryLoad : MonoBehaviour
         //this should be called from enterFactory trigger/function
         player = GameObject.FindWithTag("Player"); //Player position should be set from start or load game function
         Debug.Log("Player position should be set from start or load game function, currently it is set from FactoryLoad.cs");
-
+                
         blueprintGolemSpawner = GameObject.FindWithTag("GolemSpawner");
         player.transform.position = playerSpawner.position;
         player.transform.rotation = playerSpawner.rotation;

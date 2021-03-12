@@ -44,10 +44,6 @@ public class MenuControl : MonoBehaviour
         Inactive
 
     }
-    void Start()
-    {
-
-    }
 
     private void OnEnable()
     {
@@ -105,6 +101,16 @@ public class MenuControl : MonoBehaviour
             inventoryMenuState = InventoryMenuState.Active;
             panelHandler.ToggleMainMenu();
             EnablingMenuInteraction();
+        }
+    }
+
+    public void ExitButton() //Function for Exit Button at Main Menu Tabs
+    {
+        if (inventoryMenuState == InventoryMenuState.Active)
+        {
+            //Need switch like Building Menu if Inventory Menu contains child menu later
+            inventoryMenuState = InventoryMenuState.Inactive;
+            ClosingInventoryMenu();
         }
     }
 
@@ -181,6 +187,8 @@ public class MenuControl : MonoBehaviour
     }
 
     #endregion
+
+
 
     // Update is called once per frame
     void Update()

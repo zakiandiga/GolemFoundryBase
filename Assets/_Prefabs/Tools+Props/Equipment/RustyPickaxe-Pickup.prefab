@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 2574036834664842412}
   - component: {fileID: 2574036834664842415}
   - component: {fileID: 2574036834664842414}
-  - component: {fileID: 2574036834664842417}
   - component: {fileID: 2574036834664842419}
-  - component: {fileID: 2574036834667141280}
   - component: {fileID: 1964557129108930328}
+  - component: {fileID: 2574036834667141280}
   - component: {fileID: 7929881557218510145}
   m_Layer: 0
   m_Name: RustyPickaxe-Pickup
@@ -116,50 +115,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2574036834664842417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574036834664842418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ec83bdea51e5954a985bcb9403ffacf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ItemInfo:
-    m_ItemAmount:
-      m_Amount: 1
-      m_Item:
-        m_ID: 1760310174
-        m_Name: Rusty Pickaxe
-        m_ItemDefinitionID: 93235220
-        m_ItemDefinition: {fileID: 11400000, guid: e3c2fa5a6677e8a41b8d45df5e8829ff, type: 2}
-        m_ItemAttributeCollection:
-          m_AttributeCollectionData:
-          - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.Int32,
-              mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
-            m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a424b280f861dc27b
-            m_ValuePositions: 000000000b0000000c0000000c00000010000000100000001400000018000000
-            m_Values: 4865616c7468506f696e740000000000b0f025070000000064000000
-            m_UnityObjects: []
-            m_Version: 3.1
-          - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[Opsive.UltimateInventorySystem.Exchange.CurrencyAmounts,
-              Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-            m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a00874d3281651b554459e79ef550e43ba1bfe96bea49dfe97c5ef5ab
-            m_ValuePositions: 000000000500000006000000060000000a0000000a0000000e0000000e000000120000001200000016000000160000001a000000
-            m_Values: 50726963650000000000b764eeda00000000010000000000000000000000
-            m_UnityObjects:
-            - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
-            m_Version: 3.1
-          - m_ObjectType: Opsive.UltimateInventorySystem.Core.AttributeSystem.Attribute`1[[System.String,
-              mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]
-            m_ValueHashes: 0d00eb255b713f72086efd3934ebab2af446621ba8823c4a95fdf7a7d9cf9114
-            m_ValuePositions: 000000000600000007000000070000000b0000000b0000000f0000000f000000
-            m_Values: 526172697479000000000066acc96f436f6d6d6f6e
-            m_UnityObjects: []
-            m_Version: 3.1
 --- !u!114 &2574036834664842419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,25 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   InteractSign: {fileID: 5966182224427893680}
---- !u!114 &2574036834667141280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2574036834664842418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03526e258566dc247a4eb8525aeeb667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 
-  m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 1
-  m_mode: 1
-  m_destroyMode: 0
-  m_destroyedVersionPrefab: {fileID: 0}
 --- !u!114 &1964557129108930328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +150,25 @@ MonoBehaviour:
     - {fileID: 11400000, guid: e3c2fa5a6677e8a41b8d45df5e8829ff, type: 2}
     - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
     m_Version: 3.1
+--- !u!114 &2574036834667141280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2574036834664842418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03526e258566dc247a4eb8525aeeb667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_key: RustyPickaxe-Pickup_255760
+  m_appendSaverTypeToKey: 0
+  m_saveAcrossSceneChanges: 1
+  m_restoreStateOnStart: 1
+  m_mode: 0
+  m_destroyMode: 1
+  m_destroyedVersionPrefab: {fileID: 0}
 --- !u!114 &7929881557218510145
 MonoBehaviour:
   m_ObjectHideFlags: 0
