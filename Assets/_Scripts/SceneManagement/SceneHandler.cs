@@ -5,6 +5,7 @@ using PixelCrushers;
 
 public class SceneHandler : MonoBehaviour
 {
+    private Scene mainMenu;
     private string menuSceneName = "MainMenu";
     private string currentScene;
     private int currentSpawner;
@@ -12,6 +13,7 @@ public class SceneHandler : MonoBehaviour
     private string sceneToUnload;
 
     public static event Action<string, int> OnSceneLoaded;
+    public static event Action<string> OnTransitionFinalized;
 
     public enum SceneState
     {
@@ -25,11 +27,13 @@ public class SceneHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainMenu = SceneManager.GetSceneByName(menuSceneName);
+
         //DontDestroyOnLoad(gameObject);
 
         //if(sceneState == SceneState.Start)
         //{
-            currentScene = "MineDesigner"; //Temporary, to be set from start or load game function
+            currentScene = "IndoorDesigner"; //Temporary, to be set from start or load game function
             SaveSystem.LoadAdditiveScene(currentScene);
             sceneState = SceneState.Running;
         //}       
@@ -37,49 +41,59 @@ public class SceneHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        TitleManager.OnNewGameCall += LoadNewGame;
         ScenePortal.OnAreaChange += ChangeScene;
         PlayerLocationSetter.OnPlayerRelocationSuccess += SceneTransitionFinalize;
     }
 
     private void OnDisable()
     {
+        TitleManager.OnNewGameCall -= LoadNewGame;
         ScenePortal.OnAreaChange -= ChangeScene;
         PlayerLocationSetter.OnPlayerRelocationSuccess -= SceneTransitionFinalize;
     }
 
+    private void LoadNewGame(TitleManager title)
+    {
+        sceneToUnload = currentScene;
+        currentScene = "IndoorDesigner";
+        currentSpawner = 0;
+        ChangeScene(sceneToUnload, 1, currentScene, 0);
+    }
+
     private void ChangeScene(string previousScene, int previousSceneDataSlot, string destinationScene, int destinationSpawner)
     {
-        //Store all the values needed
         sceneToUnload = previousScene; 
         currentScene = destinationScene;
         currentSpawner = destinationSpawner;
 
-        //Save the current/previous scene state
-        SaveSystem.SaveToSlotImmediate(inGameDataSlot);
 
-        //load next scene while listen to on scene loaded
-        SceneManager.sceneLoaded += OnAdditiveSceneLoaded;
-        
+        SaveSystem.RecordSavedGameData();
+        //SaveSystem.SaveToSlotImmediate(inGameDataSlot);
+
+        SceneManager.sceneLoaded += OnAdditiveSceneLoaded;       
+
         SaveSystem.LoadAdditiveScene(destinationScene);
     }
 
     private void OnAdditiveSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //unsubscribe to the sceneLoaded event
         SceneManager.sceneLoaded -= OnAdditiveSceneLoaded;
+        SceneManager.SetActiveScene(scene);  //To make sure the GO with Saver component loaded in this exact scene instead of in main menu
 
-        //what to do OnSceneLoaded
-        OnSceneLoaded?.Invoke(currentScene, currentSpawner);        
+        //The PlayerMover component subscribe to this event to move the player to the new scene
+        OnSceneLoaded?.Invoke(currentScene, currentSpawner);
     }
 
+    //This function called when the player successfully move to the new scene (somehow I need to force the player to move before unloading the previous map scene)
     private void SceneTransitionFinalize(PlayerLocationSetter p)
     {
-        if(SaveSystem.HasSavedGameInSlot(inGameDataSlot))
-        {
-            SaveSystem.LoadFromSlot(inGameDataSlot);
-        }        
-        
+        //SaveSystem.LoadFromSlot(inGameDataSlot);
+        SceneManager.SetActiveScene(mainMenu);
+
+        SaveSystem.BeforeSceneChange();
         SaveSystem.UnloadAdditiveScene(sceneToUnload);
+        OnTransitionFinalized?.Invoke("SceneHandler");
     }
 
     public void ExitGame()

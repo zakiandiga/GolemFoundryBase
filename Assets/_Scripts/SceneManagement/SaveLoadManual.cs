@@ -6,8 +6,8 @@ using PixelCrushers;
 
 public class SaveLoadManual : MonoBehaviour
 {
-    public ActionButton saveButton;
-    public ActionButton loadButton;
+    //public ActionButton saveButton;
+    //public ActionButton loadButton;
 
     // Start is called before the first frame update
     void Start()
@@ -16,9 +16,15 @@ public class SaveLoadManual : MonoBehaviour
     }
 
     public void SaveGame()
-    {        
+    {
+        SaveSystem.RecordSavedGameData();
         SaveSystem.SaveToSlot(2);
         Debug.Log("Manual save performed!");
+        foreach(string scene in SaveSystem.addedScenes)
+        {
+            Debug.Log("Additively loaded scene: " + scene);
+        }
+        
     }
 
     public void LoadGame()

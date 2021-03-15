@@ -19,6 +19,7 @@ public class GatheringStats : RandomInventoryPickup
         
     }
 
+    
     public override void Deactivate()
     {
         Debug.Log("Gathering Iron ore");
@@ -31,4 +32,5 @@ public class GatheringStats : RandomInventoryPickup
 
 
     }
+    
 }

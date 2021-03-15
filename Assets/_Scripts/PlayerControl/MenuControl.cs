@@ -42,7 +42,12 @@ public class MenuControl : MonoBehaviour
         BlueprintOption,
         BlueprintGrid,
         Inactive
-
+    }
+    private CraftingMenuState craftingMenuState = CraftingMenuState.Inactive;
+    public enum CraftingMenuState
+    {
+        Inactive,
+        Active
     }
 
     private void OnEnable()
@@ -51,7 +56,7 @@ public class MenuControl : MonoBehaviour
         PlayerMovement.OnOpenInventoryMenu += OpenInventoryMenu; 
         
         //Player interact with Building Pod
-        PlayerMovement.OnOpenMenuFromInteract += OpenBuildingMenu; 
+        PlayerMovement.OnOpenMenuFromInteract += OpenMenuFromInteract; 
 
         //player choose a blueprint on Blueprint Selection
         ItemActionUsingBlueprint.OnBlueprintSelected += BlueprintSelected;
@@ -70,7 +75,7 @@ public class MenuControl : MonoBehaviour
         confirm.action.Disable();
 
         PlayerMovement.OnOpenInventoryMenu -= OpenInventoryMenu;
-        PlayerMovement.OnOpenMenuFromInteract -= OpenBuildingMenu;
+        PlayerMovement.OnOpenMenuFromInteract -= OpenMenuFromInteract;
         ItemActionUsingBlueprint.OnBlueprintSelected -= BlueprintSelected;
         BuildGolemHandler.OnBuildPressed -= OpenBuildingMenu;
     }
@@ -123,6 +128,20 @@ public class MenuControl : MonoBehaviour
     }
     #endregion
 
+    private void OpenMenuFromInteract(string announcer) //Interact Menu selector
+    {
+        switch (announcer)
+        {
+            case "BuildingMenu":
+                OpenBuildingMenu("BuildingMenu");
+                break;
+            case "CraftingMenu":
+                OpenCraftingMenu("CraftingMenu");
+                break;
+        }
+    }
+
+
     #region Building Menu Control
     private void BlueprintSelected(int value)
     {
@@ -139,7 +158,7 @@ public class MenuControl : MonoBehaviour
         {
             //player interact with Building Pod
             case BuildingMenuState.Inactive:
-                if (announcer == "player")
+                if (announcer == "BuildingMenu")
                 {
                     panelHandler.TogglePanel("BuildingMenu");
                     EnablingMenuInteraction();
@@ -178,15 +197,46 @@ public class MenuControl : MonoBehaviour
                     buildingMenuState = BuildingMenuState.Inactive;
                 }
                 break;           
-        }
+        }        
     }
-        
+
     public void CancelButton()
     {
         OpenBuildingMenu("button"); //Handling cancel building from UI Button
     }
-
     #endregion
+    
+    private void OpenCraftingMenu(string announcer)
+    {        
+        switch (craftingMenuState)
+        {
+            case CraftingMenuState.Inactive:
+                if (announcer == "CraftingMenu")
+                {
+                    panelHandler.TogglePanel("CraftingMenu");
+                    EnablingMenuInteraction();
+                    craftingMenuState = CraftingMenuState.Active;
+                    Debug.Log("crafting menu opened!");
+                }
+                break;
+            case CraftingMenuState.Active:
+                OnClosingMenuNEW?.Invoke("CraftingMenu");
+                Debug.Log("OnClosingMenuNew Invoke");
+
+                
+                panelHandler.TogglePanel("CraftingMenu");
+                DisablingMenuInteraction();
+                Debug.Log("Disabling Menu Interaction");
+
+                craftingMenuState = CraftingMenuState.Inactive;
+                break;
+        }
+    }
+
+    public void CraftingExitButton()
+    {
+        OpenCraftingMenu("Input");
+    }
 
 
 
@@ -211,6 +261,11 @@ public class MenuControl : MonoBehaviour
                 inventoryMenuState = InventoryMenuState.Inactive;
                 ClosingInventoryMenu();
             }
+
+            if(craftingMenuState == CraftingMenuState.Active)
+            {
+                OpenCraftingMenu("Input");
+            }
         }    
 
         if(menu.action.triggered) //Might be refactored?
@@ -223,7 +278,7 @@ public class MenuControl : MonoBehaviour
             }
         }
 
-        //Panel force close
+        //Available Parts Panel force close (Bug workaround)
         if(availableParts.IsOpen && buildingMenuState != BuildingMenuState.BlueprintGrid )
         {
             panelHandler.TogglePanel("AvailableParts");

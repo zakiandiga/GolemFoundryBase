@@ -193,6 +193,12 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             MenuControlSwitch("InventoryMenu");
         }
 
+        if(announcer == "CraftingMenu")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("CraftingMenu");
+        }
+
         else
             StartCoroutine(EnableControlDelay());
     }
@@ -319,9 +325,9 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
     private void OpenMenuFromInteract(string menu)
     {
-        if(menu == "Assembling Menu")
+        if(menu == "BuildingMenu")
         {
-            OnOpenMenuFromInteract?.Invoke("player");
+            OnOpenMenuFromInteract?.Invoke("BuildingMenu");
             if (movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
@@ -342,6 +348,25 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
             MenuControlSwitch("player");
         }
+
+        if(menu == "CraftingMenu")
+        {
+            OnOpenMenuFromInteract?.Invoke("CraftingMenu");
+            if(movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+
+                //set camera state later!
+            }
+            else
+            {
+                //camera mode if handler (see "BuildingMenu")
+                movementState = MovementState.Idle;
+            }
+
+            //CameraStateSwitch(); //COMMENT THIS OUT AFTER THE MENU ESTABLISHED
+            MenuControlSwitch("player");
+        }
     }
 
     private void AttackAction()
@@ -349,12 +374,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //Set attack animation based on equipment state
         StartCoroutine(AttackDelay());
         anim.SetTrigger("attack");
-        OnAttack?.Invoke(this);
-        Debug.Log("Attacking!");
-
-        //SetPlayerSpawn(spawnTransform);
-        Debug.Log("Current player position is " + transform.position);
-
+        OnAttack?.Invoke(this); //Might be used for mining pickup interactable
     }
 
     private IEnumerator AttackDelay()
@@ -508,6 +528,8 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             }
 
         }
+
+        
 
     }
 
