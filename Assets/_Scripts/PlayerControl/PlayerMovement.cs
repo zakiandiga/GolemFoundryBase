@@ -114,6 +114,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
         //Cursor.visible = false;
         interactSign.enabled = false; //TEMP
+        //ameObject.SetActive(false);
     }
 
     private void OnEnable()
