@@ -374,7 +374,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     {
         //Set attack animation based on equipment state
         StartCoroutine(AttackDelay());
-        anim.SetTrigger("attack");
+        inventoryInteractor.Interact();
         OnAttack?.Invoke(this); //Might be used for mining pickup interactable
     }
 
@@ -507,8 +507,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
         if(interactControl.action.triggered)
         {
-            //OnInteract?.Invoke(currentInteractable);
-            //Interact(); FIND OUT HOW TO DO THIS IN THE NEW SYSTEM
             inventoryInteractor.Interact();
         }
 

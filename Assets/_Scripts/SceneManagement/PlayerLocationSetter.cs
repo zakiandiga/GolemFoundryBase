@@ -35,13 +35,10 @@ public class PlayerLocationSetter : MonoBehaviour
         targetTransform = spawnerTransform;
         transform.position = targetTransform.position;
         transform.rotation = targetTransform.localRotation;
-        Debug.Log("player target transform = " + spawnerTransform.position);
-        Debug.Log("Set player position to " + transform.position);
     }
 
     private void TryInitialize()
     {
-        Debug.Log("Retry relocating!");
         transform.position = targetTransform.position;
         transform.rotation = targetTransform.rotation;
     }
@@ -52,7 +49,6 @@ public class PlayerLocationSetter : MonoBehaviour
         {
             if(transform.position != targetTransform.transform.position)
             {
-                Debug.Log("Player relocation failed");
                 TryInitialize();
             }
             else
@@ -60,7 +56,6 @@ public class PlayerLocationSetter : MonoBehaviour
                 isRelocating = false;
                 playerMovement.enabled = true;
                 OnPlayerRelocationSuccess?.Invoke(this);
-                Debug.Log("Relocation finally success!");
             }
         }
     }

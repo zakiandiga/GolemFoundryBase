@@ -12,6 +12,8 @@ public class SceneHandler : MonoBehaviour
     private int inGameDataSlot = 1;
     private string sceneToUnload;
 
+    public static event Action<int> OnStart; //HACK
+    public static event Action<string> OnChangeSceneStart;
     public static event Action<string, int> OnSceneLoaded;
     public static event Action<string> OnTransitionFinalized;
 
@@ -34,6 +36,7 @@ public class SceneHandler : MonoBehaviour
         //if(sceneState == SceneState.Start)
         //{
             currentScene = "IndoorDesigner"; //Temporary, to be set from start or load game function
+            OnStart?.Invoke(0); //HACK
             SaveSystem.LoadAdditiveScene(currentScene);
             sceneState = SceneState.Running;
         //}       
@@ -70,6 +73,7 @@ public class SceneHandler : MonoBehaviour
 
         SaveSystem.RecordSavedGameData();
         //SaveSystem.SaveToSlotImmediate(inGameDataSlot);
+        OnChangeSceneStart?.Invoke("SceneHandler");
 
         SceneManager.sceneLoaded += OnAdditiveSceneLoaded;       
 

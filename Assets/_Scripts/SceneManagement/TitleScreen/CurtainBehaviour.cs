@@ -19,6 +19,7 @@ public class CurtainBehaviour : MonoBehaviour
     {
         TitleManager.OnFadeInCalled += FadeIn;
         TitleManager.OnFadeOutCalled += FadeOut;
+        SceneHandler.OnChangeSceneStart += FadeOut;
         SceneHandler.OnTransitionFinalized += FadeIn;
     }
 
@@ -26,6 +27,7 @@ public class CurtainBehaviour : MonoBehaviour
     {
         TitleManager.OnFadeInCalled -= FadeIn;
         TitleManager.OnFadeOutCalled -= FadeOut;
+        SceneHandler.OnChangeSceneStart -= FadeOut;
         SceneHandler.OnTransitionFinalized -= FadeIn;
     }
 

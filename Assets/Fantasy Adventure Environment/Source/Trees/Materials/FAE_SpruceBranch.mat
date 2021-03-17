@@ -10,7 +10,7 @@ Material:
   m_Name: FAE_SpruceBranch
   m_Shader: {fileID: -6465566751694194690, guid: 85827a98514358f438446da0fc64b0f0, type: 3}
   m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF _ALPHATEST_ON
-  m_LightmapFlags: 0
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -145,7 +145,7 @@ Material:
     - _GlossyReflections: 1
     - _GradientBrightness: 1
     - _MaskClipValue: 0.5
-    - _MaxWindStrength: 0.5
+    - _MaxWindStrength: 0.597
     - _Metallic: 0
     - _Mode: 1
     - _OcclusionStrength: 1
@@ -177,8 +177,8 @@ Material:
     - _TrunkWindWeight: 2
     - _UVSec: 0
     - _UseLegacyVertexColors: 0
-    - _UseSpeedTreeWind: 0
-    - _WindAmplitudeMultiplier: 10
+    - _UseSpeedTreeWind: 1
+    - _WindAmplitudeMultiplier: 10.35
     - _WindQuality: 0
     - _WindSpeed: 0.5
     - _WindWeight: 1

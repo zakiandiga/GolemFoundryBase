@@ -32,13 +32,17 @@ MonoBehaviour:
   m_ElementsData:
     m_ObjectType: Opsive.Shared.Utility.ResizableArray`1[[Opsive.UltimateInventorySystem.Crafting.CraftingRecipe,
       Opsive.UltimateInventorySystem, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]
-    m_ValueHashes: 4c1e4f8e29fdbde2a5e125e828e025e8bbe625e8
-    m_ValuePositions: 0000000004000000080000000c00000010000000
-    m_Values: 0300000003000000000000000100000002000000
+    m_ValueHashes: 4c1e4f8e29fdbde2a5e125e828e025e8bbe625e84ee525e8d1db25e864da25e8f7d825e8
+    m_ValuePositions: 0000000004000000080000000c0000001000000014000000180000001c00000020000000
+    m_Values: 070000000700000000000000010000000200000003000000040000000500000006000000
     m_UnityObjects:
     - {fileID: 11400000, guid: 7a8bc979e59a4514c92e36d1d696bf9c, type: 2}
     - {fileID: 11400000, guid: b984e2f38baaa484b8406fbe066ca3b8, type: 2}
     - {fileID: 11400000, guid: 967eb39b3b4c6b94880c9582fca63eba, type: 2}
+    - {fileID: 11400000, guid: efdb1a1a0a5b3514396c0c62baaa9e9a, type: 2}
+    - {fileID: 11400000, guid: 444e81a5a32755b4e920c723fccedad2, type: 2}
+    - {fileID: 11400000, guid: ed196d51c4c987e43a77ef3d7f5601e9, type: 2}
+    - {fileID: 11400000, guid: ac5f29bc67fdeb045b8038dc44b01cd3, type: 2}
     m_Version: 3.1
   m_IsAbstract: 0
   m_Color: {r: 0.513266, g: 0.13498773, b: 0.54297906, a: 1}
