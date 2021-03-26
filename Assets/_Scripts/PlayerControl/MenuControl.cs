@@ -26,6 +26,8 @@ public class MenuControl : MonoBehaviour
     
     public static event Action<int> OnBuildCleanupNEW; //Might be safe to remove
 
+    public static event Action<MenuControl> OnDebugMenuControl; //DEBUG
+
     /// <summary>
     /// State of all menu
     /// Current menu: InventoryMenu, BuildingMenu
@@ -147,9 +149,8 @@ public class MenuControl : MonoBehaviour
     {
         buildingMenuState = BuildingMenuState.BlueprintGrid;
         openedBlueprintIndex = value;
+        //panelHandler.TogglePanel("AvailableParts");
         panelHandler.TogglePanel("AvailableParts");
-
-        Debug.Log(availableParts.IsOpen);
     }
 
     private void OpenBuildingMenu(string announcer)
@@ -176,24 +177,26 @@ public class MenuControl : MonoBehaviour
                 Debug.Log("Closing Assembling Menu, buildingMenuState = " + buildingMenuState);
                 break;
             
-            case BuildingMenuState.BlueprintGrid:  //player press back during Blueprint Grid
+            case BuildingMenuState.BlueprintGrid:  //player press back or cancel button during Blueprint Grid
                 if (announcer == "button")
                 {
                     OnCancelBuildNEW("blueprintGrid");
-                    buildingMenuState = BuildingMenuState.BlueprintOption;                        
+                                          
                     panelHandler.TogglePanel("AvailableParts");
+                    openedBlueprintIndex = 0;
+                    buildingMenuState = BuildingMenuState.BlueprintOption;
                 }
                 else if (announcer == "buildHandler")
                 {                   
 
                     OnClosingMenuNEW?.Invoke("BlueprintOption");
-                    OnBuildCleanupNEW.Invoke(openedBlueprintIndex); 
-                    
+                    OnBuildCleanupNEW.Invoke(openedBlueprintIndex);
+                    openedBlueprintIndex = 0;
+
                     panelHandler.TogglePanel("AvailableParts");
                     panelHandler.TogglePanel("BuildingMenu");
-
-                    openedBlueprintIndex = 0;
-                    DisablingMenuInteraction();
+                                        
+                    //DisablingMenuInteraction();
                     buildingMenuState = BuildingMenuState.Inactive;
                 }
                 break;           
@@ -244,7 +247,7 @@ public class MenuControl : MonoBehaviour
     void Update()
     {
         if(back.action.triggered)
-        {
+        {            
             //Handle cancel button for building menu here later
             if(buildingMenuState == BuildingMenuState.BlueprintGrid)
             {
@@ -278,11 +281,17 @@ public class MenuControl : MonoBehaviour
             }
         }
 
-        //Available Parts Panel force close (Bug workaround)
+        if(previous.action.triggered)
+        {
+            OnDebugMenuControl?.Invoke(this); //DEBUG
+        }
+
+        //Available Parts Panel force close (Bug workaround)        
         if(availableParts.IsOpen && buildingMenuState != BuildingMenuState.BlueprintGrid )
         {
             panelHandler.TogglePanel("AvailableParts");
             Debug.Log("Available parts currently " + availableParts.IsOpen);
         }
+        
     }
 }

@@ -59,9 +59,7 @@ public class ItemTransferHandler : MonoBehaviour
         if(announcer == "blueprintGrid")
         {
             CancelBuild();
-            Debug.Log("CancelBuild() called!");
         }
-
     }
 
     public void CancelBuild() //triggered from button and CancelCue()
