@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Opsive.UltimateInventorySystem.UI.Monitors;
 using PixelCrushers;
 
 public class SceneHandler : MonoBehaviour
@@ -11,6 +12,7 @@ public class SceneHandler : MonoBehaviour
     private int currentSpawner;
     private int inGameDataSlot = 1;
     private string sceneToUnload;
+    [SerializeField] InventoryMonitor inventoryMonitor;
 
     public static event Action<int> OnStart; //HACK
     public static event Action<string> OnChangeSceneStart;
@@ -70,7 +72,7 @@ public class SceneHandler : MonoBehaviour
         currentScene = destinationScene;
         currentSpawner = destinationSpawner;
 
-
+        inventoryMonitor.StopListening();
         SaveSystem.RecordSavedGameData();
         //SaveSystem.SaveToSlotImmediate(inGameDataSlot);
         OnChangeSceneStart?.Invoke("SceneHandler");
@@ -98,6 +100,7 @@ public class SceneHandler : MonoBehaviour
         SaveSystem.BeforeSceneChange();
         SaveSystem.UnloadAdditiveScene(sceneToUnload);
         OnTransitionFinalized?.Invoke("SceneHandler");
+        inventoryMonitor.StartListening();
     }
 
     public void ExitGame()

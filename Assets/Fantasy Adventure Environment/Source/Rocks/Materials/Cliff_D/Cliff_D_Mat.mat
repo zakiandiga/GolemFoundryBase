@@ -78,15 +78,15 @@ Material:
     m_Floats:
     - _CoverageAmount: 0.01
     - _CoverageTiling: 1
-    - _Detailstrength: 0.28
+    - _Detailstrength: 0.7
     - _Float4: 0.13
-    - _Globaltiling: 0.13
+    - _Globaltiling: 0.01
     - _MaskClipValue: 0.5
-    - _Roughness: 0.276
+    - _Roughness: 0.22
     - _SnowCover: 1
     - _SnowTiling: 7
     - __dirty: 0
     m_Colors:
-    - _GlobalColor: {r: 0.5882353, g: 0.5294118, b: 0.40784317, a: 1}
-    - _ObjectColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+    - _GlobalColor: {r: 0.80392164, g: 0.74509805, b: 0.6745098, a: 1}
+    - _ObjectColor: {r: 0.8196079, g: 0.81568635, b: 0.8235295, a: 1}
   m_BuildTextureStacks: []
