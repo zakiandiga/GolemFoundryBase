@@ -164,10 +164,10 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 0
-    - _Detailstrength: 0.7
+    - _Detailstrength: 0.28
     - _DstBlend: 0
     - _Float0: 4.78
-    - _Globaltiling: 0.01
+    - _Globaltiling: 0.13
     - _GlossMapScale: 0.727
     - _Glossiness: 0.5
     - _GlossinessSource: 0
@@ -179,7 +179,7 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Roughness: 0.22
+    - _Roughness: 0.276
     - _Shininess: 0
     - _Smoothness: 0.5
     - _SmoothnessSource: 0
@@ -202,7 +202,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.4852941, g: 0.4852941, b: 0.4852941, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlobalColor: {r: 0.80392164, g: 0.74509805, b: 0.6745098, a: 1}
-    - _ObjectColor: {r: 0.8196079, g: 0.81568635, b: 0.8235295, a: 1}
+    - _GlobalColor: {r: 0.5882353, g: 0.5294118, b: 0.40784317, a: 1}
+    - _ObjectColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []

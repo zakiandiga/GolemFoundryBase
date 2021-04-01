@@ -50,6 +50,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
         {
             var moveCursor = m_ItemViewSlotsContainer.gameObject.GetCachedComponent<ItemViewSlotMoveCursor>();
             moveCursor.StartMove(m_ItemViewSlotIndex);
+            
         }
     }
 }
