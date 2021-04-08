@@ -200,8 +200,10 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             MenuControlSwitch("CraftingMenu");
         }
 
+        /*
         else
             StartCoroutine(EnableControlDelay());
+        */
     }
 
     IEnumerator EnableControlDelay()
@@ -300,12 +302,14 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             Cursor.lockState = CursorLockMode.Confined;  //CURSOR MODE CHECK
             //Cursor.visible = true;
             DisablingMovement();
+            Debug.Log("PlayerControl Disabled: " + movementState);
         }
         else if(movementState != MovementState.OnMenu)
         {
             Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
             //Cursor.visible = false;
             EnablingMovement();
+            Debug.Log("PlayerControl Disabled: " + movementState);
         }
     }
 
