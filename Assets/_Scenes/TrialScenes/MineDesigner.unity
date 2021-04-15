@@ -617,14 +617,14 @@ Transform:
   m_Children:
   - {fileID: 877002441}
   - {fileID: 828417282}
-  - {fileID: 1573434206}
   - {fileID: 1758830868}
-  - {fileID: 2042392735}
+  - {fileID: 1573434206}
   - {fileID: 1747298492}
+  - {fileID: 2042392735}
   - {fileID: 1616418917}
   - {fileID: 491437284}
-  - {fileID: 2628533808320286700}
   - {fileID: 1691270245}
+  - {fileID: 2628533808320286700}
   - {fileID: 1793907107}
   - {fileID: 655064856}
   m_Father: {fileID: 0}
@@ -4292,6 +4292,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CliffAppearance
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013654716540, guid: c10c321eba25fd048889f2ab186d7ba2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000010013880912, guid: c10c321eba25fd048889f2ab186d7ba2, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -6125,7 +6129,7 @@ Transform:
   - {fileID: 1291914837}
   - {fileID: 775259868}
   m_Father: {fileID: 171444756}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1719031448
 GameObject:
@@ -6266,7 +6270,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 171444756}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1747298493
 MonoBehaviour:
@@ -6344,7 +6348,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 171444756}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1793907106
 GameObject:

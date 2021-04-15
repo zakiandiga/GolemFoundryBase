@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FlatKitWaterfallFoam
+  m_Shader: {fileID: 4800000, guid: efcaf526ceb1f4efd9eb4e4c30c6ade6, type: 3}
+  m_ShaderKeywords: _COLORMODE_LINEAR _FOAMMODE_TEXTURE _WAVEMODE_ROUND
+  m_LightmapFlags: 2
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3001
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _ColorGradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DummyTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseMap:
+        m_Texture: {fileID: 2800000, guid: cd3599394ee15cf47a144615252f4943, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: 1a1e99c7f4bb0a4479e4e5c835fd6c98, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: cd3599394ee15cf47a144615252f4943, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ColorMode: 0
+    - _Coloring: 0.104
+    - _CrestSharpness: 0.1
+    - _CrestSize: 0.1
+    - _FadeDistance: 0.5
+    - _Float1: 1.08
+    - _FoamAmount: 0.19
+    - _FoamDepth: 0.5
+    - _FoamDirection: -0.32
+    - _FoamMode: 2
+    - _FoamNoiseAmount: 0.572
+    - _FoamScale: 0.26
+    - _FoamSharpness: 0.411
+    - _FoamSpeed: 19.34
+    - _FoamStretchX: 1.87
+    - _FoamStretchY: 1.87
+    - _MaskClipValue: 0.5
+    - _Opaque: 1
+    - _Opcaity: 1
+    - _QueueOffset: 1
+    - _RefractionAmplitude: 0.0813
+    - _RefractionFrequency: 35
+    - _RefractionScale: 1
+    - _RefractionSpeed: 5.6
+    - _Shading: 1
+    - _ShadowStrength: 0.35
+    - _Speed: 0.55
+    - _Strength: 5
+    - _TessMax: 25
+    - _TessMin: 10
+    - _TessValue: 4
+    - _Tesselation: 5.36
+    - _WaterClearness: 0.3
+    - _WaterDepth: 5
+    - _WaveAmplitude: 0.25
+    - _WaveDirection: 0
+    - _WaveFrequency: 1
+    - _WaveMode: 1
+    - _WaveNoise: 0.25
+    - _WaveSpeed: 0.5
+    - __dirty: 0
+    m_Colors:
+    - _ColorDeep: {r: 0.6367924, g: 0.76895654, b: 0.8490566, a: 1}
+    - _ColorShallow: {r: 0.4268423, g: 0.6799224, b: 0.8301887, a: 0.8}
+    - _CrestColor: {r: 0.6839622, g: 0.9719493, b: 1, a: 1}
+    - _FoamColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
+  m_BuildTextureStacks: []

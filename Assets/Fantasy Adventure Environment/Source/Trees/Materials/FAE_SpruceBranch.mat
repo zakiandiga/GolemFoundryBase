@@ -9,13 +9,15 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: FAE_SpruceBranch
   m_Shader: {fileID: -6465566751694194690, guid: 85827a98514358f438446da0fc64b0f0, type: 3}
-  m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF _ALPHATEST_ON
+  m_ShaderKeywords: EFFECT_HUE_VARIATION GEOM_TYPE_LEAF _ALPHATEST_ON _CELPRIMARYMODE_SINGLE
+    _TEXTUREBLENDINGMODE_MULTIPLY _UNITYSHADOWMODE_NONE
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -23,7 +25,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CelCurveTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CelStepTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -125,31 +139,59 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AO: 1
+    - _AlphaClip: 1
     - _Alphacutoff: 0.594
     - _AmbientOcclusion: 0.475
+    - _Blend: 0
     - _BumpScale: 1
+    - _CelExtraEnabled: 0
+    - _CelNumSteps: 3
+    - _CelPrimaryMode: 1
     - _CheckerOpacity: 0
     - _ColorVarHeu: 0
     - _ColorVariation: 0
     - _Cull: 0
-    - _Cutoff: 0.5
+    - _Cutoff: 0.45
     - _Debug: 0
     - _DetailNormalMapScale: 1
     - _Dist: 0
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _FlatLighting: 1
+    - _FlatRimEdgeSmoothness: 0.5
+    - _FlatRimLightAlign: 0
+    - _FlatRimSize: 0.5
+    - _FlatSpecularEdgeSmoothness: 0
+    - _FlatSpecularSize: 0.1
+    - _Flatness: 1
+    - _FlatnessExtra: 1
     - _Float8: 0.1
     - _Gloss: 0.5
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _GradientAngle: 0
     - _GradientBrightness: 1
+    - _GradientCenterX: 0
+    - _GradientCenterY: 0
+    - _GradientEnabled: 0
+    - _GradientSize: 10
+    - _LightContribution: 0
+    - _LightFalloffSize: 0.0001
+    - _LightmapDirectionPitch: 0
+    - _LightmapDirectionYaw: 0
     - _MaskClipValue: 0.5
     - _MaxWindStrength: 0.597
     - _Metallic: 0
     - _Mode: 1
     - _OcclusionStrength: 1
+    - _OverrideLightmapDir: 0
     - _Parallax: 0.02
+    - _QueueOffset: 0
+    - _RimEnabled: 0
+    - _SelfShadingSize: 0.5
+    - _SelfShadingSizeExtra: 0.6
+    - _ShadowEdgeSize: 0.05
+    - _ShadowEdgeSizeExtra: 0.05
     - _Shadows: 1
     - _Shininess: 0.1
     - _SmoothShading: 0
@@ -157,16 +199,20 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _Snow: 0.988
     - _SnowHeight: 0.083
+    - _SpecularEnabled: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _Subsurface: 0
     - _SubsurfaceAmount: 0.161
     - _SubsurfaceSize: 10
+    - _Surface: 1
     - _TessMax: 25
     - _TessMin: 10
     - _TessPhongStrength: 0.5
     - _TessValue: 20.3
     - _Tessellation: 13.25
+    - _TextureBlendingMode: 0
+    - _TextureImpact: 1
     - _Tiling: 1.56
     - _TransAmbient: 0.2
     - _TransDirect: 1
@@ -176,23 +222,37 @@ Material:
     - _Translucency: 1
     - _TrunkWindWeight: 2
     - _UVSec: 0
+    - _UnityShadowMode: 0
+    - _UnityShadowPower: 0.2
+    - _UnityShadowSharpness: 1
     - _UseLegacyVertexColors: 0
     - _UseSpeedTreeWind: 1
+    - _VertexColorsEnabled: 0
     - _WindAmplitudeMultiplier: 10.35
     - _WindQuality: 0
     - _WindSpeed: 0.5
     - _WindWeight: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     - __dirty: 0
     - _node_3730: 0
     m_Colors:
+    - _BaseColor: {r: 0.27612138, g: 0.6886792, b: 0.3390304, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color1: {r: 0, g: 0, b: 0, a: 0}
+    - _ColorDim: {r: 1, g: 1, b: 1, a: 1}
+    - _ColorDimCurve: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimExtra: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorDimSteps: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
+    - _ColorGradient: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FlatRimColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
+    - _FlatSpecularColor: {r: 0.85023, g: 0.85034, b: 0.85045, a: 0.85056}
     - _HueVariation: {r: 0, g: 1, b: 0.8344829, a: 0.209}
+    - _LightmapDirection: {r: 0, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 0}
     - _Transmisioncolor: {r: 1, g: 1, b: 1, a: 0.122}
     - _TransmissionColor: {r: 0.2827586, g: 1, b: 0, a: 0.191}
+    - _UnityShadowColor: {r: 0.85023, g: 0.85034, b: 0.8504499, a: 0.85056}
     - _VariationColor: {r: 1, g: 0.5, b: 0, a: 0.297}
     - _Variationcolor: {r: 1, g: 0.8896551, b: 0, a: 0}
     - _WindDirection: {r: 0.93536794, g: 0, b: 0.35367614, a: 0}

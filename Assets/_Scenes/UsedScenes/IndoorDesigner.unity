@@ -476,7 +476,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777720
+  m_Name: pb_Mesh-479486
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -790,7 +790,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777708
+  m_Name: pb_Mesh-479474
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1164,7 +1164,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9716981, g: 0.9360689, b: 0.7654414, a: 1}
-  m_Intensity: 18.77
+  m_Intensity: 0.6
   m_Range: 28.38
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -1315,7 +1315,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777700
+  m_Name: pb_Mesh-479466
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1572,7 +1572,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777664
+  m_Name: pb_Mesh-479430
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2157,7 +2157,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777684
+  m_Name: pb_Mesh-479450
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2410,7 +2410,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9716981, g: 0.9360689, b: 0.7654414, a: 1}
-  m_Intensity: 18.77
+  m_Intensity: 0.6
   m_Range: 28.38
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -2480,7 +2480,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-5777672
+  m_Name: pb_Mesh-479438
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3542,11 +3542,11 @@ PrefabInstance:
       objectReference: {fileID: 446025527}
     - target: {fileID: 5271949809184429297, guid: d4fc2b227f0c56b45abe8c6dbe0567d1, type: 3}
       propertyPath: m_SelectedEdges.Array.size
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5271949809184429297, guid: d4fc2b227f0c56b45abe8c6dbe0567d1, type: 3}
       propertyPath: m_SelectedFaces.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5271949809184429297, guid: d4fc2b227f0c56b45abe8c6dbe0567d1, type: 3}
       propertyPath: m_Textures0.Array.data[0].x
@@ -3566,7 +3566,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5271949809184429297, guid: d4fc2b227f0c56b45abe8c6dbe0567d1, type: 3}
       propertyPath: m_SelectedVertices.Array.size
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5271949809184429297, guid: d4fc2b227f0c56b45abe8c6dbe0567d1, type: 3}
       propertyPath: m_Faces.Array.data[0].m_Uv.m_Scale.x
@@ -4069,7 +4069,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9716981, g: 0.9360689, b: 0.7654414, a: 1}
-  m_Intensity: 18.77
+  m_Intensity: 0.6
   m_Range: 28.38
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -4401,7 +4401,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 0.9716981, g: 0.9360689, b: 0.7654414, a: 1}
-  m_Intensity: 18.77
+  m_Intensity: 0.6
   m_Range: 28.38
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
