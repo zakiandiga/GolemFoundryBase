@@ -59,7 +59,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected override void AssignItemToSlot(ItemInfo itemInfo, int slot)
         {
             if (m_SwapItemViewOnAssign) {
-                m_ItemViewDrawer.DrawView(slot, slot, itemInfo, true);
+                m_ItemViewDrawer.DrawView(slot, slot, itemInfo);
                 return;
             }
 

@@ -11,6 +11,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     using Opsive.UltimateInventorySystem.ItemActions;
     using Opsive.UltimateInventorySystem.UI.Item;
     using Opsive.UltimateInventorySystem.UI.Panels.ActionPanels;
+    using System;
     using UnityEngine;
 
     /// <summary>
@@ -18,6 +19,8 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
     /// </summary>
     public abstract class ItemViewSlotsContainerItemActionBindingBase : ItemViewSlotsContainerBinding
     {
+        public event Action OnItemUserAssigned;
+        
         [Tooltip("The item user. Defaults to the Inventory Item User if null.")]
         [SerializeField] protected ItemUser m_ItemUser;
         [Tooltip("The action panel will open when clicking an item, displaying the actions that can be used on it. Can be null.")]
@@ -89,6 +92,7 @@ namespace Opsive.UltimateInventorySystem.UI.Panels.ItemViewSlotContainers
         public void SetItemUser(ItemUser itemUser)
         {
             m_ItemUser = itemUser;
+            OnItemUserAssigned?.Invoke();
         }
 
         /// <summary>

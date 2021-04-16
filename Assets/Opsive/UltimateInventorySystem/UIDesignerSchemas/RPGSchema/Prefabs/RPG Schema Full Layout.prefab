@@ -3031,7 +3031,7 @@ MonoBehaviour:
   m_text: "The RPG schema full layout comes with a few UI panels pre-built. Some
     of these require the inventory to be set up a certain way. Please follow the
     instrusctions below or remove the relevant panel and create it specifically using
-    the UI Designer.\n\n<b>Display Panel Manager</b>\n<indent=5%>- Set the you character
+    the UI Designer.\n\n<b>Display Panel Manager</b>\n<indent=5%>- Set the character
     Inventory as the panel owner.\n- Tick the \"Allow Deselection when gameplay panel
     is selected\".</indent>\n\n<b>Inventory Panel (Item Shape Grid)</b>\n<indent=5%>-
     Use the UI Designer Item Shape Grid menu to fix your inventory, or if you wish
@@ -3112,10 +3112,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4423715132183610919}
-    characterCount: 1285
+    characterCount: 1281
     spriteCount: 0
-    spaceCount: 210
-    wordCount: 212
+    spaceCount: 209
+    wordCount: 211
     linkCount: 0
     lineCount: 24
     pageCount: 1

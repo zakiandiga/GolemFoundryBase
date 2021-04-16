@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
     using Opsive.UltimateInventorySystem.UI;
     using Opsive.UltimateInventorySystem.UI.Grid;

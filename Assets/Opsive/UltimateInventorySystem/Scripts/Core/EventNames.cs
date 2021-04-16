@@ -78,26 +78,10 @@ namespace Opsive.UltimateInventorySystem.Core
         //The gameplay panel was selected or unselected, this event is particularly useful to enable disable character/UI input. The target game object is the panel owner assigned in the PanelManager.
         public const string c_GameObject_OnGameplayPanelSelected_Bool = "GameObject_OnGameplayPanelSelected_Bool";
 
-        //Enable or Disable Character Input (does not enable disable UI inputs)
-        public const string c_GameObject_OnEnableCharacterInput_Bool = "GameObject_OnEnableCharacterInput_Bool";
-        //The Inventory Input for switching to the previous tab for example.
-        public const string c_GameObject_OnInput_Interact = "GameObject_OnInput_Interact";
-        //The Inventory Input for switching to the previous tab for example.
-        public const string c_GameObject_OnInput_TriggerPrevious = "GameObject_OnInput_TriggerPrevious";
-        //The Inventory Input for switching to the next tab for example.
-        public const string c_GameObject_OnInput_TriggerNext = "GameObject_OnInput_TriggerNext";
-        //The Inventory Input to close the currently selected panel.
-        public const string c_GameObject_OnInput_ClosePanel = "GameObject_OnInput_ClosePanel";
-        //The Inventory Input to open a panel by name. Use it to open the main menu for example.
-        public const string c_GameObject_OnInput_OpenPanel_String = "GameObject_OnInput_OpenPanel_String";
-        //The Inventory Input to toggle a panel by name. Use it to toggle the main menu for example.
-        public const string c_GameObject_OnInput_TogglePanel_String = "GameObject_OnInput_TogglePanel_String";
-        //The Inventory Input for triggering an item action when an item is selected in the UI -1 and 0 are reserved for no input and default click respectively
-        public const string c_GameObject_OnInput_ItemAction_Int = "GameObject_OnInput_ItemAction_Int";
-        //The Inventory Input game object sends out events. pass the item hotbar slot index as parameter
-        public const string c_GameObject_OnInput_HotbarUseItem_Int = "GameObject_OnInput_HotbarUseItem_Int";
-        //The Inventory Input game object sends out events. (int itemObjectSlotIndex, int actionIndex)
-        public const string c_GameObject_OnInput_UseItemObject_Int_Int = "GameObject_OnInput_UseItemObject_Int_Int";
+        //Enable or Disable GameplayInput (This is shared with UCC)
+        public const string c_CharacterGameObject_OnEnableGameplayInput_Bool = "OnEnableGameplayInput";
+        //The Player Input component was disabled (This is shared with UCC)
+        public const string c_CharacterGameObject_OnPlayerInputEnabled_Bool = "OnPlayerInputEnabled";
 
         //Choose to enable or disable the inventory monitor listening to the inventory.
         public const string c_InventoryGameObject_InventoryMonitorListen_Bool = "InventoryGameObject_InventoryMonitorListen_Bool";

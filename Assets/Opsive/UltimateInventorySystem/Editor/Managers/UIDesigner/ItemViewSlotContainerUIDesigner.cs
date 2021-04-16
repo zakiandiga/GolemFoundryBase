@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Inspectors;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.ItemActions;
@@ -261,8 +261,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                         (newValue) =>
                         {
                             itemActionsBinding.m_ItemActionSet = newValue;
-                            Shared.Editor.Utility.InspectorUtility.SetDirty(newValue);
-                            Shared.Editor.Utility.InspectorUtility.SetDirty(itemActionsBinding);
+                            Shared.Editor.Utility.EditorUtility.SetDirty(newValue);
+                            Shared.Editor.Utility.EditorUtility.SetDirty(itemActionsBinding);
                         });
                 m_SelectedContainer.Add(m_CategoryItemActions);
             } else if (m_ItemActionBinding is ItemViewSlotsContainerCategoryItemActionSetBinding itemActionsSetBinding) {
@@ -274,8 +274,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                         (newValue) =>
                         {
                             itemActionsSetBinding.m_CategoryItemActionSet = newValue;
-                            Shared.Editor.Utility.InspectorUtility.SetDirty(newValue);
-                            Shared.Editor.Utility.InspectorUtility.SetDirty(itemActionsSetBinding);
+                            Shared.Editor.Utility.EditorUtility.SetDirty(newValue);
+                            Shared.Editor.Utility.EditorUtility.SetDirty(itemActionsSetBinding);
                         });
                 m_SelectedContainer.Add(m_CategoryItemActionSet);
             }
@@ -392,8 +392,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                 (newValue) =>
                 {
                     m_ItemViewDrawer.CategoryItemViewSet = newValue;
-                    InspectorUtility.SetDirty(newValue);
-                    InspectorUtility.SetDirty(m_ItemViewDrawer);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(newValue);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_ItemViewDrawer);
                     Refresh();
                 }, true);
         }

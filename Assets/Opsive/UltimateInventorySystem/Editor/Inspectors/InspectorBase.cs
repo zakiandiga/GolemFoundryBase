@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using UnityEditor;
     using UnityEngine.UIElements;
@@ -25,7 +24,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         {
             var container = new VisualElement();
 
-            container.styleSheets.Add(InspectorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0"));//shared uss
+            container.styleSheets.Add(Shared.Editor.Utility.EditorUtility.LoadAsset<StyleSheet>("e70f56fae2d84394b861a2013cb384d0")); // Shared stylesheet.
             container.styleSheets.Add(CommonStyles.StyleSheet);
             container.styleSheets.Add(ManagerStyles.StyleSheet);
             container.styleSheets.Add(ControlTypeStyles.StyleSheet);

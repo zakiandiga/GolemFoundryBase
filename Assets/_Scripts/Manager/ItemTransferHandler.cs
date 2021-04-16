@@ -19,9 +19,24 @@ public class ItemTransferHandler : MonoBehaviour
 
     private void Start()
     {
+
+    }
+
+    private void OnEnable()
+    {
         BuildGolemHandler.OnBuildPressed += BuildCleanup;
         //UIS_CustomInput.OnClosingBuildMenu += CancelCue;
-        UIS_CustomInput.OnCancelBuild += CancelCue;
+        UIS_CustomInput.OnCancelBuild += CancelCue; //OLD
+        MenuControl.OnCancelBuildNEW += CancelCue;  //NEW
+    }
+
+    private void OnDisable()
+    {
+        BuildGolemHandler.OnBuildPressed -= BuildCleanup;
+        //UIS_CustomInput.OnClosingBuildMenu += CancelCue;
+        UIS_CustomInput.OnCancelBuild -= CancelCue;  //OLD
+        
+        MenuControl.OnCancelBuildNEW -= CancelCue; //NEW
     }
 
 
@@ -44,9 +59,7 @@ public class ItemTransferHandler : MonoBehaviour
         if(announcer == "blueprintGrid")
         {
             CancelBuild();
-            Debug.Log("CancelBuild() called!");
         }
-
     }
 
     public void CancelBuild() //triggered from button and CancelCue()

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-749058509614165388
+--- !u!114 &-6402879841481997282
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,15 +16,15 @@ MonoBehaviour:
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 0.03
+    m_Value: 10.35
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.49
+    m_Value: 0.1
     min: 0
   scatter:
     m_OverrideState: 1
-    m_Value: 0.085
+    m_Value: 0.7
     min: 0
     max: 1
   clamp:
@@ -32,7 +32,7 @@ MonoBehaviour:
     m_Value: 65472
     min: 0
   tint:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 0
     showAlpha: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Name: indoorPostpro
   m_EditorClassIdentifier: 
   components:
-  - {fileID: -749058509614165388}
+  - {fileID: -6402879841481997282}
   - {fileID: 4245036820976520640}
   - {fileID: 303633451152422}
   - {fileID: 7424056313494868160}

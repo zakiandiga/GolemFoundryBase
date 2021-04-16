@@ -6,9 +6,13 @@
 
 namespace Opsive.UltimateInventorySystem.Interactions
 {
+    using Opsive.Shared.Game;
+    using Opsive.Shared.Input;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
+    using Opsive.UltimateInventorySystem.Input;
+    using System;
     using System.Collections.Generic;
     using UnityEngine;
     using EventHandler = Opsive.Shared.Events.EventHandler;
@@ -24,7 +28,10 @@ namespace Opsive.UltimateInventorySystem.Interactions
         [SerializeField] protected GameObject m_InteractableIndicator;
         [Tooltip("If false the pickup wil be triggered by the inventory input, if true the interactable will be interacted with automatically.")]
         [SerializeField] protected bool m_AutoInteract = false;
+        [Tooltip("Interaction Input.")]
+        [SerializeField] protected SimpleInput m_Input = new SimpleInput("Action", InputType.ButtonDown);
 
+        protected PlayerInput m_PlayerInput;
         protected ResizableArray<IInteractable> m_Interactables;
 
         protected IInteractable m_SelectedInteractable;
@@ -33,7 +40,7 @@ namespace Opsive.UltimateInventorySystem.Interactions
 
         public Inventory Inventory {
             get => m_Inventory;
-            set => m_Inventory = value;
+            set => SetInventory(value);
         }
 
         public IInteractable SelectedInteractable => m_SelectedInteractable;
@@ -46,13 +53,47 @@ namespace Opsive.UltimateInventorySystem.Interactions
         {
             if (m_Inventory == null) { m_Inventory = GetComponent<Inventory>(); }
 
+            SetInventory(m_Inventory);
+            
             m_Interactables = new ResizableArray<IInteractable>();
             if (m_InteractableIndicator != null) {
                 m_InteractableIndicator.SetActive(false);
             }
+            
+            EventHandler.RegisterEvent<bool>(gameObject, EventNames.c_CharacterGameObject_OnEnableGameplayInput_Bool, HandleEnableGameplayInput);
+        }
+        
+        /// <summary>
+        /// Handle the gameplay input being enabled/disabled.
+        /// </summary>
+        /// <param name="enable">is the gameplay input enabled?</param>
+        private void HandleEnableGameplayInput(bool enable)
+        {
+            enabled = enable;
+        }
 
-            EventHandler.RegisterEvent(gameObject, EventNames.c_GameObject_OnInput_Interact, Interact);
+        /// <summary>
+        /// Set the Inventory.
+        /// </summary>
+        /// <param name="inventory">The inventory.</param>
+        protected void SetInventory(Inventory inventory)
+        {
+            m_Inventory = inventory;
+            if (m_Inventory == null) {
+                m_PlayerInput = null;
+                return;
+            }
+            m_PlayerInput = m_Inventory.gameObject.GetCachedComponent<PlayerInput>();
+        }
 
+        /// <summary>
+        /// Check for the input.
+        /// </summary>
+        private void Update()
+        {
+            if (m_Input.CheckInput(m_PlayerInput)) {
+                Interact();
+            }
         }
 
         /// <summary>
@@ -143,7 +184,9 @@ namespace Opsive.UltimateInventorySystem.Interactions
         /// </summary>
         private void OnDestroy()
         {
-            EventHandler.UnregisterEvent(gameObject, EventNames.c_GameObject_OnInput_Interact, Interact);
+            EventHandler.UnregisterEvent<bool>(gameObject, EventNames.c_CharacterGameObject_OnEnableGameplayInput_Bool, HandleEnableGameplayInput);
         }
+
+       
     }
 }

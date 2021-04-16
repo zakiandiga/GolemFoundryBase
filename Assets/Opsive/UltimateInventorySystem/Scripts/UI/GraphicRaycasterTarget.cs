@@ -2,6 +2,7 @@
 
 namespace Opsive.UltimateInventorySystem.UI
 {
+    using Opsive.UltimateInventorySystem.Input;
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -54,7 +55,8 @@ namespace Opsive.UltimateInventorySystem.UI
         {
             if (m_RaycastResults == null) { m_RaycastResults = new List<RaycastResult>(); } else { m_RaycastResults.Clear(); }
 
-            EventSystem.current.RaycastAll(eventData, m_RaycastResults);
+            var eventSystem = EventSystemManager.GetEvenSystemFor(gameObject); 
+            eventSystem.RaycastAll(eventData, m_RaycastResults);
 
             if (m_RaycastResults.Count <= 0) { return; }
 

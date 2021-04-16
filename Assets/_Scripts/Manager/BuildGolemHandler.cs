@@ -24,6 +24,7 @@ public class BuildGolemHandler : MonoBehaviour
     private DisplayPanel blueprintPanel;
 
     public static event Action<string> OnBuildPressed;
+    public static event Action<GameObject, Vector3, Quaternion> OnGolemReadyToSpawn;
 
     void Start()
     {
@@ -48,7 +49,6 @@ public class BuildGolemHandler : MonoBehaviour
     private void ResetSlotFill(int amount)
     {
         currentSlotFill += amount;
-        Debug.Log("Build canceled! currentSlotFill = " + currentSlotFill);
 
         if(currentSlotFill < 0) //negative handler
         {
@@ -81,13 +81,10 @@ public class BuildGolemHandler : MonoBehaviour
         OnBuildPressed?.Invoke("buildHandler");
         currentSlotFill = 0;
 
-        Instantiate(targetGolem, spawner.position, spawner.rotation); //Should we pool this?
+        OnGolemReadyToSpawn?.Invoke(targetGolem, spawner.position, spawner.rotation);
+
+        //Instantiate(targetGolem, spawner.position, spawner.rotation); //Should we pool this?
         
-    }
-
-    public void Cancel()
-    {
-
     }
 
 }

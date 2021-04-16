@@ -34,7 +34,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             button.SetButtonName(title);
             button.transform.SetSiblingIndex(0);
             mainMenu.Panels.Add(new PanelButton() { Panel = displayPanel, Button = button });
-            Shared.Editor.Utility.InspectorUtility.SetDirty(mainMenu);
+            Shared.Editor.Utility.EditorUtility.SetDirty(mainMenu);
         }
     }
 
@@ -175,7 +175,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
         private void RefreshSubPanelList()
         {
             m_Target.m_Panels = new List<PanelButton>(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_Target);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Target);
             Refresh();
         }
 

@@ -167,7 +167,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         {
             m_Equipper.Slots = m_List.ToArray();
             m_ReorderableList.Refresh(m_List);
-            Shared.Editor.Utility.InspectorUtility.SetDirty(m_Equipper);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Equipper);
             Select(m_ReorderableList.SelectedIndex);
         }
 

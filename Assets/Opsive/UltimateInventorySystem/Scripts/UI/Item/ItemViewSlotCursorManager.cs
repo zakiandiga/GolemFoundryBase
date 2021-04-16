@@ -38,7 +38,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected ItemView m_FloatingItemView;
         protected bool m_IsMoving = false;
 
-        protected ItemViewSlotEventData m_PointerSlotEventData;
+        protected ItemViewSlotEventData m_SlotEventData;
 
         public uint ID => m_ID;
 
@@ -46,7 +46,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         public ItemView FloatingItemView => m_FloatingItemView;
         public ItemViewSlot SourceItemViewSlot => m_SourceItemViewSlot;
 
-        public ItemViewSlotEventData PointerSlotEventData => m_PointerSlotEventData;
+        public ItemViewSlotEventData SlotEventData => m_SlotEventData;
 
         public bool UseContainerToSpawnItemView {
             get => m_UseContainerToSpawnItemView;
@@ -115,7 +115,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         {
             if (CanMove() == false) { return; }
 
-            m_PointerSlotEventData = slotEventData;
+            m_SlotEventData = slotEventData;
             StartMove(slotEventData.ItemViewSlot, slotEventData.ItemViewSlotsContainer);
         }
 
@@ -127,7 +127,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected void StartMove(ItemViewSlot itemViewSlot, ItemViewSlotsContainerBase viewSlotsContainer)
         {
             if (CanMove() == false) { return; }
-
+            
             m_SourceItemViewSlot = itemViewSlot;
             m_SourceContainer = viewSlotsContainer;
 
@@ -219,7 +219,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
                 m_SourceItemViewSlot = null;
             }
 
-            m_PointerSlotEventData = null;
+            m_SlotEventData = null;
 
             if (m_FloatingItemView != null) {
                 ObjectPool.Destroy(m_FloatingItemView.gameObject);

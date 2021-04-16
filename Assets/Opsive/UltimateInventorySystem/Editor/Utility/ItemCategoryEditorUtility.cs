@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.AttributeSystem;
@@ -379,7 +378,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
             category.Serialize();
             AttributeEditorUtility.SerializeAttributes(category);
 
-            InspectorUtility.SetDirty(category);
+            Shared.Editor.Utility.EditorUtility.SetDirty(category);
             category.Dirty = false;
         }
 

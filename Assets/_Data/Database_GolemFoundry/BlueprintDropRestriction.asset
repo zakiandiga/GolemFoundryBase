@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4953898e542342fa8b4f97450ce6f880, type: 3}
+  m_Name: BlueprintDropRestriction
+  m_EditorClassIdentifier: 
+  m_Restriction:
+    m_ItemCollectionIDs:
+    - m_Name: Submitted Parts
+      m_Purpose: 1
+    m_ItemCollectionOverflow:
+      m_OverflowAction: 0
+      m_RemoveReplacedItem: 0
+      m_OverflowBackToOrigin: 1
+      m_OverflowItemCollection:
+        m_Name: Backpack
+        m_Purpose: 1
+      m_RejectedItemActions: {fileID: 0}
+      m_ForcedRemoveItemActions: {fileID: 0}
+    m_ItemCollectionRestrictions: 8
+    m_FullSizeLimit: 2147483647
+    m_DefaultCategorySizeLimit: 2147483647
+    m_LimitPerCategoryAttributeName: CategorySizeLimit
+    m_DefaultDefinitionSizeLimit: 2147483647
+    m_LimitPerDefinitionAttributeName: DefinitionSizeLimit
+    m_DefaultItemSizeLimit: 1
+    m_ItemSizeLimitAttributeName: ItemSizeLimit
+    m_RejectCategories: 1
+    m_ItemCategories:
+      m_ItemCategories:
+      - m_Name: Parts
+        m_ItemCategory: {fileID: 11400000, guid: e1d7814651add3d48be1a81dd9d749e1, type: 2}

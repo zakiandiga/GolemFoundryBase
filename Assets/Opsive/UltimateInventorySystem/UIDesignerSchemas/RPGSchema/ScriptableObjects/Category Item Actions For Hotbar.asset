@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ItemCategory:
     m_Name: Hotbar Item
-    m_ItemCategory: {fileID: 11400000, guid: 13976259e04ab2445b526cef37f694f9, type: 2}
+    m_ItemCategory: {fileID: 0}
   m_ExceptionCategories:
     m_ItemCategories:
     - m_Name: Key Item
-      m_ItemCategory: {fileID: 11400000, guid: d644de0017de6574a956c8bf1f399ffe, type: 2}
+      m_ItemCategory: {fileID: 0}
   m_ItemActionCollection:
     m_ItemActionsData:
     - m_ObjectType: Opsive.UltimateInventorySystem.ItemActions.DebugItemAction

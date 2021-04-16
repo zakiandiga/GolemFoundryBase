@@ -6,8 +6,8 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.VisualElements
 {
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Utility;
     using Opsive.UltimateInventorySystem.ItemActions;
     using System;

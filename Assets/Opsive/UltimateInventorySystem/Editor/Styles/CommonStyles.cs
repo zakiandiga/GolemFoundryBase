@@ -15,7 +15,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Styles
     public static class CommonStyles
     {
         public static StyleSheet StyleSheet =>
-            InspectorUtility.LoadAsset<StyleSheet>("4ff86fbeece30534ca88317c5f5702b9");
+            EditorUtility.LoadAsset<StyleSheet>("4ff86fbeece30534ca88317c5f5702b9");
 
         public static readonly string s_VerticalLayout = "vertical-layout";
         public static readonly string s_HorizontalAlignCenter = "horizontal-align-center";

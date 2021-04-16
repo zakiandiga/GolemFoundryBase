@@ -82,7 +82,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 
 
         [Header("Item Shape Grid")]
-        [FormerlySerializedAs("m_ItemShapeInventoryGrid")]
+        [UnityEngine.Serialization.FormerlySerializedAs("m_ItemShapeInventoryGrid")]
         [UIDesignerSchemaValidation(new[] { typeof(ItemViewDrawer) })]
         [SerializeField] protected ItemShapeGrid m_ItemShapeGrid;
         [SerializeField] protected ItemViewSlot m_ItemShapeViewSlot;
@@ -294,10 +294,8 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
                     continue;
                 }
 
-                if (TypeUtility.HasAttribute(field, typeof(UIDesignerSchemaValidationAttribute))) {
-
+                if (TypeUtility.GetAttribute(field, typeof(UIDesignerSchemaValidationAttribute)) != null) {
                     var gameobject = fieldValue as GameObject;
-
                     if (gameobject == null) {
                         var component = fieldValue as Component;
                         if (component != null) {

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bd51efa92e147949a3cd2038091aece, type: 3}
   m_Name: Category Recipe View Set
   m_EditorClassIdentifier: 
-  m_EmptyRecipeView: {fileID: 5466338003704477349, guid: 23bbdbc94bfbbee4fa8b7caed7f6f471,
-    type: 3}
+  m_EmptyRecipeView: {fileID: 5466338003704477349, guid: f8ef4d5aa96be9441bb31c497a510ce8, type: 3}
   m_CategoriesRecipeViews:
-  - m_Category: {fileID: 0}
-    m_RecipeViewPrefab: {fileID: 5466338003704477349, guid: 23bbdbc94bfbbee4fa8b7caed7f6f471,
-      type: 3}
+  - m_Category:
+      m_Name: MaterialRecipes
+      m_CraftingCategory: {fileID: 11400000, guid: 493739b094de6f44dae2fdeeef3ea199, type: 2}
+    m_RecipeViewPrefab: {fileID: 5466338003704477349, guid: f8ef4d5aa96be9441bb31c497a510ce8, type: 3}

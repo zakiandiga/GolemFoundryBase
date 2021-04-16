@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Editor.Styles;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
@@ -81,7 +80,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers.UIDesigner
             get {
                 if (s_UIDesignerSchema != null) { return s_UIDesignerSchema; }
 
-                s_UIDesignerSchema = InspectorUtility.LoadAsset<UIDesignerSchema>(UIBuilderConfigGUID);
+                s_UIDesignerSchema = Shared.Editor.Utility.EditorUtility.LoadAsset<UIDesignerSchema>(UIBuilderConfigGUID);
                 return s_UIDesignerSchema;
             }
             set {

@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.AttributeSystem;
@@ -256,7 +255,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
         public static void SerializeAttributesAndDirty(UnityEngine.Object target, AttributeCollection attributeCollection)
         {
             SerializeAttributes(attributeCollection);
-            if (target != null) { InspectorUtility.SetDirty(target); }
+            if (target != null) { Shared.Editor.Utility.EditorUtility.SetDirty(target); }
         }
 
         /// <summary>

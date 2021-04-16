@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.ItemActions
 {
+    using Opsive.Shared.Input;
     using Opsive.UltimateInventorySystem.Input;
     using System.Collections.Generic;
     using UnityEngine;
@@ -19,9 +20,9 @@ namespace Opsive.UltimateInventorySystem.ItemActions
     public class ItemUser : MonoBehaviour
     {
         [Tooltip("The component used to get input from the player to control UI and use items.")]
-        [SerializeField] protected InventoryInput m_InventoryInput;
+        [SerializeField] protected PlayerInput m_InventoryInput;
 
-        public InventoryInput InventoryInput {
+        public PlayerInput InventoryInput {
             get => m_InventoryInput;
             set => m_InventoryInput = value;
         }
@@ -33,7 +34,7 @@ namespace Opsive.UltimateInventorySystem.ItemActions
         /// </summary>
         protected virtual void Awake()
         {
-            if (m_InventoryInput == null) { m_InventoryInput = GetComponent<InventoryInput>(); }
+            if (m_InventoryInput == null) { m_InventoryInput = GetComponent<PlayerInput>(); }
 
             m_ItemActionsData = new Dictionary<IItemUserAction, object>();
         }

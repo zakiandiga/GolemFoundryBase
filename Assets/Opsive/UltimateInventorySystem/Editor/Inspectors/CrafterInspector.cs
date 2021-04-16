@@ -7,7 +7,6 @@
 namespace Opsive.UltimateInventorySystem.Editor.Inspectors
 {
     using Opsive.Shared.Editor.UIElements;
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Crafting;
     using Opsive.UltimateInventorySystem.Crafting.Processors;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
@@ -71,7 +70,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 (newValue) =>
                 {
                     m_Crafter.CraftingCategories = newValue;
-                    InspectorUtility.SetDirty(m_Crafter);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_Crafter);
                 });
             container.Add(m_CraftingCategoryReorderableList);
 
@@ -82,7 +81,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
                 (newValue) =>
                 {
                     m_Crafter.MiscellaneousRecipes = newValue;
-                    InspectorUtility.SetDirty(m_Crafter);
+                    Shared.Editor.Utility.EditorUtility.SetDirty(m_Crafter);
                 });
             container.Add(m_CraftingRecipeReorderableList);
 
@@ -136,7 +135,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Inspectors
         private void ProcessorValueChanged()
         {
             m_Crafter.Serialize();
-            InspectorUtility.SetDirty(m_Crafter);
+            Shared.Editor.Utility.EditorUtility.SetDirty(m_Crafter);
         }
     }
 }

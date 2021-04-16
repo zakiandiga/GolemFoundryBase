@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.Shared.Utility;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Storage;
@@ -42,7 +41,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
             AddToDatabaseInternal(category, database);
 
             var success = AssetDatabaseUtility.CreateAsset(category, assetDirectoryPath + category.name, new string[] { database.name });
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             if (!success) { return false; }
 
             return true;
@@ -81,7 +80,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             RemoveFromDatabaseInternal(category, database);
             AssetDatabaseUtility.DeleteAsset(category);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
         }
 
         /// <summary>
@@ -240,7 +239,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             category.Serialize();
 
-            InspectorUtility.SetDirty(category);
+            Shared.Editor.Utility.EditorUtility.SetDirty(category);
             category.Dirty = false;
         }
 

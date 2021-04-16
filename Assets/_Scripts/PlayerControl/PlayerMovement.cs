@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Opsive.UltimateInventorySystem.Input;
+using Opsive.UltimateInventorySystem.Interactions; //TEST
 using System;
 using System.Collections;
 using TMPro;
@@ -8,7 +9,8 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : InventoryInput //only use Interact() from InventoryInput
+[RequireComponent(typeof(InventoryInteractor))]
+public class PlayerMovement : MonoBehaviour //only use Interact() from InventoryInput
 {
     //Add character visual game object as a children to the prefab
     //Required cinemachine brain on main camera
@@ -61,6 +63,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
     private Animator anim;
     [SerializeField] private TextMeshProUGUI interactSign; //TEMP
     private GameObject currentInteractable;
+    [SerializeField] private InventoryInteractor inventoryInteractor; //Manual InventoryInteractor input
 
     #endregion
 
@@ -104,34 +107,30 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
-        //DontDestroyOnLoad(this.gameObject);
-
-
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
         //Cursor.visible = false;
         interactSign.enabled = false; //TEMP
+
+        controller.enabled = false; //Set CC false on start menu
+        movementState = MovementState.OnMenu; //(Start menu)
     }
 
     private void OnEnable()
     {
-        movementControl.action.Enable(); //Enable (and disable) these reference action
-        jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
-        attackControl.action.Enable();
-        crouchControl.action.Enable();   //Instead of SetActive the component
-        openMenu.action.Enable();
-        interactControl.action.Enable();
-        indoorSwitch.action.Enable(); //Temporary indoor switch
 
-        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
-        
+
+        SceneHandler.OnGameLoaded += GameLoadControlEnable;
 
         InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
 
         OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
 
-        UIS_CustomInput.OnClosingMenu += EnableControl;
+        PlayerLocationSetter.OnPlayerRelocationSuccess += EnableControl;
+
+        UIS_CustomInput.OnClosingMenu += EnableControl; //REMOVE LATER
+        MenuControl.OnClosingMenuNEW += EnableControl;
 
         //PlayerSpawner.OnPlayerReadyToMove += SetPlayerSpawn;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
@@ -149,15 +148,18 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         indoorSwitch.action.Disable(); //Temporary indoor switch
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
+        SceneHandler.OnGameLoaded -= GameLoadControlEnable;
+
         InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
 
         OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
 
-        UIS_CustomInput.OnClosingMenu -= EnableControl;
+        PlayerLocationSetter.OnPlayerRelocationSuccess -= EnableControl;
 
-        //PlayerSpawner.OnPlayerReadyToMove -= SetPlayerSpawn;
-        //UIS_CustomInput.OnBuildTrigger -= EnableControl;
+        UIS_CustomInput.OnClosingMenu -= EnableControl; //REMOVE LATER
+        MenuControl.OnClosingMenuNEW -= EnableControl;
+
     }
 
     /*
@@ -171,6 +173,14 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         Debug.Log("Player Position set to " + transform.position);
     }
     */
+
+    private void GameLoadControlEnable(SceneHandler s)
+    {
+        controller.enabled = true;
+
+        EnableControl("TitleScreen");
+        Debug.Log("GameLoadControlEnable() called here");
+    }
 
     private void EnableControl(string announcer)
     {
@@ -188,8 +198,27 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
             MenuControlSwitch("InventoryMenu");
         }
 
+        if(announcer == "CraftingMenu")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("CraftingMenu");
+        }
+        
+        if (announcer == "TitleScreen")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("TitleScreen");
+        }
+        
+        if(announcer == "PlayerRelocationSetter")
+        {
+            EnablingMovement();
+        }
+
+        /*
         else
             StartCoroutine(EnableControlDelay());
+        */
     }
 
     IEnumerator EnableControlDelay()
@@ -229,6 +258,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         attackControl.action.Disable();
         crouchControl.action.Disable();
         interactControl.action.Disable();
+        indoorSwitch.action.Disable(); //Temporary indoor switch
 
         openMenu.action.Disable();
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable(); //Not working
@@ -241,6 +271,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
         attackControl.action.Enable();
         crouchControl.action.Enable();
         interactControl.action.Enable();
+        indoorSwitch.action.Enable(); //Temporary indoor switch
 
         openMenu.action.Enable();
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
@@ -288,12 +319,14 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
             Cursor.lockState = CursorLockMode.Confined;  //CURSOR MODE CHECK
             //Cursor.visible = true;
             DisablingMovement();
+            Debug.Log("PlayerControl Disabled: " + movementState);
         }
         else if(movementState != MovementState.OnMenu)
         {
             Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
             //Cursor.visible = false;
             EnablingMovement();
+            Debug.Log("PlayerControl Disabled: " + movementState);
         }
     }
 
@@ -314,15 +347,14 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
     private void OpenMenuFromInteract(string menu)
     {
-        if(menu == "Assembling Menu")
+        if(menu == "BuildingMenu")
         {
-            OnOpenMenuFromInteract?.Invoke("player");
+            OnOpenMenuFromInteract?.Invoke("BuildingMenu");
             if (movementState != MovementState.OnMenu)
             {
                 movementState = MovementState.OnMenu;
 
-                //cameraMode = CameraMode.OnObject; //temp
-                cameraMode = CameraMode.OnObject;
+                cameraMode = CameraMode.OnObject; //Temp, camera should define what object to lookAt
             }
             else
             {
@@ -338,19 +370,33 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
             MenuControlSwitch("player");
         }
+
+        if(menu == "CraftingMenu")
+        {
+            OnOpenMenuFromInteract?.Invoke("CraftingMenu");
+            if(movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+
+                //set camera state later!
+            }
+            else
+            {
+                //camera mode if handler (see "BuildingMenu")
+                movementState = MovementState.Idle;
+            }
+
+            //CameraStateSwitch(); //COMMENT THIS OUT AFTER THE MENU ESTABLISHED
+            MenuControlSwitch("player");
+        }
     }
 
     private void AttackAction()
     {
         //Set attack animation based on equipment state
         StartCoroutine(AttackDelay());
-        anim.SetTrigger("attack");
-        OnAttack?.Invoke(this);
-        Debug.Log("Attacking!");
-
-        //SetPlayerSpawn(spawnTransform);
-        Debug.Log("Current player position is " + transform.position);
-
+        inventoryInteractor.Interact();
+        OnAttack?.Invoke(this); //Might be used for mining pickup interactable
     }
 
     private IEnumerator AttackDelay()
@@ -482,8 +528,7 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
 
         if(interactControl.action.triggered)
         {
-            //OnInteract?.Invoke(currentInteractable);
-            Interact();
+            inventoryInteractor.Interact();
         }
 
         //Temporary camera switch
@@ -503,6 +548,8 @@ public class PlayerMovement : InventoryInput //only use Interact() from Inventor
             }
 
         }
+
+        
 
     }
 

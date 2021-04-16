@@ -14,19 +14,33 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
     /// </summary>
     public class ChestInteractable : InteractableBehavior
     {
-        [Tooltip("The chest menu.")]
+        [Tooltip("The chest game object in case you are using the chest interface instead of the class.")]
+        [SerializeField] protected GameObject m_ChestGameObject;
+        [Tooltip("The chest.")]
         [SerializeField] protected Chest m_Chest;
 
+        protected IChest m_RealChest;
+        
         /// <summary>
         /// Initialize.
         /// </summary>
         protected void Awake()
         {
-            m_Chest.OnClose += () =>
+            if (m_Chest != null) {
+                m_RealChest = m_Chest;
+            } else {
+                m_RealChest = m_ChestGameObject?.GetComponent<IChest>();
+                if (m_RealChest == null) {
+                    Debug.LogError("A chest component or game object is missing from the chest interactable.",gameObject);
+                    return;
+                }
+            }
+
+            m_RealChest.OnClose += () =>
             {
                 m_Interactable.SetIsInteractable(true);
             };
-            m_Chest.OnOpen += (clientInventory) =>
+            m_RealChest.OnOpen += (clientInventory) =>
             {
                 m_Interactable.SetIsInteractable(false);
             };
@@ -48,7 +62,7 @@ namespace Opsive.UltimateInventorySystem.UI.Menus.Chest
         {
             if (!(interactor is IInteractorWithInventory interactorWithInventory)) { return; }
 
-            m_Chest.Open(interactorWithInventory.Inventory);
+            m_RealChest.Open(interactorWithInventory.Inventory);
         }
     }
 }

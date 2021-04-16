@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
     using Opsive.UltimateInventorySystem.Editor.Managers;
     using Opsive.UltimateInventorySystem.Editor.VisualElements;
     using Opsive.UltimateInventorySystem.Exchange;
@@ -49,7 +48,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
                 $"{assetDirectory}\\Currencies\\{((Object)currency).name}",
                 new string[] { database.name });
 
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
             return currency;
         }
 
@@ -96,7 +95,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
             database.RemoveCurrency(currency);
 
             AssetDatabaseUtility.DeleteAsset(currency);
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
         }
 
         /// <summary>
@@ -134,7 +133,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
                 $"{assetDirectory}\\Currencies\\{((Object)currency).name}",
                 new string[] { database.name });
 
-            InspectorUtility.SetDirty(database);
+            Shared.Editor.Utility.EditorUtility.SetDirty(database);
 
             SetCurrencyDirty(currency, true);
 
@@ -161,7 +160,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
             if (currency.Dirty == false && !force) { return; }
             currency.Serialize();
 
-            InspectorUtility.SetDirty(currency);
+            Shared.Editor.Utility.EditorUtility.SetDirty(currency);
             currency.Dirty = false;
         }
 

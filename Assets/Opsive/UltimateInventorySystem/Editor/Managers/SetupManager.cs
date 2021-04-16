@@ -6,8 +6,9 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Managers
 {
-    using Opsive.Shared.Editor.Utility;
+    using Opsive.Shared.Editor.Inspectors.Utility;
     using Opsive.Shared.Game;
+    using Opsive.Shared.Input;
     using Opsive.UltimateInventorySystem.Core;
     using Opsive.UltimateInventorySystem.Core.AttributeSystem;
     using Opsive.UltimateInventorySystem.Core.InventoryCollections;
@@ -97,13 +98,27 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
             m_Container = new ScrollView(ScrollViewMode.Vertical);
 
-            CreateMenuBox("Scene Setup", "Adds the Inventory System Manager and other requires Manager components to the scene under a 'Game' game object.", null, "Add Components", () =>
+            CreateMenuBox("Input Setup", "Adds the required inputs to the Unity Input Manager.", null, "Add Inputs", () =>
+            {
+                var setupProject = EditorUtility.DisplayDialog("Change the inputs in the Input Manager?",
+                                      $"This change will affect your project settings and cannot be undone." +
+                                      $"Are you sure you would like to make the change?",
+                                      "Yes",
+                                      "No");
+
+                if (setupProject) {
+                    InventoryInputBuilder.UpdateInputManager();
+                    Debug.Log("The inputs were updated.");
+                }
+            }, m_Container, true);
+            
+            CreateMenuBox("Scene Setup", "Adds the Inventory System Manager and other requires manager components to the scene under a 'Game' GameObject.", null, "Add Components", () =>
             {
                 AddSceneComponents();
                 Debug.Log("The components have been added.");
             }, m_Container, true);
 
-            CreateMenuBox("Character Setup", "Adds the Inventory, Item User, Inventory Input, Inventory Interactor, Currency Owner and Inventory Identifier components on the game object.", AddCharacterOptions, "Add Components", SetupCharacter, m_Container, true);
+            CreateMenuBox("Character Setup", "Adds the Inventory, Item User, Unity Input, Inventory Interactor, Currency Owner and Inventory Identifier components on the game object.", AddCharacterOptions, "Add Components", SetupCharacter, m_Container, true);
 
             CreateMenuBox("Save Setup", "Adds the Inventory Saver and/or the Currency Owner Saver on the selected object.\n" +
                                         "Adds the Save Manager and Inventory System Manager Item Saver if they are missing.", AddSaveOptions, "Add Components", SetupSave, m_Container, true);
@@ -122,9 +137,9 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
         /// <returns>Return true if at least one of the required assets is missing.</returns>
         private bool AreDemoAssetsMissing()
         {
-            return InspectorUtility.LoadAsset<GameObject>("f93adf60a19012a4c9c35fb7595903d0") == null ||
-                   InspectorUtility.LoadAsset<GameObject>("25eea7b1384f975459f5e67c2b9b0bde") == null ||
-                   InspectorUtility.LoadAsset<CategoryItemViewSet>("b0286cb637ba1a64f81828f2dddf84ad") == null;
+            return Shared.Editor.Utility.EditorUtility.LoadAsset<GameObject>("f93adf60a19012a4c9c35fb7595903d0") == null ||
+                    Shared.Editor.Utility.EditorUtility.LoadAsset<GameObject>("25eea7b1384f975459f5e67c2b9b0bde") == null ||
+                    Shared.Editor.Utility.EditorUtility.LoadAsset<CategoryItemViewSet>("b0286cb637ba1a64f81828f2dddf84ad") == null;
         }
 
         /// <summary>
@@ -179,7 +194,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
                 iconAttribute.ChangeType(typeof(Sprite));
 
                 ItemCategoryEditorUtility.SetItemCategoryDirty(allCategory, true);
-                InspectorUtility.SetDirty(database);
+                Shared.Editor.Utility.EditorUtility.SetDirty(database);
 
                 var categoryManager = m_MainManagerWindow.GetManager<ItemCategoryManager>();
 
@@ -274,8 +289,6 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
 
             InspectorUtility.AddComponent<Scheduler>(gameGameObject);
             InspectorUtility.AddComponent<ObjectPool>(gameGameObject);
-
-
         }
 
         /// <summary>
@@ -357,8 +370,10 @@ namespace Opsive.UltimateInventorySystem.Editor.Managers
             if (character.GetComponent<Inventory>() == null) { character.AddComponent<Inventory>(); }
             if (character.GetComponent<ItemUser>() == null) { character.AddComponent<ItemUser>(); }
 
-            if (character.GetComponent<InventoryInput>() == null) {
-                var input = character.AddComponent<InventoryStandardInput>();
+            if (character.GetComponent<UnityInput>() == null) {
+                var input = character.AddComponent<UnityInput>();
+                input.EnableCursorWithEscape = false;
+                input.DisableCursor = false;
                 character.GetComponent<ItemUser>().InventoryInput = input;
             }
 

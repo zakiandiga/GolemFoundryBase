@@ -6,7 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Utility
 {
-    using Opsive.Shared.Editor.Utility;
+    using Opsive.Shared.Editor;
     using System.Text.RegularExpressions;
     using UnityEditor;
     using UnityEngine;
@@ -72,7 +72,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
 
             if (labels != null) { AssetDatabase.SetLabels(newAsset, labels); }
 
-            InspectorUtility.SetDirty(newAsset);
+            Shared.Editor.Utility.EditorUtility.SetDirty(newAsset);
             return true;
         }
 
@@ -131,7 +131,7 @@ namespace Opsive.UltimateInventorySystem.Editor.Utility
         {
             AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(asset));
 
-            InspectorUtility.SetDirty(asset);
+            Shared.Editor.Utility.EditorUtility.SetDirty(asset);
         }
 
         /// <summary>

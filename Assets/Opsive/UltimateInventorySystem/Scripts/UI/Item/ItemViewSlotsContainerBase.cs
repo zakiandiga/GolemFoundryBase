@@ -15,6 +15,7 @@ namespace Opsive.UltimateInventorySystem.UI.Item
     using System;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.EventSystems;
     using UnityEngine.Serialization;
 
     /// <summary>
@@ -100,7 +101,8 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         protected bool m_IsRegisteredToInventoryUpdate = false;
         protected bool m_IsInventorySet = false;
         protected ItemViewSlotEventData m_ItemViewSlotEventData;
-        protected ItemViewSlotPointerEventData m_ItemViewSlotPointerEventData;
+        protected ItemViewSlotPointerEventData m_ItemViewSlotPointerDownEventData;
+        protected ItemViewSlotPointerEventData m_ItemViewSlotDragEventData;
         protected ItemViewSlotPointerEventData m_ItemViewSlotDropEventData;
         protected DisplayPanel m_DisplayPanel;
         protected ItemViewSlotActionEvent m_OneTimeClick;
@@ -156,6 +158,12 @@ namespace Opsive.UltimateInventorySystem.UI.Item
         /// </summary>
         public virtual void Initialize(bool force)
         {
+            if (Application.isPlaying == false)
+            {
+                m_IsInitialized = true;
+                return;
+            }
+
             if (m_IsInitialized && !force) { return; }
 
             if (m_SlotCursor == null && Application.isPlaying) {
@@ -168,8 +176,9 @@ namespace Opsive.UltimateInventorySystem.UI.Item
             }
 
             m_ItemViewSlotEventData = new ItemViewSlotEventData();
-            m_ItemViewSlotPointerEventData = new ItemViewSlotPointerEventData();
+            m_ItemViewSlotPointerDownEventData = new ItemViewSlotPointerEventData();
             m_ItemViewSlotDropEventData = new ItemViewSlotPointerEventData();
+            m_ItemViewSlotDragEventData = new ItemViewSlotPointerEventData();
 
 
             for (int i = 0; i < m_ItemViewSlots.Length; i++) {
@@ -211,27 +220,42 @@ namespace Opsive.UltimateInventorySystem.UI.Item
                 };
                 itemViewSlot.OnPointerDownE += (pointerEventData) =>
                 {
-                    m_ItemViewSlotPointerEventData.SetValues(this, localIndex);
-                    m_ItemViewSlotPointerEventData.PointerEventData = pointerEventData;
-                    OnItemViewSlotPointerDownE?.Invoke(m_ItemViewSlotPointerEventData);
+                    m_ItemViewSlotPointerDownEventData.SetValues(this, localIndex);
+                    m_ItemViewSlotPointerDownEventData.PointerEventData = pointerEventData;
+                    OnItemViewSlotPointerDownE?.Invoke(m_ItemViewSlotPointerDownEventData);
                 };
                 itemViewSlot.OnBeginDragE += (pointerEventData) =>
                 {
-                    m_ItemViewSlotPointerEventData.SetValues(this, localIndex);
-                    m_ItemViewSlotPointerEventData.PointerEventData = pointerEventData;
-                    OnItemViewSlotBeginDragE?.Invoke(m_ItemViewSlotPointerEventData);
+                    if (m_ItemViewSlotDragEventData.PointerEventData != null) {
+                        //The drop event is being used, so it cannot be used again until the drag ends.
+                        return;
+                    }
+                    
+                    m_ItemViewSlotDragEventData.SetValues(this, localIndex);
+                    m_ItemViewSlotDragEventData.PointerEventData = pointerEventData;
+                    OnItemViewSlotBeginDragE?.Invoke(m_ItemViewSlotDragEventData);
                 };
                 itemViewSlot.OnEndDragE += (pointerEventData) =>
                 {
+                    if (m_ItemViewSlotDragEventData.PointerEventData == null || 
+                        pointerEventData?.pointerId != m_ItemViewSlotDragEventData.PointerEventData.pointerId) {
+                        return;
+                    }
                     //m_ItemBoxPointerEventData.SetValues(this, GetItemBoxAt(index),index);
-                    m_ItemViewSlotPointerEventData.PointerEventData = pointerEventData;
-                    OnItemViewSlotEndDragE?.Invoke(m_ItemViewSlotPointerEventData);
+                    m_ItemViewSlotDragEventData.PointerEventData = pointerEventData;
+                    OnItemViewSlotEndDragE?.Invoke(m_ItemViewSlotDragEventData);
+                    
+                    m_ItemViewSlotDragEventData.Reset();
                 };
                 itemViewSlot.OnDragE += (pointerEventData) =>
                 {
+                    if (m_ItemViewSlotDragEventData.PointerEventData == null || 
+                        pointerEventData?.pointerId != m_ItemViewSlotDragEventData.PointerEventData.pointerId) {
+                        return;
+                    }
                     //m_ItemBoxPointerEventData.SetValues(this, GetItemBoxAt(index),index);
-                    m_ItemViewSlotPointerEventData.PointerEventData = pointerEventData;
-                    OnItemViewSlotDragE?.Invoke(m_ItemViewSlotPointerEventData);
+                    m_ItemViewSlotDragEventData.PointerEventData = pointerEventData;
+                    OnItemViewSlotDragE?.Invoke(m_ItemViewSlotDragEventData);
                 };
                 itemViewSlot.OnDropE += (pointerEventData) =>
                 {

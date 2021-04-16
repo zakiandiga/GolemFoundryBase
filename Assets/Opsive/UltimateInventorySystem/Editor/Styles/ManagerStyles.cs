@@ -6,7 +6,6 @@
 
 namespace Opsive.UltimateInventorySystem.Editor.Styles
 {
-    using Opsive.Shared.Editor.Utility;
     using UnityEditor;
     using UnityEngine;
     using UnityEngine.UIElements;
@@ -16,10 +15,10 @@ namespace Opsive.UltimateInventorySystem.Editor.Styles
     /// </summary>
     public static class ManagerStyles
     {
-        public static StyleSheet StyleSheet => InspectorUtility.LoadAsset<StyleSheet>("dde60a90d31dc9d44be74c339427d85f");
+        public static StyleSheet StyleSheet => Shared.Editor.Utility.EditorUtility.LoadAsset<StyleSheet>("dde60a90d31dc9d44be74c339427d85f");
 
-        public static Texture2D UncategorizedIcon => InspectorUtility.LoadAsset<Texture2D>("cae5ceed97260c84aa54154a126e1c78");
-        public static Texture2D MissingCurrencyIcon => InspectorUtility.LoadAsset<Texture2D>("70014ee6687184847a67dc36978f3001");
+        public static Texture2D UncategorizedIcon => Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>("cae5ceed97260c84aa54154a126e1c78");
+        public static Texture2D MissingCurrencyIcon => Shared.Editor.Utility.EditorUtility.LoadAsset<Texture2D>("70014ee6687184847a67dc36978f3001");
 
         public static string MenuBackground => EditorGUIUtility.isProSkin ? "dark-menu-background" : "light-menu-background";
         public static string MenuButton => "menu-button";

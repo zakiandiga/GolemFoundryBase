@@ -6,6 +6,7 @@
 
 namespace Opsive.UltimateInventorySystem.UI.CompoundElements
 {
+    using Opsive.UltimateInventorySystem.Input;
     using System;
     using UnityEngine;
     using UnityEngine.Events;
@@ -76,7 +77,7 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
         /// </summary>
         public override void Select()
         {
-            base.Select();
+            EventSystemManager.Select(gameObject);
             OnSelect(null);
         }
 
@@ -154,8 +155,9 @@ namespace Opsive.UltimateInventorySystem.UI.CompoundElements
 
             if (eventData.IsPointerMoving() == false) { return; }
 
-            if (!EventSystem.current.alreadySelecting) {
-                EventSystem.current.SetSelectedGameObject(gameObject);
+            var eventSystem = EventSystemManager.GetEvenSystemFor(gameObject); 
+            if (!eventSystem.alreadySelecting) {
+                eventSystem.SetSelectedGameObject(gameObject);
             }
             OnPointerEnterE?.Invoke(eventData);
 
