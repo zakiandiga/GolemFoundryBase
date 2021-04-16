@@ -56,7 +56,7 @@ public class TitleManager : MonoBehaviour
 
     private void FadeOutHandler(CurtainBehaviour curtain)
     {
-
+        Debug.Log("FadeOutHandler Called");
         switch (titleScreenState)
         {
 
@@ -67,9 +67,9 @@ public class TitleManager : MonoBehaviour
                 Debug.Log("We got here");
                 break;
             case TitleScreenState.NewGame:
-                menuPanel.SetActive(false);
+                //menuPanel.SetActive(false);
                 OnNewGameCall?.Invoke(this);
-                SceneManager.LoadScene("MainMenu");
+                //SceneManager.LoadScene("MainMenu");
                 break;
 
         }
@@ -90,16 +90,19 @@ public class TitleManager : MonoBehaviour
 
     public void PlayButton()
     {
+        titleScreenState = TitleScreenState.MenuOpen;
         FadeOut();
         Debug.Log("Play Button clicked!");
-        titleScreenState = TitleScreenState.MenuOpen;
+        
         //Loading time here
     }
 
     public void NewGame()
     {
-        FadeOut();
+        Debug.Log("New Game pressed");
         titleScreenState = TitleScreenState.NewGame;
+        FadeOut();
+        
     }
 
     public void QuitGame()

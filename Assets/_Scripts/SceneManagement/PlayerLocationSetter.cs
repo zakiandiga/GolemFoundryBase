@@ -10,7 +10,8 @@ public class PlayerLocationSetter : MonoBehaviour
     private bool isRelocating = false;
     private bool isFailed = false;
 
-    public static event Action<PlayerLocationSetter> OnPlayerRelocationSuccess;
+    public static event Action<string> OnPlayerRelocationSuccess;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +32,7 @@ public class PlayerLocationSetter : MonoBehaviour
     private void SetPlayerSpawn(Transform spawnerTransform)
     {
         playerMovement.enabled = false;
+        
         isRelocating = true;
         targetTransform = spawnerTransform;
         transform.position = targetTransform.position;
@@ -55,7 +57,7 @@ public class PlayerLocationSetter : MonoBehaviour
             {
                 isRelocating = false;
                 playerMovement.enabled = true;
-                OnPlayerRelocationSuccess?.Invoke(this);
+                OnPlayerRelocationSuccess?.Invoke("PlayerRelocationSetter");
             }
         }
     }

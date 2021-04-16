@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Opsive.UltimateInventorySystem.UI.Monitors;
 using PixelCrushers;
 
 public class SceneHandler : MonoBehaviour
 {
+    [SerializeField] private GameObject TitleCanvas, InventoryCanvas;
+
     private Scene mainMenu;
     private string menuSceneName = "MainMenu";
     private string currentScene;
@@ -14,6 +17,7 @@ public class SceneHandler : MonoBehaviour
     private string sceneToUnload;
     [SerializeField] InventoryMonitor inventoryMonitor;
 
+    public static event Action<SceneHandler> OnGameLoaded;
     public static event Action<int> OnStart; //HACK
     public static event Action<string> OnChangeSceneStart;
     public static event Action<string, int> OnSceneLoaded;
@@ -33,37 +37,44 @@ public class SceneHandler : MonoBehaviour
     {
         mainMenu = SceneManager.GetSceneByName(menuSceneName);
 
+        //InventoryCanvas.SetActive(false);
+
         //DontDestroyOnLoad(gameObject);
 
         //if(sceneState == SceneState.Start)
         //{
-            currentScene = "IndoorDesigner"; //Temporary, to be set from start or load game function
-            OnStart?.Invoke(0); //HACK
-            SaveSystem.LoadAdditiveScene(currentScene);
-            sceneState = SceneState.Running;
+            //currentScene = "StartMenu"; //Temporary, to be set from start or load game function
+            //OnStart?.Invoke(0); //HACK light check
+            //SaveSystem.LoadAdditiveScene(currentScene);
+            //sceneState = SceneState.Running;
         //}       
     }
 
     private void OnEnable()
     {
-        TitleManager.OnNewGameCall += LoadNewGame;
+        TitleHandler.OnNewGamePressed += LoadNewGame;
         ScenePortal.OnAreaChange += ChangeScene;
         PlayerLocationSetter.OnPlayerRelocationSuccess += SceneTransitionFinalize;
     }
 
     private void OnDisable()
     {
-        TitleManager.OnNewGameCall -= LoadNewGame;
+        TitleHandler.OnNewGamePressed -= LoadNewGame;
         ScenePortal.OnAreaChange -= ChangeScene;
         PlayerLocationSetter.OnPlayerRelocationSuccess -= SceneTransitionFinalize;
     }
 
-    private void LoadNewGame(TitleManager title)
+    private void LoadNewGame(string parameter)
     {
+        OnGameLoaded?.Invoke(this);
+        OnStart?.Invoke(0); //HACK
         sceneToUnload = currentScene;
         currentScene = "IndoorDesigner";
         currentSpawner = 0;
-        ChangeScene(sceneToUnload, 1, currentScene, 0);
+        InventoryCanvas.SetActive(true);
+        SaveSystem.LoadAdditiveScene(currentScene);
+        inventoryMonitor.StartListening();
+        sceneState = SceneState.Running;
     }
 
     private void ChangeScene(string previousScene, int previousSceneDataSlot, string destinationScene, int destinationSpawner)
@@ -92,7 +103,7 @@ public class SceneHandler : MonoBehaviour
     }
 
     //This function called when the player successfully move to the new scene (somehow I need to force the player to move before unloading the previous map scene)
-    private void SceneTransitionFinalize(PlayerLocationSetter p)
+    private void SceneTransitionFinalize(string announcer)
     {
         //SaveSystem.LoadFromSlot(inGameDataSlot);
         SceneManager.SetActiveScene(mainMenu);

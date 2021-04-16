@@ -38,6 +38,7 @@ public class CurtainBehaviour : MonoBehaviour
 
     private void FadeOut(string source)
     {
+        Debug.Log("Fading Out, waiting for FadeOutDone() invoke");
         anim.SetTrigger("fadeOut");
     }
 
@@ -49,11 +50,8 @@ public class CurtainBehaviour : MonoBehaviour
     public void FadeOutDone()
     {        
         OnFadeOutDone?.Invoke(this);
+        Debug.Log("OnFadeOutDone INVOKED");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

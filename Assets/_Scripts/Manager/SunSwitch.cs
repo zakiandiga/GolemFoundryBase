@@ -41,17 +41,14 @@ public class SunSwitch : MonoBehaviour
 
     private void LightCheck(int light)
     {
-        Debug.Log("LightCheck called!");
         if(light == 0)
         {
             lighting.enabled = false;
-            Debug.Log("Light OFF");
             //SunController.OnLightCheck -= LightCheck;
         }
         else if (light == 1 && !lighting.enabled)
         {
             lighting.enabled = true;
-            Debug.Log("Light ON");
             //SunController.OnLightCheck -= LightCheck;
         }
     }

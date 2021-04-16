@@ -107,33 +107,27 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
 
-        //DontDestroyOnLoad(this.gameObject);
-
-
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
         //Cursor.visible = false;
         interactSign.enabled = false; //TEMP
-        //ameObject.SetActive(false);
+
+        controller.enabled = false; //Set CC false on start menu
+        movementState = MovementState.OnMenu; //(Start menu)
     }
 
     private void OnEnable()
     {
-        movementControl.action.Enable(); //Enable (and disable) these reference action
-        jumpControl.action.Enable();     //Utilize this to activate/deactivate player control
-        attackControl.action.Enable();
-        crouchControl.action.Enable();   //Instead of SetActive the component
-        openMenu.action.Enable();
-        interactControl.action.Enable();
-        indoorSwitch.action.Enable(); //Temporary indoor switch
 
-        playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
-        
+
+        SceneHandler.OnGameLoaded += GameLoadControlEnable;
 
         InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
 
         OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
+
+        PlayerLocationSetter.OnPlayerRelocationSuccess += EnableControl;
 
         UIS_CustomInput.OnClosingMenu += EnableControl; //REMOVE LATER
         MenuControl.OnClosingMenuNEW += EnableControl;
@@ -154,16 +148,18 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         indoorSwitch.action.Disable(); //Temporary indoor switch
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
+        SceneHandler.OnGameLoaded -= GameLoadControlEnable;
+
         InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
 
         OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
 
+        PlayerLocationSetter.OnPlayerRelocationSuccess -= EnableControl;
+
         UIS_CustomInput.OnClosingMenu -= EnableControl; //REMOVE LATER
         MenuControl.OnClosingMenuNEW -= EnableControl;
 
-        //PlayerSpawner.OnPlayerReadyToMove -= SetPlayerSpawn;
-        //UIS_CustomInput.OnBuildTrigger -= EnableControl;
     }
 
     /*
@@ -177,6 +173,14 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         Debug.Log("Player Position set to " + transform.position);
     }
     */
+
+    private void GameLoadControlEnable(SceneHandler s)
+    {
+        controller.enabled = true;
+
+        EnableControl("TitleScreen");
+        Debug.Log("GameLoadControlEnable() called here");
+    }
 
     private void EnableControl(string announcer)
     {
@@ -198,6 +202,17 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         {
             movementState = MovementState.Idle;
             MenuControlSwitch("CraftingMenu");
+        }
+        
+        if (announcer == "TitleScreen")
+        {
+            movementState = MovementState.Idle;
+            MenuControlSwitch("TitleScreen");
+        }
+        
+        if(announcer == "PlayerRelocationSetter")
+        {
+            EnablingMovement();
         }
 
         /*
@@ -243,6 +258,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         attackControl.action.Disable();
         crouchControl.action.Disable();
         interactControl.action.Disable();
+        indoorSwitch.action.Disable(); //Temporary indoor switch
 
         openMenu.action.Disable();
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable(); //Not working
@@ -255,6 +271,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         attackControl.action.Enable();
         crouchControl.action.Enable();
         interactControl.action.Enable();
+        indoorSwitch.action.Enable(); //Temporary indoor switch
 
         openMenu.action.Enable();
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
