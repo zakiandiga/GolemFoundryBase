@@ -7,7 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(InventoryInteractor))]
 public class PlayerMovement : MonoBehaviour //only use Interact() from InventoryInput
@@ -17,6 +16,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     #region CameraComponent
     private Transform cam;
     //private GameObject cinemachineLock;
+    [SerializeField] private CinemachineVirtualCamera titleScreenCam;
     [SerializeField] private CinemachineVirtualCamera directObjCam;
     [SerializeField] private CinemachineVirtualCamera playerLockCam;
     [SerializeField] private CinemachineFreeLook playerFreeCam;
@@ -95,7 +95,8 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         LockOn,
         Cutscene,
         Indoor,
-        OnObject
+        OnObject,
+        TitleScreen,
     }
     #endregion
 
@@ -114,14 +115,14 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
         controller.enabled = false; //Set CC false on start menu
         movementState = MovementState.OnMenu; //(Start menu)
+        cameraMode = CameraMode.TitleScreen;
+        //CameraStateSwitch();
+        
     }
 
     private void OnEnable()
     {
-
-
-        SceneHandler.OnGameLoaded += GameLoadControlEnable;
-
+        //SceneHandler.OnGameLoaded += GameLoadControlEnable;
         InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
 
@@ -148,7 +149,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         indoorSwitch.action.Disable(); //Temporary indoor switch
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
-        SceneHandler.OnGameLoaded -= GameLoadControlEnable;
+        //SceneHandler.OnGameLoaded -= GameLoadControlEnable;
 
         InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
@@ -162,17 +163,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
     }
 
-    /*
-    private void SetPlayerSpawn(Transform position)
-    {
-        spawnTransform = position;
-        //spawnTransform.eulerAngles = rotation;
-
-        transform.position = spawnTransform.position;
-        transform.rotation = spawnTransform.rotation;
-        Debug.Log("Player Position set to " + transform.position);
-    }
-    */
 
     private void GameLoadControlEnable(SceneHandler s)
     {
@@ -212,6 +202,16 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         
         if(announcer == "PlayerRelocationSetter")
         {
+            if(cameraMode == CameraMode.TitleScreen)
+            {
+                cameraMode = CameraMode.Free;
+                CameraStateSwitch();
+            }
+
+            if(controller.enabled == false)
+            {
+                controller.enabled = true;
+            }
             EnablingMovement();
         }
 
@@ -281,14 +281,23 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     {
         switch(cameraMode)
         {
-            case CameraMode.Free:
+            case CameraMode.TitleScreen:                
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
-                playerFreeCam.m_Priority = 1;
+                playerFreeCam.m_Priority = 0;
+                titleScreenCam.m_Priority = 1;
+                break;
+            case CameraMode.Free:
+                titleScreenCam.m_Priority = 0;
+                playerLockCam.m_Priority = 0;
+                directObjCam.m_Priority = 0;
+                playerIndoorCam.m_Priority = 0;
+                playerFreeCam.m_Priority = 1;                
                 //Debug.Log("CameraMode = " + cameraMode);
                 break;
             case CameraMode.LockOn:
+                titleScreenCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
@@ -296,6 +305,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 //Debug.Log("CameraMode = " + cameraMode);
                 break;
             case CameraMode.OnObject:
+                titleScreenCam.m_Priority = 0;
                 playerLockCam.m_Priority = 0;
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
@@ -303,6 +313,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 //Debug.Log("CaemraMode = " + cameraMode);
                 break;
             case CameraMode.Indoor:
+                titleScreenCam.m_Priority = 0;
                 playerFreeCam.m_Priority = 0;
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
@@ -354,7 +365,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 movementState = MovementState.OnMenu;
 
                 //directObjCam.transform = 
-                cameraMode = CameraMode.OnObject;
+                cameraMode = CameraMode.TitleScreen;
             }
         }
 
@@ -505,7 +516,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         #region LockOn/Crouch
         if (crouchControl.action.ReadValue<float>() != 0)
         {
-            if(cameraMode != CameraMode.LockOn && cameraMode != CameraMode.OnObject)
+            if(cameraMode != CameraMode.LockOn && cameraMode != CameraMode.OnObject && cameraMode != CameraMode.TitleScreen)
             {
                 cameraMode = CameraMode.LockOn;
                 anim.SetBool("walk", true);
@@ -514,7 +525,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         }
         else if(crouchControl.action.ReadValue<float>() == 0)
         {
-            if(cameraMode != CameraMode.Free && cameraMode != CameraMode.OnObject && cameraMode != CameraMode.Indoor)
+            if(cameraMode != CameraMode.Free && cameraMode != CameraMode.OnObject && cameraMode != CameraMode.Indoor && cameraMode != CameraMode.TitleScreen)
             {
                 cameraMode = CameraMode.Free;
                 anim.SetBool("walk", false);
@@ -558,13 +569,8 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 CameraStateSwitch();
             }
 
-        }
-
-        
-
+        }        
     }
-
-
 
     private void OnDrawGizmosSelected()
     {

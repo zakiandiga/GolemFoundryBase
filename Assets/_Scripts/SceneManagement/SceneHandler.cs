@@ -43,11 +43,15 @@ public class SceneHandler : MonoBehaviour
 
         //if(sceneState == SceneState.Start)
         //{
-            //currentScene = "StartMenu"; //Temporary, to be set from start or load game function
-            //OnStart?.Invoke(0); //HACK light check
-            //SaveSystem.LoadAdditiveScene(currentScene);
-            //sceneState = SceneState.Running;
-        //}       
+        //currentScene = "StartMenu"; //Temporary, to be set from start or load game function
+        //OnStart?.Invoke(0); //HACK light check
+        //SaveSystem.LoadAdditiveScene(currentScene);
+        //sceneState = SceneState.Running;
+        //}
+        //
+
+        currentScene = "TerrainTransfer";
+        SaveSystem.LoadAdditiveScene(currentScene);
     }
 
     private void OnEnable()
@@ -68,12 +72,19 @@ public class SceneHandler : MonoBehaviour
     {
         OnGameLoaded?.Invoke(this);
         OnStart?.Invoke(0); //HACK
+        InventoryCanvas.SetActive(true);
         sceneToUnload = currentScene;
         currentScene = "IndoorDesigner";
         currentSpawner = 0;
-        InventoryCanvas.SetActive(true);
+
         SaveSystem.LoadAdditiveScene(currentScene);
         inventoryMonitor.StartListening();
+        //ChangeScene(sceneToUnload, 1, currentScene, currentSpawner);
+
+        //OnChangeSceneStart?.Invoke("SceneHandler");
+
+        SceneManager.sceneLoaded += OnAdditiveSceneLoaded;
+        SaveSystem.LoadAdditiveScene(currentScene);
         sceneState = SceneState.Running;
     }
 
@@ -87,6 +98,7 @@ public class SceneHandler : MonoBehaviour
         SaveSystem.RecordSavedGameData();
         //SaveSystem.SaveToSlotImmediate(inGameDataSlot);
         OnChangeSceneStart?.Invoke("SceneHandler");
+                
 
         SceneManager.sceneLoaded += OnAdditiveSceneLoaded;       
 

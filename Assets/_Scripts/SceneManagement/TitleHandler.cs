@@ -9,6 +9,8 @@ public class TitleHandler : MonoBehaviour
 {
     [SerializeField] private GameObject TitleCanvas;
     [SerializeField] private GameObject titlePanel, playPanel, transitionCurtain;
+    [SerializeField] private GameObject titleGolem;
+
     private Animator titleAnim, playAnim, curtainAnim;
 
 
@@ -21,7 +23,7 @@ public class TitleHandler : MonoBehaviour
         titleAnim = titlePanel.GetComponent<Animator>();
         playAnim = playPanel.GetComponent<Animator>();
         curtainAnim = transitionCurtain.GetComponent<Animator>();
-
+        titleGolem.SetActive(true);
         playPanel.SetActive(false);
 
     }
@@ -39,8 +41,15 @@ public class TitleHandler : MonoBehaviour
 
     private void DeactivateTitleScreen(SceneHandler handler)
     {
+        titleGolem.SetActive(false);
         TitleCanvas.SetActive(false);
     }    
+
+    private void ActivateTitleScreen()
+    {
+        titleGolem.SetActive(true);
+        TitleCanvas.SetActive(true);
+    }
 
     //Button functions
     public void PressPlay()
