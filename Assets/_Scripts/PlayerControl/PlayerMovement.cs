@@ -326,7 +326,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
             //Cursor.visible = false;
             EnablingMovement();
-            Debug.Log("PlayerControl Disabled: " + movementState);
+            Debug.Log("PlayerControl Enabled: " + movementState);
         }
     }
 
@@ -347,6 +347,17 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
     private void OpenMenuFromInteract(string menu)
     {
+        if(menu == "TitleScreen")
+        {
+            if(movementState != MovementState.OnMenu)
+            {
+                movementState = MovementState.OnMenu;
+
+                //directObjCam.transform = 
+                cameraMode = CameraMode.OnObject;
+            }
+        }
+
         if(menu == "BuildingMenu")
         {
             OnOpenMenuFromInteract?.Invoke("BuildingMenu");

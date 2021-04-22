@@ -9,6 +9,7 @@ using Opsive.UltimateInventorySystem.UI.Panels;
 
 public class MenuControl : MonoBehaviour
 {
+    [SerializeField] private GameObject inventoryCanvas; //Needed to force close build menu
     [SerializeField] private DisplayPanelManager panelHandler; //From inventory canvas
     [SerializeField] private DisplayPanel availableParts;
 
@@ -19,6 +20,7 @@ public class MenuControl : MonoBehaviour
     [SerializeField] private InputActionReference confirm; //ItemActionInput - UI
 
     private int openedBlueprintIndex = 0;
+    private bool buildingMenuOpen = false;
 
     public static event Action<string> OnBuildTriggerNEW; //Might be safe to remove
     public static event Action<string> OnClosingMenuNEW;
@@ -160,55 +162,64 @@ public class MenuControl : MonoBehaviour
             //player interact with Building Pod
             case BuildingMenuState.Inactive:
                 if (announcer == "BuildingMenu")
-                {
+                {                    
                     panelHandler.TogglePanel("BuildingMenu");
                     EnablingMenuInteraction();
+                    buildingMenuOpen = true;
                     buildingMenuState = BuildingMenuState.BlueprintOption;
-
-                    Debug.Log("CustomInput OpenMenu from " + announcer + ", menuState = " + buildingMenuState);
+                    //Debug.Log("CustomInput OpenMenu from " + announcer + ", menuState = " + buildingMenuState);
                 }
                 break;
             
             case BuildingMenuState.BlueprintOption: //player press back during Blueprint Selection
                 OnClosingMenuNEW?.Invoke("BlueprintOption");
                 panelHandler.TogglePanel("BuildingMenu");
+                buildingMenuOpen = false;
                 buildingMenuState = BuildingMenuState.Inactive;
-
-                Debug.Log("Closing Assembling Menu, buildingMenuState = " + buildingMenuState);
+                //Debug.Log("Closing Assembling Menu, buildingMenuState = " + buildingMenuState);
                 break;
             
             case BuildingMenuState.BlueprintGrid:  //player press back or cancel button during Blueprint Grid
                 if (announcer == "button")
                 {
-                    OnCancelBuildNEW("blueprintGrid");
+                    OnCancelBuildNEW?.Invoke("blueprintGrid");
                                           
                     panelHandler.TogglePanel("AvailableParts");
                     openedBlueprintIndex = 0;
                     buildingMenuState = BuildingMenuState.BlueprintOption;
                 }
                 else if (announcer == "buildHandler")
-                {                   
+                {
+                    //OnBuildCleanupNEW?.Invoke(openedBlueprintIndex);
 
-                    OnClosingMenuNEW?.Invoke("BlueprintOption");
-                    OnBuildCleanupNEW.Invoke(openedBlueprintIndex);
                     openedBlueprintIndex = 0;
 
                     panelHandler.TogglePanel("AvailableParts");
                     panelHandler.TogglePanel("BuildingMenu");
-                                        
+                  
                     //DisablingMenuInteraction();
                     buildingMenuState = BuildingMenuState.Inactive;
+                    
                 }
                 break;           
         }        
     }
 
+    private void ForceCloseBuildMenu()
+    {
+        panelHandler.TogglePanel("BuildingMenu");
+
+    }
+
     public void CancelButton()
     {
         OpenBuildingMenu("button"); //Handling cancel building from UI Button
+        //OpenBuildingMenu("buildHandler"); //Debugging buildHandler closing
     }
     #endregion
-    
+
+    #region Crafting Menu Control
+
     private void OpenCraftingMenu(string announcer)
     {        
         switch (craftingMenuState)
@@ -241,7 +252,7 @@ public class MenuControl : MonoBehaviour
         OpenCraftingMenu("Input");
     }
 
-
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -290,7 +301,21 @@ public class MenuControl : MonoBehaviour
         if(availableParts.IsOpen && buildingMenuState != BuildingMenuState.BlueprintGrid )
         {
             panelHandler.TogglePanel("AvailableParts");
-            Debug.Log("Available parts currently " + availableParts.IsOpen);
+        }
+
+        //Building Menu panel doesn't close on 2nd build bug workaround
+        if(inventoryCanvas.activeSelf && buildingMenuState == BuildingMenuState.Inactive && buildingMenuOpen == true) //Force close identifier
+        {
+            if(panelHandler.GetPanel("BuildingMenu").IsOpen)
+            {
+                ForceCloseBuildMenu();
+            }
+            else if (!panelHandler.GetPanel("BuildingMenu").IsOpen && buildingMenuOpen == true)
+            {                
+                OnClosingMenuNEW?.Invoke("BlueprintOption"); //Tell player movement to enable playerMovement
+                buildingMenuOpen = false;
+            }
+                
         }
         
     }

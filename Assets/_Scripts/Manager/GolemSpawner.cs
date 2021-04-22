@@ -29,12 +29,8 @@ public class GolemSpawner : MonoBehaviour
         SceneManager.SetActiveScene(targetScene);
         GameObject spawnedGolem = Instantiate(golem, position, rotation);
 
-        Debug.Log("Spawning golem at " + SceneManager.GetActiveScene().name);
         //SceneManager.MoveGameObjectToScene(spawnedGolem, SceneManager.GetSceneByName(targetScene));
 
-        SceneManager.SetActiveScene(menuScene);
-
-        Debug.Log("Current active scene is " + SceneManager.GetActiveScene().name);
-        
+        SceneManager.SetActiveScene(menuScene);        
     }
 }

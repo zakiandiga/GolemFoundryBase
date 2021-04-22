@@ -15,7 +15,7 @@ public class MusicManager : MonoBehaviour
         musicHandler.release();
 
         //TEMPORARY
-        AreaIdentify(1);
+        AreaIdentify(3); //Force music on title screen to 3
     }
 
     private void OnEnable()
@@ -51,6 +51,7 @@ public class MusicManager : MonoBehaviour
     {
         musicHandler.setParameterByName("Area", area);
     }
+    
 
     private void OnDestroy()
     {
