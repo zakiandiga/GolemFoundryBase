@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using Opsive.UltimateInventorySystem.Input;
+using Opsive.UltimateInventorySystem.Core;
 using Opsive.UltimateInventorySystem.Interactions; //TEST
 using System;
 using System.Collections;
@@ -64,7 +65,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     [SerializeField] private TextMeshProUGUI interactSign; //TEMP
     private GameObject currentInteractable;
     [SerializeField] private InventoryInteractor inventoryInteractor; //Manual InventoryInteractor input
-
+    private PlayerSound playerSound;
     #endregion
 
     #region ActionAnnouncer
@@ -107,6 +108,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         cam = Camera.main.transform;
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
+        playerSound = GetComponent<PlayerSound>();
 
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
@@ -132,6 +134,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
         UIS_CustomInput.OnClosingMenu += EnableControl; //REMOVE LATER
         MenuControl.OnClosingMenuNEW += EnableControl;
+        GatheringAnnouncer.OnGatheringMaterial += GatheringAnimation;
 
         //PlayerSpawner.OnPlayerReadyToMove += SetPlayerSpawn;
         //BuildGolemHandler.OnBuildPressed += EnableControl;
@@ -160,6 +163,8 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
         UIS_CustomInput.OnClosingMenu -= EnableControl; //REMOVE LATER
         MenuControl.OnClosingMenuNEW -= EnableControl;
+
+        GatheringAnnouncer.OnGatheringMaterial -= GatheringAnimation;
 
     }
 
@@ -250,6 +255,28 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         }
         //Debug.Log("current interactable object is " + currentInteractable.name);
     }
+
+    #region Gathering Animation+Sound Handler
+    private void GatheringAnimation(Item item, int amount)
+    {
+        DisablingMovement();
+        anim.SetTrigger("gathering");
+        StartCoroutine(FinishGathering());
+    }
+
+    private IEnumerator FinishGathering()
+    {
+        int animFrame = 13; //last frame of the animation
+
+        for (int i = 0; i<animFrame; i++)
+        {
+            yield return null;
+        }
+        playerSound.GatheringPickaxe();
+        EnablingMovement();
+    }
+    #endregion
+
 
     private void DisablingMovement()  //when opening UI
     {

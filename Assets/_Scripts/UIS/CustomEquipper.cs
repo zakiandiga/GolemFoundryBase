@@ -13,9 +13,21 @@ namespace Opsive.UltimateInventorySystem.Equipping
     public class CustomEquipper : Equipper
     {
         private string lamp = "Lamp"; //Lamp Equipper
+        [SerializeField] private Item rustyPickaxe;
 
         public static event Action<string> OnEquipLamp;
-        
+        public static event Action<bool> OnToolChecked;
+
+        private void OnEnable()
+        {
+            GatheringAnnouncer.OnCheckTool += CheckTool;
+        }
+
+        private void OnDisable()
+        {
+            GatheringAnnouncer.OnCheckTool -= CheckTool;
+        }
+
         public override bool Equip(Item item)
         {
             for (int i = 0; i < m_Slots.Length; i++)
@@ -36,7 +48,7 @@ namespace Opsive.UltimateInventorySystem.Equipping
             {
                 if (m_Slots[i].Category != null && m_Slots[i].Category.InherentlyContains(item) == false) { continue; }
 
-                //lamp switch
+                //lamp switch on
                 if (item.name == lamp)
                 {
                     OnEquipLamp?.Invoke("EquipLamp");
@@ -54,12 +66,38 @@ namespace Opsive.UltimateInventorySystem.Equipping
             {
                 if (m_Slots[i].ItemObject == null || m_Slots[i].ItemObject.Item != item) { continue; }
 
-                if(item.name == lamp)
+                //Lamp switch off
+                if (item.name == lamp)
                 {
                     OnEquipLamp?.Invoke("UnequipLamp");
                 }
                 UnEquip(i);
                 return;
+            }
+
+        }
+
+        public void CheckTool(Item item)
+        {
+            int itemFound = 0;
+
+            for (int i = 0; i < m_Slots.Length; i++)
+            {
+                if (m_Slots[i].ItemObject != null && m_Slots[i].ItemObject.Item.ItemDefinition == item.ItemDefinition)
+                {
+                    itemFound += 1;                   
+                }
+            }
+
+            if(itemFound > 0)
+            {
+                Debug.Log("Pickaxe equipped");
+                OnToolChecked?.Invoke(true);
+            }
+            else if (itemFound <= 0)
+            {
+                Debug.Log("Pickace not equipped!");
+                OnToolChecked?.Invoke(false);
             }
 
         }
