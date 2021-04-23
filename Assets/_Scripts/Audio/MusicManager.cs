@@ -15,7 +15,7 @@ public class MusicManager : MonoBehaviour
         musicHandler.release();
 
         //TEMPORARY
-        AreaIdentify(3); //Force music on title screen to 3
+        AreaIdentify(1); //Force music on title screen to 3
     }
 
     private void OnEnable()
@@ -33,16 +33,16 @@ public class MusicManager : MonoBehaviour
         switch (scene)
         {
             case "IndoorDesigner":
-                AreaIdentify(1);
+                AreaIdentify(0);
                 break;
             case "TerrainTransfer":
-                AreaIdentify(0);
+                AreaIdentify(1);
                 break;
             case "MineDesigner":
                 AreaIdentify(2);
                 break;
             case "TitleScreen":
-                AreaIdentify(3);
+                AreaIdentify(1);
                 break;
         }        
     }
