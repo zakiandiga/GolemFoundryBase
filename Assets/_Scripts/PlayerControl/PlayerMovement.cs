@@ -73,6 +73,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     public static event Action<string> OnOpenInventoryMenu;
     public static event Action<GameObject> OnInteract;
     public static event Action<PlayerMovement> OnAttack;
+    public static event Action<string> OnGatheringHit;
     #endregion
 
     #region PlayerState
@@ -266,12 +267,13 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
     private IEnumerator FinishGathering()
     {
-        int animFrame = 13; //last frame of the animation
+        int animFrame = 15; //last frame of the animation
 
         for (int i = 0; i<animFrame; i++)
         {
             yield return null;
         }
+        OnGatheringHit?.Invoke("pickaxe");
         playerSound.GatheringPickaxe();
         EnablingMovement();
     }

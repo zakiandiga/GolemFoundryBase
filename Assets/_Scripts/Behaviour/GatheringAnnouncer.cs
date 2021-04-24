@@ -14,7 +14,12 @@ public class GatheringAnnouncer : PickupBase
     public Item itemResult;
     //public GameObject itemResult;
     private InRangeAnnouncer announcer;
-    private Interactable interactable;
+    [SerializeField] private Interactable interactable;
+    private bool interactingWithPlayer = false;
+
+    public GameObject impactParticle;
+    private ParticleSystem impactVFX;
+    
 
     public int minAmount;
     public int maxAmount;
@@ -26,19 +31,25 @@ public class GatheringAnnouncer : PickupBase
     {
         base.Start();
         announcer = GetComponent<InRangeAnnouncer>();
-        interactable = GetComponent<Interactable>();
+        
+        //impactVFX = GetComponentInChildren<ParticleSystem>();
     }
 
     private void OnEnable()
     {
-        CustomEquipper.OnToolChecked += InteractResult;
         
-        //interactable.SetIsInteractable(true);
+        CustomEquipper.OnToolChecked += InteractResult;
+        PlayerMovement.OnGatheringHit += DeactivateGatheringSpot;
+
+        if (interactable == null) { interactable = GetComponent<Interactable>(); }
+        
+        interactable.SetIsInteractable(true);
     }
 
     private void OnDisable()
     {
         CustomEquipper.OnToolChecked -= InteractResult;
+        PlayerMovement.OnGatheringHit -= DeactivateGatheringSpot;
     }
 
     public void Interacted()
@@ -58,12 +69,11 @@ public class GatheringAnnouncer : PickupBase
     {
         if(itemValid)
         {
-            Debug.Log("Interact with the Gathering spot");            
-            OnGatheringMaterial?.Invoke(itemResult, UnityEngine.Random.Range(minAmount, maxAmount));
+            Debug.Log("Interact with the Gathering spot");
+            interactingWithPlayer = true;
+            OnGatheringMaterial?.Invoke(itemResult, UnityEngine.Random.Range(minAmount, maxAmount));            
             
             
-            //announcer.PlayerOutRange(); //Remove this interactable from player interactor
-            StartCoroutine(DeactivateGatheringSpot());
         }
         else if (!itemValid)
         {
@@ -71,19 +81,28 @@ public class GatheringAnnouncer : PickupBase
         }
     }
 
-    private IEnumerator DeactivateGatheringSpot()
+    private void DeactivateGatheringSpot(string tool)
     {
-        float delay = 1f;
+        if(interactingWithPlayer == true)
+        {
+            Debug.Log("Gathering spot deactivated!");
+            Instantiate(impactParticle, transform.position, transform.rotation);
+            //impactVFX.Play();
+            //StartCoroutine(Deactivating())
+            interactingWithPlayer = false;
+            Deactivate();
+            //this.gameObject.SetActive(false); //return to pool
+        }
 
-        yield return new WaitForSeconds(delay);
-
-        Debug.Log("Gathering spot deactivated!");
-        Deactivate();
-        //this.gameObject.SetActive(false); //return to pool
-        
     }
 
-
+    public override void Deactivate()
+    {
+        //base.Deactivate();
+        interactable.SetIsInteractable(false);
+        this.gameObject.SetActive(false);
+        ObjectPooler.Instance.ReturnToPool(this.gameObject);       
+    }
 
     protected override void OnInteractInternal(IInteractor interactor)
     {

@@ -355,9 +355,8 @@ GameObject:
   - component: {fileID: 7274800469540265106}
   - component: {fileID: 7274800469540265105}
   - component: {fileID: 6842012438565515530}
-  - component: {fileID: 8682752322755574218}
   - component: {fileID: 677292573818448781}
-  - component: {fileID: 853762935689725313}
+  - component: {fileID: 8682752322755574218}
   m_Layer: 0
   m_Name: Lamp-Pickup
   m_TagString: Untagged
@@ -543,25 +542,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 16a1092a5efb54f4ab2d5984c7c8daa9, type: 2}
     - {fileID: 11400000, guid: 4c4fd93e12d0c25498d16b654925d3cc, type: 2}
     m_Version: 3.1
---- !u!114 &8682752322755574218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7274800469540265107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03526e258566dc247a4eb8525aeeb667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_key: 
-  m_appendSaverTypeToKey: 0
-  m_saveAcrossSceneChanges: 1
-  m_restoreStateOnStart: 0
-  m_mode: 0
-  m_destroyMode: 1
-  m_destroyedVersionPrefab: {fileID: 0}
 --- !u!114 &677292573818448781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,16 +558,22 @@ MonoBehaviour:
   m_ScheduleReactivationTime: -1
   m_SelectIndicators: []
   m_AudioClip: {fileID: 0}
---- !u!135 &853762935689725313
-SphereCollider:
+--- !u!114 &8682752322755574218
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7274800469540265107}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.46915305
-  m_Center: {x: 0, y: -0.3247618, z: -0.000000029802322}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03526e258566dc247a4eb8525aeeb667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_key: Lamp-Pickup_6999942
+  m_appendSaverTypeToKey: 0
+  m_saveAcrossSceneChanges: 1
+  m_restoreStateOnStart: 0
+  m_mode: 0
+  m_destroyMode: 1
+  m_destroyedVersionPrefab: {fileID: 0}

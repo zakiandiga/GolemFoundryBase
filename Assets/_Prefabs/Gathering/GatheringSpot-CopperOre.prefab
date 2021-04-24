@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 088496263d4891a43983e74d22e86a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DeactivateOnInteract: 1
+  m_DeactivateOnInteract: 0
   m_ScheduleReactivationTime: -1
   m_SelectIndicators: []
   m_AudioClip: {fileID: 0}
@@ -156,6 +156,8 @@ MonoBehaviour:
     m_ItemDefinition: {fileID: 11400000, guid: f26af142c476d464e9386f0347a3ca3b, type: 2}
     m_ItemAttributeCollection:
       m_AttributeCollectionData: []
+  interactable: {fileID: 1470793016846997219}
+  impactParticle: {fileID: 8163684771574148739, guid: 6dc4191059d6c3a4a820270672bbf567, type: 3}
   minAmount: 1
   maxAmount: 3
 --- !u!1 &7286188363758986416
