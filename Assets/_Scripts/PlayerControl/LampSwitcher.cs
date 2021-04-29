@@ -8,6 +8,9 @@ public class LampSwitcher : MonoBehaviour
 {
     [SerializeField] private GameObject lamp;
 
+    public bool lampEquipped = false;
+    public bool lampOn = false;
+
     private void OnEnable()
     {
         CustomEquipper.OnEquipLamp += LampSwitch;
@@ -18,15 +21,54 @@ public class LampSwitcher : MonoBehaviour
         CustomEquipper.OnEquipLamp -= LampSwitch;
     }
 
+    public void LampOn()
+    {
+        if (!lampOn && lampEquipped)
+        {
+            lampOn = true;
+            lamp.SetActive(true);
+        }
+    }
+
+    public void LampOff()
+    {
+        if(lampOn)
+        {
+            lampOn = false;
+            lamp.SetActive(false);
+        }
+    }
+
+    public void LampSwitch()
+    {
+        if (!lampOn)
+        {
+            if (lampEquipped)
+            {
+                lampOn = true;
+                lamp.SetActive(true);
+            }
+        }
+
+        else if (lampOn)
+        {
+            lamp.SetActive(false);
+            lampOn = false;
+        }
+            
+    }
+
     private void LampSwitch(string mode)
     {
         switch (mode)
         {
             case "EquipLamp":
-                lamp.SetActive(true);
+                lampEquipped = true;
+                LampSwitch();
                 break;
             case "UnequipLamp":
-                lamp.SetActive(false);
+                lampEquipped = false;
+                LampSwitch();
                 break;
         }
     }

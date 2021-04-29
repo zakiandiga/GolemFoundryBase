@@ -22,11 +22,11 @@ public class MenuControl : MonoBehaviour
     private int openedBlueprintIndex = 0;
     private bool buildingMenuOpen = false;
 
-    public static event Action<string> OnBuildTriggerNEW; //Might be safe to remove
-    public static event Action<string> OnClosingMenuNEW;
-    public static event Action<string> OnCancelBuildNEW;
+    public static event Action<string> OnBuildTrigger; //Might be safe to remove
+    public static event Action<string> OnClosingMenu;
+    public static event Action<string> OnCancelBuild;
     
-    public static event Action<int> OnBuildCleanupNEW; //Might be safe to remove
+    public static event Action<int> OnBuildCleanup; //Might be safe to remove
 
     public static event Action<MenuControl> OnDebugMenuControl; //DEBUG
 
@@ -128,7 +128,7 @@ public class MenuControl : MonoBehaviour
         
         panelHandler.ToggleMainMenu();
         DisablingMenuInteraction();
-        OnClosingMenuNEW?.Invoke("InventoryMenu");
+        OnClosingMenu?.Invoke("InventoryMenu");
     }
     #endregion
 
@@ -172,7 +172,7 @@ public class MenuControl : MonoBehaviour
                 break;
             
             case BuildingMenuState.BlueprintOption: //player press back during Blueprint Selection
-                OnClosingMenuNEW?.Invoke("BlueprintOption");
+                OnClosingMenu?.Invoke("BlueprintOption");
                 panelHandler.TogglePanel("BuildingMenu");
                 buildingMenuOpen = false;
                 buildingMenuState = BuildingMenuState.Inactive;
@@ -182,7 +182,7 @@ public class MenuControl : MonoBehaviour
             case BuildingMenuState.BlueprintGrid:  //player press back or cancel button during Blueprint Grid
                 if (announcer == "button")
                 {
-                    OnCancelBuildNEW?.Invoke("blueprintGrid");
+                    OnCancelBuild?.Invoke("blueprintGrid");
                                           
                     panelHandler.TogglePanel("AvailableParts");
                     openedBlueprintIndex = 0;
@@ -234,7 +234,7 @@ public class MenuControl : MonoBehaviour
                 }
                 break;
             case CraftingMenuState.Active:
-                OnClosingMenuNEW?.Invoke("CraftingMenu");
+                OnClosingMenu?.Invoke("CraftingMenu");
                 Debug.Log("OnClosingMenuNew Invoke");
 
                 
@@ -312,7 +312,7 @@ public class MenuControl : MonoBehaviour
             }
             else if (!panelHandler.GetPanel("BuildingMenu").IsOpen && buildingMenuOpen == true)
             {                
-                OnClosingMenuNEW?.Invoke("BlueprintOption"); //Tell player movement to enable playerMovement
+                OnClosingMenu?.Invoke("BlueprintOption"); //Tell player movement to enable playerMovement
                 buildingMenuOpen = false;
             }
                 

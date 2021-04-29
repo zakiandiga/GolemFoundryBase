@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
 {
-    [FMODUnity.EventRef]
-    public string Event;
+    [FMODUnity.EventRef] public string Event;
+    [FMODUnity.EventRef] public string spawnEffect;
+
     public bool PlayOnEnable;
     public bool PlayOnDisable;
 
@@ -23,6 +24,10 @@ public class AudioTrigger : MonoBehaviour
     {
         if (PlayOnDisable)
             PlaySound();
+    }
 
+    public void SpawnGolem()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(spawnEffect, gameObject);
     }
 }

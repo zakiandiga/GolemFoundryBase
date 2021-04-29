@@ -10,4 +10,13 @@ public class PlayerSound : MonoBehaviour
         FMODUnity.RuntimeManager.PlayOneShotAttached(actionPickaxe, gameObject);
     }
 
+    public void Attack()
+    {
+
+    }
+
+    public void Footsteps()
+    {
+
+    }
 }

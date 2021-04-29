@@ -149,7 +149,7 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.GamesAoE.GolemFoundry
   buildNumber:
-    Standalone: 3
+    Standalone: 4
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 0

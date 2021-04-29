@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     [SerializeField] private InputActionReference interactControl;
     [SerializeField] private InputActionReference openMenu;
     [SerializeField] private InputActionReference indoorSwitch;
-    //private InputActionReference lookAxis;
     #endregion
 
     #region MovementVariables
@@ -66,6 +65,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     private GameObject currentInteractable;
     [SerializeField] private InventoryInteractor inventoryInteractor; //Manual InventoryInteractor input
     private PlayerSound playerSound;
+    private LampSwitcher lampSwitcher;
     #endregion
 
     #region ActionAnnouncer
@@ -110,6 +110,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         cinemachineCollider = playerFreeCam.GetComponent<CinemachineCollider>();
         cameraBrain = cam.GetComponent<CinemachineBrain>();
         playerSound = GetComponent<PlayerSound>();
+        lampSwitcher = GetComponent<LampSwitcher>();
 
         //InventoryUI.OnAssembling += AssemblingControl;
         //Cursor.lockState = CursorLockMode.Locked;  //CURSOR MODE CHECK
@@ -128,18 +129,11 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //SceneHandler.OnGameLoaded += GameLoadControlEnable;
         InRangeAnnouncer.OnPlayerInRange += RegisterInteractable; //TEMP
         InRangeAnnouncer.OnPlayerOutRange += DeactivateMenu;
-
         OpenMenuAnnouncer.OnMenuInteracting += OpenMenuFromInteract;
-
         PlayerLocationSetter.OnPlayerRelocationSuccess += EnableControl;
-
-        UIS_CustomInput.OnClosingMenu += EnableControl; //REMOVE LATER
-        MenuControl.OnClosingMenuNEW += EnableControl;
+        MenuControl.OnClosingMenu += EnableControl;
+        PlayerAnimationObserver.OnAnimationDone += EnableControl;
         GatheringAnnouncer.OnGatheringMaterial += GatheringAnimation;
-
-        //PlayerSpawner.OnPlayerReadyToMove += SetPlayerSpawn;
-        //BuildGolemHandler.OnBuildPressed += EnableControl;
-        //UIS_CustomInput.OnBuildTrigger += EnableControl;
     }
 
     private void OnDisable()
@@ -153,20 +147,13 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         indoorSwitch.action.Disable(); //Temporary indoor switch
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Disable();
 
-        //SceneHandler.OnGameLoaded -= GameLoadControlEnable;
-
-        InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable; //TEMP
+        InRangeAnnouncer.OnPlayerInRange -= RegisterInteractable;
         InRangeAnnouncer.OnPlayerOutRange -= DeactivateMenu;
-
         OpenMenuAnnouncer.OnMenuInteracting -= OpenMenuFromInteract;
-
         PlayerLocationSetter.OnPlayerRelocationSuccess -= EnableControl;
-
-        UIS_CustomInput.OnClosingMenu -= EnableControl; //REMOVE LATER
-        MenuControl.OnClosingMenuNEW -= EnableControl;
-
+        MenuControl.OnClosingMenu -= EnableControl;
+        PlayerAnimationObserver.OnAnimationDone -= EnableControl;
         GatheringAnnouncer.OnGatheringMaterial -= GatheringAnimation;
-
     }
 
 
@@ -221,6 +208,14 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             EnablingMovement();
         }
 
+        if(announcer == "Animation")
+        {
+            if(movementState != MovementState.Idle)
+                movementState = MovementState.Idle;
+
+            EnablingMovement();
+        }
+
         /*
         else
             StartCoroutine(EnableControlDelay());
@@ -262,7 +257,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
     {
         DisablingMovement();
         anim.SetTrigger("gathering");
-        StartCoroutine(FinishGathering());
     }
 
     private IEnumerator FinishGathering()
@@ -370,21 +364,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         }
     }
 
-    /*
-    private void AssemblingControl(InventoryUI ui)
-    {
-        if (cameraMode == CameraMode.OnObject)
-        {
-            cameraMode = CameraMode.Free;
-        }
-        else
-        {
-            cameraMode = CameraMode.OnObject;
-        }
-        CameraStateSwitch();       
-    }
-    */
-
     private void OpenMenuFromInteract(string menu)
     {
         if(menu == "TitleScreen")
@@ -393,7 +372,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
             {
                 movementState = MovementState.OnMenu;
 
-                //directObjCam.transform = 
                 cameraMode = CameraMode.TitleScreen;
             }
         }
@@ -585,19 +563,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //Temporary camera switch
         if (indoorSwitch.action.triggered)
         {
-            if(cameraMode != CameraMode.Indoor)
-            {
-                cameraMode = CameraMode.Indoor;
-                CameraStateSwitch();
-                
-            }
-
-            else
-            {
-                cameraMode = CameraMode.Free;
-                CameraStateSwitch();
-            }
-
+            lampSwitcher.LampSwitch();
         }        
     }
 
