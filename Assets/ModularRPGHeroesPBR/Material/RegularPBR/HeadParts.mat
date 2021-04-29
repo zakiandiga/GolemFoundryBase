@@ -22,7 +22,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 90a890dd387814f4aaee1c8fb1f75422, type: 3}
+        m_Texture: {fileID: 2800000, guid: 82bb50e21cde0f341a2e67caed990b9e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -106,7 +106,7 @@ Material:
     - _FlatRimSize: 0.484
     - _FlatSpecularEdgeSmoothness: 0.647
     - _FlatSpecularSize: 0.186
-    - _Flatness: 0.992
+    - _Flatness: 0.832
     - _FlatnessExtra: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -125,7 +125,7 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineDepthOffset: 0
     - _OutlineScale: 1
-    - _OutlineWidth: 1.62
+    - _OutlineWidth: 1.48
     - _OverrideLightmapDir: 0
     - _Parallax: 0.02
     - _QueueOffset: 0

@@ -27,7 +27,7 @@ public class ItemTransferHandler : MonoBehaviour
         BuildGolemHandler.OnBuildPressed += BuildCleanup;
         //UIS_CustomInput.OnClosingBuildMenu += CancelCue;
         UIS_CustomInput.OnCancelBuild += CancelCue; //OLD
-        MenuControl.OnCancelBuildNEW += CancelCue;  //NEW
+        MenuControl.OnCancelBuild += CancelCue;  //NEW
     }
 
     private void OnDisable()
@@ -36,7 +36,7 @@ public class ItemTransferHandler : MonoBehaviour
         //UIS_CustomInput.OnClosingBuildMenu += CancelCue;
         UIS_CustomInput.OnCancelBuild -= CancelCue;  //OLD
         
-        MenuControl.OnCancelBuildNEW -= CancelCue; //NEW
+        MenuControl.OnCancelBuild -= CancelCue; //NEW
     }
 
 

@@ -80,6 +80,7 @@ namespace Opsive.UltimateInventorySystem.Interactions
             OnTriggerEnterInternal(other.gameObject);
         }
 
+
         /// <summary>
         /// On trigger exit 2D.
         /// </summary>

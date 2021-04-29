@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour
 {
-    //[SerializeField] private ObjectPooler objectPooler;
     [SerializeField] private int spawnLimit = 20;
     [SerializeField] private Vector2 randomSpawnTime;
     private int currentSpawn;
@@ -14,9 +13,7 @@ public class ObjectSpawner : MonoBehaviour
     
     void Start()
     {
-        //objectPooler = ObjectPooler.Instance;
         StartCoroutine(SpawnTimer());
-
     }
 
     private void OnDestroy()
@@ -51,6 +48,7 @@ public class ObjectSpawner : MonoBehaviour
         Vector3 spawnVector;
 
         Ray ray = new Ray(randomVector, Vector3.down);
+
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             randomY = transform.position.y - hit.distance;

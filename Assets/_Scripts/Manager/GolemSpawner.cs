@@ -8,12 +8,16 @@ public class GolemSpawner : MonoBehaviour
 {
     public string menuSceneName, targetSceneName;
     Scene menuScene, targetScene;
+    [SerializeField] private GameObject spawnEffect;
+    private AudioTrigger audioTrigger;
 
     private void Start()
     {
+        audioTrigger = GetComponent<AudioTrigger>();
         menuScene = SceneManager.GetSceneByName(menuSceneName);
         targetScene = SceneManager.GetSceneByName(targetSceneName);
     }
+
     private void OnEnable()
     {
         BuildGolemHandler.OnGolemReadyToSpawn += SpawnGolem;
@@ -28,13 +32,11 @@ public class GolemSpawner : MonoBehaviour
     {
         SceneManager.SetActiveScene(targetScene);
         GameObject spawnedGolem = Instantiate(golem, position, rotation);
+        Instantiate(spawnEffect, transform.position, transform.rotation);
+        audioTrigger.SpawnGolem();
 
-        Debug.Log("Spawning golem at " + SceneManager.GetActiveScene().name);
         //SceneManager.MoveGameObjectToScene(spawnedGolem, SceneManager.GetSceneByName(targetScene));
 
-        SceneManager.SetActiveScene(menuScene);
-
-        Debug.Log("Current active scene is " + SceneManager.GetActiveScene().name);
-        
+        SceneManager.SetActiveScene(menuScene);        
     }
 }

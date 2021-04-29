@@ -29,8 +29,7 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected += OpenPanel;        
         ItemTransferHandler.OnRefreshTransfer += ClosePanel;
-        UIS_CustomInput.OnBuildCleanup += ClosePanel; //OLD
-        MenuControl.OnBuildCleanupNEW += ClosePanel; //NEW
+        MenuControl.OnBuildCleanup += ClosePanel;
         BuildGolemHandler.OnBuildPressed += ClosingPanelOnBuild;        
     }
 
@@ -38,8 +37,7 @@ public class BlueprintViewManager : MonoBehaviour
     {
         ItemActionUsingBlueprint.OnBlueprintSelected -= OpenPanel;
         ItemTransferHandler.OnRefreshTransfer -= ClosePanel;
-        UIS_CustomInput.OnBuildCleanup -= ClosePanel; //OLD
-        MenuControl.OnBuildCleanupNEW -= ClosePanel; //NEW
+        MenuControl.OnBuildCleanup -= ClosePanel;
         BuildGolemHandler.OnBuildPressed -= ClosingPanelOnBuild;
     }
 
@@ -48,17 +46,15 @@ public class BlueprintViewManager : MonoBehaviour
         selectedBlueprintIndex = value;
         currentBlueprintPanel = blueprintPrefabs[selectedBlueprintIndex].GetComponent<DisplayPanel>();
 
-
         currentBlueprintPanel.SmartToggle();
 
         blueprintGridOpen = true;
         blueprintLearned.SmartClose();
-
     }
 
     private void ClosingPanelOnBuild(string source)
     {
-        ClosePanel(1); //unused parameter
+        ClosePanel(1); //unused argument
     }
 
     private void ClosePanel(int itemCount)
