@@ -1,7 +1,6 @@
 ﻿using Cinemachine;
-using Opsive.UltimateInventorySystem.Input;
 using Opsive.UltimateInventorySystem.Core;
-using Opsive.UltimateInventorySystem.Interactions; //TEST
+using Opsive.UltimateInventorySystem.Interactions;
 using System;
 using System.Collections;
 using TMPro;
@@ -10,9 +9,9 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(InventoryInteractor))]
-public class PlayerMovement : MonoBehaviour //only use Interact() from InventoryInput
+public class PlayerMovement : MonoBehaviour
 {
-    //Add character visual game object as a children to the prefab
+    //Add character sprite as a children to this prefab
     //Required cinemachine brain on main camera
     #region CameraComponent
     private Transform cam;
@@ -117,11 +116,9 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //Cursor.visible = false;
         interactSign.enabled = false; //TEMP
 
-        controller.enabled = false; //Set CC false on start menu
+        controller.enabled = false; 
         movementState = MovementState.OnMenu; //(Start menu)
-        cameraMode = CameraMode.TitleScreen;
-        //CameraStateSwitch();
-        
+        cameraMode = CameraMode.TitleScreen;        
     }
 
     private void OnEnable()
@@ -215,32 +212,13 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
 
             EnablingMovement();
         }
-
-        /*
-        else
-            StartCoroutine(EnableControlDelay());
-        */
     }
 
-    IEnumerator EnableControlDelay()
-    {
-        float delay = 1.2f;
-        yield return new WaitForSeconds(delay);
-
-        movementState = MovementState.Idle;
-        cameraMode = CameraMode.Free;
-
-        CameraStateSwitch();
-
-        MenuControlSwitch("nonPlayer");
-    }
 
     private void RegisterInteractable(GameObject announcer) //this should be binded to the target instead of player
-    {
-        
+    {        
         currentInteractable = announcer;
         //Debug.Log("Can interact with " + currentInteractable.name);
-
     }
 
     private void DeactivateMenu(GameObject announcer)  //this should be binded to the target instead of player
@@ -294,7 +272,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         attackControl.action.Enable();
         crouchControl.action.Enable();
         interactControl.action.Enable();
-        indoorSwitch.action.Enable(); //Temporary indoor switch
+        indoorSwitch.action.Enable(); //Temporary switch
 
         openMenu.action.Enable();
         playerFreeCam.GetComponent<CinemachineInputProvider>().XYAxis.action.Enable();
@@ -316,8 +294,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
-                playerFreeCam.m_Priority = 1;                
-                //Debug.Log("CameraMode = " + cameraMode);
+                playerFreeCam.m_Priority = 1;                        
                 break;
             case CameraMode.LockOn:
                 titleScreenCam.m_Priority = 0;
@@ -325,7 +302,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
                 playerLockCam.m_Priority = 1;
-                //Debug.Log("CameraMode = " + cameraMode);
                 break;
             case CameraMode.OnObject:
                 titleScreenCam.m_Priority = 0;
@@ -333,7 +309,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 playerFreeCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 0;
                 directObjCam.m_Priority = 1;
-                //Debug.Log("CaemraMode = " + cameraMode);
                 break;
             case CameraMode.Indoor:
                 titleScreenCam.m_Priority = 0;
@@ -341,7 +316,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 playerLockCam.m_Priority = 0;
                 directObjCam.m_Priority = 0;
                 playerIndoorCam.m_Priority = 1;
-                //Debug.Log("CameraMode = " + cameraMode);
                 break;
         }        
     }
@@ -414,8 +388,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
                 //camera mode if handler (see "BuildingMenu")
                 movementState = MovementState.Idle;
             }
-
-            //CameraStateSwitch(); //COMMENT THIS OUT AFTER THE MENU ESTABLISHED
             MenuControlSwitch("player");
         }
     }
@@ -425,7 +397,7 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         //Set attack animation based on equipment state
         StartCoroutine(AttackDelay());
         inventoryInteractor.Interact();
-        OnAttack?.Invoke(this); //Might be used for mining pickup interactable
+        OnAttack?.Invoke(this);
     }
 
     private IEnumerator AttackDelay()
@@ -542,8 +514,6 @@ public class PlayerMovement : MonoBehaviour //only use Interact() from Inventory
         #endregion
 
         #endregion
-
-
 
         if(openMenu.action.triggered)
         {

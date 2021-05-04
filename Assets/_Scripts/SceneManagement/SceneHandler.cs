@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Opsive.UltimateInventorySystem.UI.Monitors;
 using PixelCrushers;
@@ -37,19 +36,6 @@ public class SceneHandler : MonoBehaviour
     {
         mainMenu = SceneManager.GetSceneByName(menuSceneName);
 
-        //InventoryCanvas.SetActive(false);
-
-        //DontDestroyOnLoad(gameObject);
-
-        //if(sceneState == SceneState.Start)
-        //{
-        //currentScene = "StartMenu"; //Temporary, to be set from start or load game function
-        //OnStart?.Invoke(0); //HACK light check
-        //SaveSystem.LoadAdditiveScene(currentScene);
-        //sceneState = SceneState.Running;
-        //}
-        //
-
         currentScene = "TerrainTransfer";
         SaveSystem.LoadAdditiveScene(currentScene);
     }
@@ -71,7 +57,7 @@ public class SceneHandler : MonoBehaviour
     private void LoadNewGame(string parameter)
     {
         OnGameLoaded?.Invoke(this);
-        OnStart?.Invoke(0); //HACK
+        OnStart?.Invoke(0);
         InventoryCanvas.SetActive(true);
         sceneToUnload = currentScene;
         currentScene = "IndoorDesigner";
@@ -79,9 +65,6 @@ public class SceneHandler : MonoBehaviour
 
         SaveSystem.LoadAdditiveScene(currentScene);
         inventoryMonitor.StartListening();
-        //ChangeScene(sceneToUnload, 1, currentScene, currentSpawner);
-
-        //OnChangeSceneStart?.Invoke("SceneHandler");
 
         SceneManager.sceneLoaded += OnAdditiveSceneLoaded;
         SaveSystem.LoadAdditiveScene(currentScene);
@@ -114,7 +97,6 @@ public class SceneHandler : MonoBehaviour
         OnSceneLoaded?.Invoke(currentScene, currentSpawner);
     }
 
-    //This function called when the player successfully move to the new scene (somehow I need to force the player to move before unloading the previous map scene)
     private void SceneTransitionFinalize(string announcer)
     {
         //SaveSystem.LoadFromSlot(inGameDataSlot);
